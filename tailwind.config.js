@@ -7,11 +7,15 @@ module.exports = {
   ],
   theme: {
     animation: {
+      fade: 'fade 1s ease-in-out normal forwards',
+      'fade-short': 'fade-short 200ms ease-in-out normal forwards',
       launch: 'launch 1.6s ease-in-out infinite',
+      zoom: 'zoom 1s ease-in normal forwards',
     },
     colors: {
       transparent: 'transparent',
-      black: '#414142',
+      black: '#000000',
+      dark: '#414142',
       green: '#3E6442',
       white: '#f3f3f3',
     },
@@ -21,9 +25,22 @@ module.exports = {
         'neue-haas-display-roman': 'Neue Haas Display Roman',
       },
       keyframes: {
+        fade: {
+          '0%': { opacity: '1' },
+          '30%': { opacity: '1' },
+          '100%': { opacity: '0' },
+        },
+        'fade-short': {
+          '0%': { opacity: '1' },
+          '100%': { opacity: '0' },
+        },
         launch: {
           '0%, 100%': { background: '#3E6442' },
           '50%': { background: '#3E6442E5' },
+        },
+        zoom: {
+          '0%': { transform: 'scale(1) rotate(0)', opacity: 1 },
+          '100%': { transform: 'scale(2.5) rotate(15deg)', opacity: 0 },
         },
       },
     },
