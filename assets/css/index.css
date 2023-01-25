@@ -1,0 +1,21 @@
+@font-face {
+  font-family: 'Neue Haas Display Bold';
+  src: url('../font/NeueHaasDisplayBold.ttf');
+}
+
+@font-face {
+  font-family: 'Neue Haas Display Roman';
+  src: url('../font/NeueHaasDisplayRoman.ttf');
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+
+  html,
+  body {
+    @apply bg-black font-neue-haas-display-roman;
+  }
+}
