@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import InitFade from './InitFade';
 import { useInterfaceMoveOnMouseMove } from '../../hooks/mouse';
 import orbit from '../../../img/orbit.jpg';
 
 export default function OrbitLanding({ onEnd }) {
-  const [initFade, setInitFade] = useState(true);
   const [launchFade, setLaunchFade] = useState(false);
   const [zoomEarth, setZoomEarth] = useState(false);
 
@@ -15,7 +15,7 @@ export default function OrbitLanding({ onEnd }) {
         <img src={orbit} alt="Orbit" className={`w-full h-full object-cover ${zoomEarth && 'animate-zoom'}`} onAnimationEnd={() => onEnd()} />
       </div>
 
-      {initFade && <div className="absolute w-full h-screen bg-black backdrop-blur-lg animate-fade z-10" onAnimationEnd={() => setInitFade(false)} />}
+      <InitFade />
 
       <div className={`relative w-full h-screen backdrop-blur-sm overflow-hidden ${launchFade && 'animate-fade'}`} onAnimationEnd={(e) => e.animationName === 'fade' && setZoomEarth(true)}>
         <div className="relative w-full h-screen" style={{ transform: `translateX(${x}px) translateY(${y}px)` }}>
