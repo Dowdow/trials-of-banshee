@@ -8,23 +8,25 @@ export function useInterfaceMoveOnMouseMove() {
   function update(event) {
     const wx = window.innerWidth;
     const wy = window.innerHeight;
+    const maxMoveX = (wx / wy) >= 1 ? maxMove : maxMove * (wx / wy);
+    const maxMoveY = (wy / wx) >= 1 ? maxMove : maxMove * (wy / wx);
     const mx = event.pageX;
     const my = event.pageY;
 
     if (mx >= wx / 2) {
       const percent = (mx - (wx / 2)) / (wx - (wx / 2));
-      setX(maxMove * percent * -1);
+      setX(maxMoveX * percent * -1);
     } else {
       const percent = 1 - ((mx - 0) / ((wx / 2) - 0));
-      setX(maxMove * percent);
+      setX(maxMoveX * percent);
     }
 
     if (my >= wy / 2) {
       const percent = (my - (wy / 2)) / (wy - (wy / 2));
-      setY(maxMove * percent * -1);
+      setY(maxMoveY * percent * -1);
     } else {
       const percent = 1 - ((my - 0) / ((wy / 2) - 0));
-      setY(maxMove * percent);
+      setY(maxMoveY * percent);
     }
   }
 

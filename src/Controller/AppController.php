@@ -16,4 +16,22 @@ class AppController extends AbstractController
   {
     return $this->render('base.html.twig');
   }
+
+  /**
+   * @return Response
+   */
+  #[Route('/trials', name: 'app.trials', methods: ['GET'])]
+  public function trials(): Response
+  {
+    return $this->render('base.html.twig');
+  }
+
+  /**
+   * @return Response
+   */
+  #[Route('/weapons', name: 'app.weapons', methods: ['GET'])]
+  public function weapons(): Response
+  {
+    return $this->render('base.html.twig');
+  }
 }

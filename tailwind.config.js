@@ -9,14 +9,18 @@ module.exports = {
     animation: {
       fade: 'fade 1s ease-in-out normal forwards',
       'fade-short': 'fade-short 200ms ease-in-out normal forwards',
+      'fade-out': 'fade-out 300ms ease-in-out normal forwards',
       launch: 'launch 1.6s ease-in-out infinite',
       zoom: 'zoom 1s ease-in normal forwards',
     },
     colors: {
       transparent: 'transparent',
       black: '#000000',
-      dark: '#414142',
+      blue: '#265086',
+      dark: '#101113',
+      'dark-grey': '#1C1D1F',
       green: '#3E6442',
+      'light-grey': '#28292B',
       white: '#f3f3f3',
     },
     extend: {
@@ -31,6 +35,10 @@ module.exports = {
           '100%': { opacity: '0' },
         },
         'fade-short': {
+          '0%': { opacity: '1' },
+          '100%': { opacity: '0' },
+        },
+        'fade-out': {
           '0%': { opacity: '1' },
           '100%': { opacity: '0' },
         },
