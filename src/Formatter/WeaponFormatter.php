@@ -38,6 +38,7 @@ class WeaponFormatter
       'type' => $weapon->getType(),
       'damageType' => $weapon->getDamageType(),
       'rarity' => $weapon->getRarity(),
+      'hasSound' => $weapon->getSounds()->count() > 0,
     ];
   }
 }

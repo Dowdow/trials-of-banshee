@@ -2,19 +2,25 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { setDamageType, setQuery, setRarity, setType } from '../../actions/weaponFilters';
-import { WEAPON_DAMAGE_TYPE, WEAPON_RARITY, WEAPON_TYPE } from '../../utils/weapons';
+import { setDamageType, setHasSound, setQuery, setRarity, setType } from '../../actions/weaponFilters';
+import { WEAPON_DAMAGE_TYPE, WEAPON_DAMAGE_TYPE_IMAGE, WEAPON_DAMAGE_TYPE_NAME, WEAPON_RARITY, WEAPON_TYPE, WEAPON_TYPE_NAME } from '../../utils/weapons';
 import { ROUTES } from '../../utils/routes';
 import KeyboardButton from '../ui/KeyboardButton';
+import promo from '../../../img/misc/promotion.png';
+import releg from '../../../img/misc/relegation.png';
 
 export default function WeaponsPage() {
   const dispatch = useDispatch();
 
   const weapons = useSelector((state) => state.weapons);
-  const { damageType, query, rarity, type } = useSelector((state) => state.weaponFilters);
+  const { damageType, hasSound, query, rarity, type } = useSelector((state) => state.weaponFilters);
 
   const handleDamageType = (e) => {
     dispatch(setDamageType(parseInt(e.target.value, 10)));
+  };
+
+  const handleHasSound = (e) => {
+    dispatch(setHasSound(parseInt(e.target.value, 10)));
   };
 
   const handleQuery = (e) => {
@@ -40,7 +46,7 @@ export default function WeaponsPage() {
           <div className="flex items-center gap-6">
             <input type="text" value={query} onChange={handleQuery} className="p-2 text-lg bg-light-grey text-white outline-none" placeholder="Search a weapon" />
             <select value={rarity} onChange={handleRarity} className="p-2 text-lg bg-light-grey text-white outline-none">
-              <option value={0}>All</option>
+              <option value={0}>All Rarity</option>
               <option value={WEAPON_RARITY.EXOTIC}>Exotic</option>
               <option value={WEAPON_RARITY.LEGENDARY}>Legendary</option>
               <option value={WEAPON_RARITY.RARE}>Rare</option>
@@ -48,7 +54,7 @@ export default function WeaponsPage() {
               <option value={WEAPON_RARITY.BASIC}>Basic</option>
             </select>
             <select value={damageType} onChange={handleDamageType} className="p-2 text-lg bg-light-grey text-white outline-none">
-              <option value={0}>All</option>
+              <option value={0}>All Damage Type</option>
               <option value={WEAPON_DAMAGE_TYPE.KINETIC}>Kinetic</option>
               <option value={WEAPON_DAMAGE_TYPE.ARC}>Arc</option>
               <option value={WEAPON_DAMAGE_TYPE.SOLAR}>Solar</option>
@@ -56,7 +62,7 @@ export default function WeaponsPage() {
               <option value={WEAPON_DAMAGE_TYPE.VOID}>Void</option>
             </select>
             <select value={type} onChange={handleType} className="p-2 text-lg bg-light-grey text-white outline-none">
-              <option value={0}>All</option>
+              <option value={0}>All Weapon Type</option>
               <option value={WEAPON_TYPE.AUTO}>Auto</option>
               <option value={WEAPON_TYPE.SHOTGUN}>Shotgun</option>
               <option value={WEAPON_TYPE.MACHINEGUN}>Machine Gun</option>
@@ -74,6 +80,11 @@ export default function WeaponsPage() {
               <option value={WEAPON_TYPE.TRACE}>Trace</option>
               <option value={WEAPON_TYPE.BOW}>Bow</option>
               <option value={WEAPON_TYPE.GLAIVE}>Glaive</option>
+            </select>
+            <select value={hasSound} onChange={handleHasSound} className="p-2 text-lg bg-light-grey text-white outline-none">
+              <option value={0}>All</option>
+              <option value={1}>With Sound</option>
+              <option value={2}>Without Sound</option>
             </select>
           </div>
         </div>
@@ -93,9 +104,14 @@ export default function WeaponsPage() {
         </nav>
       </div>
       <div className="container mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3 md:gap-5 py-5 px-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-5 py-5 px-3">
           {weapons
             .filter((w) => w.names.fr.toLocaleLowerCase().includes(query.toLocaleLowerCase()))
+            .filter((w) => {
+              if (hasSound === 1) return w.hasSound === true;
+              if (hasSound === 2) return w.hasSound === false;
+              return true;
+            })
             .filter((w) => (type === 0 ? true : w.type === type))
             .filter((w) => (damageType === 0 ? true : w.damageType === damageType))
             .filter((w) => (rarity === 0 ? true : w.rarity === rarity))
@@ -112,7 +128,14 @@ function Weapon({ w }) {
     <a href={`https://www.light.gg/db/items/${w.hash}`} target="_blank" rel="noreferrer" className="p-1 border-2 border-transparent hover:border-white/80 transition-colors duration-300 cursor-pointer">
       <div className="flex gap-5 p-5 bg-transparent hover:bg-light-grey border border-white/30 hover:border-white/80 transition-colors">
         <img src={`https://bungie.net${w.icon}`} alt={w.names.fr} loading="lazy" className="w-20 h-20 border border-white/30" />
-        <span className="text-lg tracking-wide text-white">{w.names.fr}</span>
+        <div className="flex flex-col overflow-hidden">
+          <span className="text-lg tracking-wide text-white whitespace-nowrap text-ellipsis">{w.names.fr}</span>
+          <span className="text-white/60">{WEAPON_TYPE_NAME[w.type]}</span>
+          <div className="flex items-center gap-2 mt-1">
+            <img src={WEAPON_DAMAGE_TYPE_IMAGE[w.damageType]} alt={WEAPON_DAMAGE_TYPE_NAME[w.damageType]} className="w-5 h-5" />
+            <img src={w.hasSound ? promo : releg} alt={w.hasSound ? 'This weapon have a sound' : 'This weapon does not have a sound'} className="w-5 h-5" />
+          </div>
+        </div>
       </div>
     </a>
   );
@@ -121,10 +144,13 @@ function Weapon({ w }) {
 Weapon.propTypes = {
   w: PropTypes.shape({
     id: PropTypes.number.isRequired,
-    icon: PropTypes.string.isRequired,
+    damageType: PropTypes.number.isRequired,
     hash: PropTypes.string.isRequired,
+    hasSound: PropTypes.bool.isRequired,
+    icon: PropTypes.string.isRequired,
     names: PropTypes.shape({
       fr: PropTypes.string.isRequired,
     }),
+    type: PropTypes.number.isRequired,
   }).isRequired,
 };
