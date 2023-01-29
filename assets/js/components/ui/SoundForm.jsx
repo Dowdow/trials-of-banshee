@@ -69,7 +69,7 @@ export default function SoundForm({ onSubmit, sound = null, error = null }) {
         <div className="flex flex-col mb-10">
           <label className="text-lg font-bold border-b-2 border-white/30 mb-2">Weapons</label>
           <div className="flex flex-wrap gap-3">
-            {weapons.map((w) => <Weapon key={w} w={allWeapons.find((fw) => fw.id === w)} action={() => handleRemoveWeapon(w)} />)}
+            {allWeapons.length !== 0 && weapons.map((w) => <Weapon key={w} w={allWeapons.find((fw) => fw.id === w)} action={() => handleRemoveWeapon(w)} />)}
             {weapons.length === 0 && <span className="text-white/70 pl-2">No weapon linked to this sound</span>}
           </div>
 

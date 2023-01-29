@@ -1,28 +1,40 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { generatePath, Link, useParams } from 'react-router-dom';
-import { editSound } from '../../actions/sounds';
+import { generatePath, Link, useNavigate, useParams } from 'react-router-dom';
+import { addSound, editSound } from '../../actions/sounds';
 import { ROUTES, ROUTES_API } from '../../utils/routes';
 import KeyboardButton from '../ui/KeyboardButton';
 import SoundForm from '../ui/SoundForm';
 
 export default function SoundEditPage() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { id } = useParams();
-  const sound = useSelector((state) => state.sounds.find((s) => s.id === id));
+  const sound = useSelector((state) => state.sounds.find((s) => s.id === parseInt(id, 10)));
 
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (sound === undefined) {
+      fetch(generatePath(ROUTES_API.SOUND, { id }))
+        .then((response) => response.json())
+        .then((data) => dispatch(addSound(data)));
+    }
+  }, []);
 
   const handleSubmit = (payload) => {
     setError(null);
     fetch(generatePath(ROUTES_API.SOUND_EDIT, { id }), { method: 'POST', body: payload })
       .then((response) => response.json())
-      .then((data) => dispatch(editSound(id, data)))
+      .then((data) => {
+        dispatch(editSound(data));
+        navigate(ROUTES.SOUNDS);
+      })
       .catch((err) => setError(err));
   };
 
-  if (sound === null) {
+  if (sound === undefined) {
     return <div>Sound not found</div>;
   }
 

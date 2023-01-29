@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { generatePath, Link } from 'react-router-dom';
 import { setSounds } from '../../actions/sounds';
 import { ROUTES, ROUTES_API } from '../../utils/routes';
 import KeyboardButton from '../ui/KeyboardButton';
@@ -26,12 +26,14 @@ export default function SoundsPage() {
   return (
     <div className="bg-dark min-h-screen">
       <div className="sticky top-0 flex justify-between items-center gap-6 w-full bg-dark-grey p-5">
-        <div>
-          <h1 className="mb-3 font-neue-haas-display-bold text-6xl text-white">Sounds</h1>
-          <div className="w-full h-0.5 bg-white/50" />
-        </div>
         <div className="flex items-center gap-6">
-          <input type="text" value={query} onChange={handleQuery} className="p-2 text-lg bg-light-grey text-white outline-none" placeholder="Search a sound" />
+          <div>
+            <h1 className="mb-3 font-neue-haas-display-bold text-6xl text-white">Sounds</h1>
+            <div className="w-full h-0.5 bg-white/50" />
+          </div>
+          <div className="flex items-center gap-6">
+            <input type="text" value={query} onChange={handleQuery} className="p-2 text-lg bg-light-grey text-white outline-none" placeholder="Search a sound" />
+          </div>
         </div>
         <nav className="flex gap-3">
           <Link to={ROUTES.SOUND_ADD} className="flex items-center gap-2 px-1 py-0.5 border-2 border-transparent hover:border-white/70 transition-colors duration-300">
@@ -53,10 +55,10 @@ export default function SoundsPage() {
         </nav>
       </div>
       <div className="container mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3 md:gap-5 py-5 px-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-5 py-5 px-3">
           {sounds
-            .filter((s) => s.name.toLocaleLowerCase().includes(query.toLocaleLowerCase()) || s.description.toLocaleLowerCase().includes(query.toLocaleLowerCase()))
-            .sort((a, b) => a.names.fr.localeCompare(b.names.fr))
+            .filter((s) => s.name.toLowerCase().includes(query.toLowerCase()) || s.description.toLowerCase().includes(query.toLowerCase()))
+            .sort((a, b) => a.name.localeCompare(b.name))
             .map((s) => <Sound key={s.id} s={s} />)}
         </div>
       </div>
@@ -65,13 +67,49 @@ export default function SoundsPage() {
 }
 
 function Sound({ s }) {
+  const audio = useRef();
+  const [playing, setPlaying] = useState(false);
+
+  const weapons = useSelector((state) => state.weapons);
+
+  const handlePlay = () => {
+    if (playing) {
+      audio.current.currentTime = 0;
+      audio.current.pause();
+    } else {
+      audio.current.play();
+    }
+    setPlaying(!playing);
+  };
+
   return (
-    <div className="p-1 border-2 border-transparent hover:border-white/80 transition-colors duration-300 cursor-pointer">
-      <div className="flex gap-5 p-5 bg-transparent hover:bg-light-grey border border-white/30 hover:border-white/80 transition-colors">
-        <span className="text-lg tracking-wide text-white">{s.name}</span>
+    <div className="p-1 border-2 border-transparent hover:border-white/80 transition-colors duration-300">
+      <div className="flex flex-col gap-1 p-5 bg-transparent hover:bg-light-grey border border-white/30 hover:border-white/80 transition-colors">
+        <div className="flex justify-between gap-2">
+          <span className="text-lg tracking-wide text-white">{s.name}</span>
+          <div className="flex items-center gap-2">
+            <button type="button" onClick={handlePlay} className="text-white underline">{playing ? 'Pause' : 'Listen'}</button>
+            <Link to={generatePath(ROUTES.SOUND_EDIT, { id: s.id })} className="text-white underline">Edit</Link>
+          </div>
+        </div>
         <span className="text-white/80">{s.description}</span>
+        <div className="flex flex-wrap gap-2 mt-2">
+          {weapons.length !== 0 && s.weapons.map((w) => <Weapon key={w} w={weapons.find((fw) => fw.id === w)} />)}
+        </div>
+        <audio ref={audio} src={`/uploads/sounds/${s.path}`} preload="auto" onEnded={() => setPlaying(false)}>
+          <track kind="captions" />
+        </audio>
       </div>
     </div>
+  );
+}
+
+function Weapon({ w }) {
+  return (
+    <button type="button" className="flex items-center gap-1 p-1 border border-white/30">
+      <img src={`https://bungie.net${w.icon}`} alt={w.names.fr} loading="lazy" className="w-8 h-8" />
+      <span className="tracking-wide text-white">{w.names.fr}</span>
+    </button>
   );
 }
 
@@ -81,5 +119,13 @@ Sound.propTypes = {
     name: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     path: PropTypes.string.isRequired,
+    weapons: PropTypes.array.isRequired,
+  }).isRequired,
+};
+
+Weapon.propTypes = {
+  w: PropTypes.shape({
+    icon: PropTypes.string.isRequired,
+    names: PropTypes.object.isRequired,
   }).isRequired,
 };

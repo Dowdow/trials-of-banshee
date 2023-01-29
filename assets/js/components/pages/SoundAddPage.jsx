@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { addSound } from '../../actions/sounds';
 import { ROUTES, ROUTES_API } from '../../utils/routes';
 import KeyboardButton from '../ui/KeyboardButton';
@@ -8,6 +8,7 @@ import SoundForm from '../ui/SoundForm';
 
 export default function SoundAddPage() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [error, setError] = useState(null);
 
@@ -15,7 +16,10 @@ export default function SoundAddPage() {
     setError(null);
     fetch(ROUTES_API.SOUND_ADD, { method: 'POST', body: payload })
       .then((response) => response.json())
-      .then((data) => dispatch(addSound(data)))
+      .then((data) => {
+        dispatch(addSound(data));
+        navigate(ROUTES.SOUNDS);
+      })
       .catch((err) => setError(err));
   };
 

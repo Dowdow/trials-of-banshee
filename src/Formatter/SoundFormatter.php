@@ -3,6 +3,7 @@
 namespace App\Formatter;
 
 use App\Entity\Sound;
+use App\Entity\Weapon;
 
 class SoundFormatter
 {
@@ -34,6 +35,9 @@ class SoundFormatter
       'name' => $sound->getName(),
       'description' => $sound->getDescription(),
       'path' => $sound->getPath(),
+      'weapons' => array_map(static function (Weapon $weapon) {
+        return $weapon->getId();
+      }, $sound->getWeapons()->toArray()),
     ];
   }
 }

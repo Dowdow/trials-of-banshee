@@ -54,6 +54,21 @@ class ApiController extends AbstractController
   }
 
   /**
+   * @param Sound $sound
+   * @param SoundFormatter $soundFormatter
+   * @return JsonResponse
+   */
+  #[Route('/sound/{id}', name: 'api.sound', methods: ['GET'])]
+  public function sound(Sound $sound, SoundFormatter $soundFormatter): JsonResponse
+  {
+    if ($sound === null) {
+      return new JsonResponse(['errors' => ['Sound not found']], 404);
+    }
+
+    return new JsonResponse($soundFormatter->formatSound($sound));
+  }
+
+  /**
    * @param Request $request
    * @param ManagerRegistry $managerRegistry
    * @param SoundFormatter $soundFormatter

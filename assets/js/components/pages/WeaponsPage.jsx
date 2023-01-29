@@ -32,48 +32,50 @@ export default function WeaponsPage() {
   return (
     <div className="bg-dark min-h-screen">
       <div className="sticky top-0 flex justify-between items-center gap-6 w-full bg-dark-grey p-5">
-        <div>
-          <h1 className="mb-3 font-neue-haas-display-bold text-6xl text-white">Weapons</h1>
-          <div className="w-full h-0.5 bg-white/50" />
-        </div>
         <div className="flex items-center gap-6">
-          <input type="text" value={query} onChange={handleQuery} className="p-2 text-lg bg-light-grey text-white outline-none" placeholder="Search a weapon" />
-          <select value={rarity} onChange={handleRarity} className="p-2 text-lg bg-light-grey text-white outline-none">
-            <option value={0}>All</option>
-            <option value={WEAPON_RARITY.EXOTIC}>Exotic</option>
-            <option value={WEAPON_RARITY.LEGENDARY}>Legendary</option>
-            <option value={WEAPON_RARITY.RARE}>Rare</option>
-            <option value={WEAPON_RARITY.COMMON}>Common</option>
-            <option value={WEAPON_RARITY.BASIC}>Basic</option>
-          </select>
-          <select value={damageType} onChange={handleDamageType} className="p-2 text-lg bg-light-grey text-white outline-none">
-            <option value={0}>All</option>
-            <option value={WEAPON_DAMAGE_TYPE.KINETIC}>Kinetic</option>
-            <option value={WEAPON_DAMAGE_TYPE.ARC}>Arc</option>
-            <option value={WEAPON_DAMAGE_TYPE.SOLAR}>Solar</option>
-            <option value={WEAPON_DAMAGE_TYPE.STASIS}>Stasis</option>
-            <option value={WEAPON_DAMAGE_TYPE.VOID}>Void</option>
-          </select>
-          <select value={type} onChange={handleType} className="p-2 text-lg bg-light-grey text-white outline-none">
-            <option value={0}>All</option>
-            <option value={WEAPON_TYPE.AUTO}>Auto</option>
-            <option value={WEAPON_TYPE.SHOTGUN}>Shotgun</option>
-            <option value={WEAPON_TYPE.MACHINEGUN}>Machine Gun</option>
-            <option value={WEAPON_TYPE.HAND_CANNON}>Hand Cannon</option>
-            <option value={WEAPON_TYPE.ROCKET_LAUNCHER}>Rocket Launcher</option>
-            <option value={WEAPON_TYPE.FUSION}>Fusion</option>
-            <option value={WEAPON_TYPE.SNIPER}>Sniper</option>
-            <option value={WEAPON_TYPE.PULSE}>Pulse</option>
-            <option value={WEAPON_TYPE.SCOUT}>Scout</option>
-            <option value={WEAPON_TYPE.SIDEARM}>Sidearm</option>
-            <option value={WEAPON_TYPE.SWORD}>Sword</option>
-            <option value={WEAPON_TYPE.LINEAR_FUSION}>Linear Fusion</option>
-            <option value={WEAPON_TYPE.GRENADE_LAUNCHER}>Grenade Launcher</option>
-            <option value={WEAPON_TYPE.SUBMACHINE_GUN}>Submachine Gun</option>
-            <option value={WEAPON_TYPE.TRACE}>Trace</option>
-            <option value={WEAPON_TYPE.BOW}>Bow</option>
-            <option value={WEAPON_TYPE.GLAIVE}>Glaive</option>
-          </select>
+          <div>
+            <h1 className="mb-3 font-neue-haas-display-bold text-6xl text-white">Weapons</h1>
+            <div className="w-full h-0.5 bg-white/50" />
+          </div>
+          <div className="flex items-center gap-6">
+            <input type="text" value={query} onChange={handleQuery} className="p-2 text-lg bg-light-grey text-white outline-none" placeholder="Search a weapon" />
+            <select value={rarity} onChange={handleRarity} className="p-2 text-lg bg-light-grey text-white outline-none">
+              <option value={0}>All</option>
+              <option value={WEAPON_RARITY.EXOTIC}>Exotic</option>
+              <option value={WEAPON_RARITY.LEGENDARY}>Legendary</option>
+              <option value={WEAPON_RARITY.RARE}>Rare</option>
+              <option value={WEAPON_RARITY.COMMON}>Common</option>
+              <option value={WEAPON_RARITY.BASIC}>Basic</option>
+            </select>
+            <select value={damageType} onChange={handleDamageType} className="p-2 text-lg bg-light-grey text-white outline-none">
+              <option value={0}>All</option>
+              <option value={WEAPON_DAMAGE_TYPE.KINETIC}>Kinetic</option>
+              <option value={WEAPON_DAMAGE_TYPE.ARC}>Arc</option>
+              <option value={WEAPON_DAMAGE_TYPE.SOLAR}>Solar</option>
+              <option value={WEAPON_DAMAGE_TYPE.STASIS}>Stasis</option>
+              <option value={WEAPON_DAMAGE_TYPE.VOID}>Void</option>
+            </select>
+            <select value={type} onChange={handleType} className="p-2 text-lg bg-light-grey text-white outline-none">
+              <option value={0}>All</option>
+              <option value={WEAPON_TYPE.AUTO}>Auto</option>
+              <option value={WEAPON_TYPE.SHOTGUN}>Shotgun</option>
+              <option value={WEAPON_TYPE.MACHINEGUN}>Machine Gun</option>
+              <option value={WEAPON_TYPE.HAND_CANNON}>Hand Cannon</option>
+              <option value={WEAPON_TYPE.ROCKET_LAUNCHER}>Rocket Launcher</option>
+              <option value={WEAPON_TYPE.FUSION}>Fusion</option>
+              <option value={WEAPON_TYPE.SNIPER}>Sniper</option>
+              <option value={WEAPON_TYPE.PULSE}>Pulse</option>
+              <option value={WEAPON_TYPE.SCOUT}>Scout</option>
+              <option value={WEAPON_TYPE.SIDEARM}>Sidearm</option>
+              <option value={WEAPON_TYPE.SWORD}>Sword</option>
+              <option value={WEAPON_TYPE.LINEAR_FUSION}>Linear Fusion</option>
+              <option value={WEAPON_TYPE.GRENADE_LAUNCHER}>Grenade Launcher</option>
+              <option value={WEAPON_TYPE.SUBMACHINE_GUN}>Submachine Gun</option>
+              <option value={WEAPON_TYPE.TRACE}>Trace</option>
+              <option value={WEAPON_TYPE.BOW}>Bow</option>
+              <option value={WEAPON_TYPE.GLAIVE}>Glaive</option>
+            </select>
+          </div>
         </div>
         <nav className="flex gap-3">
           <Link to={ROUTES.SOUNDS} className="flex items-center gap-2 px-1 py-0.5 border-2 border-transparent hover:border-white/70 transition-colors duration-300">

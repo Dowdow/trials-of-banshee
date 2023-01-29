@@ -6,7 +6,7 @@ export function addSound(sound) {
   return (dispatch) => dispatch({ type: ADD_SOUND, sound });
 }
 
-export function editSound(id, sound) {
+export function editSound(sound) {
   return (dispatch) => dispatch({ type: EDIT_SOUND, sound });
 }
 

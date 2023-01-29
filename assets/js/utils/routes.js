@@ -8,6 +8,7 @@ export const ROUTES = {
 };
 
 export const ROUTES_API = {
+  SOUND: '/api/sound/:id',
   SOUND_ADD: '/api/sounds/add',
   SOUND_EDIT: '/api/sounds/edit/:id',
   SOUNDS: '/api/sounds',

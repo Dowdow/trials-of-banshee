@@ -77,7 +77,7 @@ class Weapon
   #[ORM\Column]
   private bool $hidden = false;
 
-  #[ORM\ManyToMany(targetEntity: Sound::class, inversedBy: 'weapons')]
+  #[ORM\ManyToMany(targetEntity: Sound::class, mappedBy: 'weapons')]
   private Collection $sounds;
 
   public function __construct()
@@ -183,10 +183,16 @@ class Weapon
     return $this->sounds->contains($sound);
   }
 
+  public function getSounds(): Collection
+  {
+    return $this->sounds;
+  }
+
   public function addSound(Sound $sound): static
   {
     if (!$this->sounds->contains($sound)) {
       $this->sounds->add($sound);
+      $sound->addWeapon($this);
     }
     return $this;
   }
@@ -195,13 +201,9 @@ class Weapon
   {
     if ($this->sounds->contains($sound)) {
       $this->sounds->removeElement($sound);
+      $sound->removeWeapon($this);
     }
     return $this;
-  }
-
-  public function getSounds(): Collection
-  {
-    return $this->sounds;
   }
 
   public function setSounds(Collection $sounds): static
