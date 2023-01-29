@@ -1,47 +1,102 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { setDamageType, setQuery, setRarity, setType } from '../../actions/weaponFilters';
+import { WEAPON_DAMAGE_TYPE, WEAPON_RARITY, WEAPON_TYPE } from '../../utils/weapons';
+import { ROUTES } from '../../utils/routes';
 import KeyboardButton from '../ui/KeyboardButton';
 
 export default function WeaponsPage() {
-  const [weapons, setWeapons] = useState([]);
-  const [query, setQuery] = useState('');
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    fetch('/api/weapons')
-      .then((res) => res.json())
-      .then((data) => setWeapons(data.weapons));
-  }, []);
+  const weapons = useSelector((state) => state.weapons);
+  const { damageType, query, rarity, type } = useSelector((state) => state.weaponFilters);
+
+  const handleDamageType = (e) => {
+    dispatch(setDamageType(parseInt(e.target.value, 10)));
+  };
 
   const handleQuery = (e) => {
-    setQuery(e.target.value);
+    dispatch(setQuery(e.target.value));
+  };
+
+  const handleRarity = (e) => {
+    dispatch(setRarity(parseInt(e.target.value, 10)));
+  };
+
+  const handleType = (e) => {
+    dispatch(setType(parseInt(e.target.value, 10)));
   };
 
   return (
     <div className="bg-dark min-h-screen">
       <div className="sticky top-0 flex justify-between items-center gap-6 w-full bg-dark-grey p-5">
-        <div className="flex items-center gap-6">
-          <div>
-            <h1 className="mb-3 font-neue-haas-display-bold text-6xl text-white">Weapons</h1>
-            <div className="w-full h-0.5 bg-white/50" />
-          </div>
-          <input type="text" value={query} onChange={handleQuery} className="p-2 text-lg bg-light-grey text-white outline-none" placeholder="Search a weapon" />
+        <div>
+          <h1 className="mb-3 font-neue-haas-display-bold text-6xl text-white">Weapons</h1>
+          <div className="w-full h-0.5 bg-white/50" />
         </div>
-        <div className="flex gap-3">
-          <Link to="/trials" className="flex items-center gap-2 px-1 py-0.5 border-2 border-transparent hover:border-white/70">
+        <div className="flex items-center gap-6">
+          <input type="text" value={query} onChange={handleQuery} className="p-2 text-lg bg-light-grey text-white outline-none" placeholder="Search a weapon" />
+          <select value={rarity} onChange={handleRarity} className="p-2 text-lg bg-light-grey text-white outline-none">
+            <option value={0}>All</option>
+            <option value={WEAPON_RARITY.EXOTIC}>Exotic</option>
+            <option value={WEAPON_RARITY.LEGENDARY}>Legendary</option>
+            <option value={WEAPON_RARITY.RARE}>Rare</option>
+            <option value={WEAPON_RARITY.COMMON}>Common</option>
+            <option value={WEAPON_RARITY.BASIC}>Basic</option>
+          </select>
+          <select value={damageType} onChange={handleDamageType} className="p-2 text-lg bg-light-grey text-white outline-none">
+            <option value={0}>All</option>
+            <option value={WEAPON_DAMAGE_TYPE.KINETIC}>Kinetic</option>
+            <option value={WEAPON_DAMAGE_TYPE.ARC}>Arc</option>
+            <option value={WEAPON_DAMAGE_TYPE.SOLAR}>Solar</option>
+            <option value={WEAPON_DAMAGE_TYPE.STASIS}>Stasis</option>
+            <option value={WEAPON_DAMAGE_TYPE.VOID}>Void</option>
+          </select>
+          <select value={type} onChange={handleType} className="p-2 text-lg bg-light-grey text-white outline-none">
+            <option value={0}>All</option>
+            <option value={WEAPON_TYPE.AUTO}>Auto</option>
+            <option value={WEAPON_TYPE.SHOTGUN}>Shotgun</option>
+            <option value={WEAPON_TYPE.MACHINEGUN}>Machine Gun</option>
+            <option value={WEAPON_TYPE.HAND_CANNON}>Hand Cannon</option>
+            <option value={WEAPON_TYPE.ROCKET_LAUNCHER}>Rocket Launcher</option>
+            <option value={WEAPON_TYPE.FUSION}>Fusion</option>
+            <option value={WEAPON_TYPE.SNIPER}>Sniper</option>
+            <option value={WEAPON_TYPE.PULSE}>Pulse</option>
+            <option value={WEAPON_TYPE.SCOUT}>Scout</option>
+            <option value={WEAPON_TYPE.SIDEARM}>Sidearm</option>
+            <option value={WEAPON_TYPE.SWORD}>Sword</option>
+            <option value={WEAPON_TYPE.LINEAR_FUSION}>Linear Fusion</option>
+            <option value={WEAPON_TYPE.GRENADE_LAUNCHER}>Grenade Launcher</option>
+            <option value={WEAPON_TYPE.SUBMACHINE_GUN}>Submachine Gun</option>
+            <option value={WEAPON_TYPE.TRACE}>Trace</option>
+            <option value={WEAPON_TYPE.BOW}>Bow</option>
+            <option value={WEAPON_TYPE.GLAIVE}>Glaive</option>
+          </select>
+        </div>
+        <nav className="flex gap-3">
+          <Link to={ROUTES.SOUNDS} className="flex items-center gap-2 px-1 py-0.5 border-2 border-transparent hover:border-white/70 transition-colors duration-300">
+            <KeyboardButton button="S" />
+            <span className="text-xl tracking-wide text-white/80">Go to Sounds</span>
+          </Link>
+          <Link to={ROUTES.TRIALS} className="flex items-center gap-2 px-1 py-0.5 border-2 border-transparent hover:border-white/70 transition-colors duration-300">
             <KeyboardButton button="B" />
             <span className="text-xl tracking-wide text-white/80">Back to the Trials</span>
           </Link>
-          <Link to="/" className="flex items-center gap-2 px-1 py-0.5 border-2 border-transparent hover:border-white/70">
+          <Link to={ROUTES.INDEX} className="flex items-center gap-2 px-1 py-0.5 border-2 border-transparent hover:border-white/70 transition-colors duration-300">
             <KeyboardButton button="O" />
             <span className="text-xl tracking-wide text-white/80">Back to Orbit</span>
           </Link>
-        </div>
+        </nav>
       </div>
       <div className="container mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3 md:gap-5 pt-5 px-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3 md:gap-5 py-5 px-3">
           {weapons
             .filter((w) => w.names.fr.toLocaleLowerCase().includes(query.toLocaleLowerCase()))
+            .filter((w) => (type === 0 ? true : w.type === type))
+            .filter((w) => (damageType === 0 ? true : w.damageType === damageType))
+            .filter((w) => (rarity === 0 ? true : w.rarity === rarity))
             .sort((a, b) => a.names.fr.localeCompare(b.names.fr))
             .map((w) => <Weapon key={w.id} w={w} />)}
         </div>
@@ -52,12 +107,12 @@ export default function WeaponsPage() {
 
 function Weapon({ w }) {
   return (
-    <div key={w.id} className="p-1 border-2 border-transparent hover:border-white/80 transition-colors duration-300">
-      <div className="flex gap-5 p-5 bg-transparent hover:bg-light-grey border border-white/30 hover:border-white/80 transition-colors cursor-pointer">
+    <a href={`https://www.light.gg/db/items/${w.hash}`} target="_blank" rel="noreferrer" className="p-1 border-2 border-transparent hover:border-white/80 transition-colors duration-300 cursor-pointer">
+      <div className="flex gap-5 p-5 bg-transparent hover:bg-light-grey border border-white/30 hover:border-white/80 transition-colors">
         <img src={`https://bungie.net${w.icon}`} alt={w.names.fr} loading="lazy" className="w-20 h-20 border border-white/30" />
         <span className="text-lg tracking-wide text-white">{w.names.fr}</span>
       </div>
-    </div>
+    </a>
   );
 }
 
@@ -65,6 +120,7 @@ Weapon.propTypes = {
   w: PropTypes.shape({
     id: PropTypes.number.isRequired,
     icon: PropTypes.string.isRequired,
+    hash: PropTypes.string.isRequired,
     names: PropTypes.shape({
       fr: PropTypes.string.isRequired,
     }),

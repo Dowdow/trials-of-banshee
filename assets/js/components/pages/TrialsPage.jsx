@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useInterfaceMoveOnMouseMove } from '../../hooks/mouse';
+import { ROUTES } from '../../utils/routes';
 import InitFade from '../ui/InitFade';
 import KeyboardButton from '../ui/KeyboardButton';
 import banshee from '../../../img/banshee.jpg';
@@ -36,11 +37,11 @@ export default function TrialsPage() {
           <div className="w-full h-[30%] bg-blue/80" />
           <div className="w-full h-[63%] bg-blue/50" />
           <div className="flex justify-end items-center gap-3 w-full h-[7%] pr-14 bg-blue/30">
-            <a href="/weapons" onClick={(e) => handleClickLink(e, '/weapons')} className="flex items-center gap-2 px-1 border-2 border-transparent hover:border-white/70">
+            <a href={ROUTES.WEAPONS} onClick={(e) => handleClickLink(e, '/weapons')} className="flex items-center gap-2 px-1 border-2 border-transparent hover:border-white/70 transition-colors duration-300">
               <KeyboardButton button="W" />
               <span className="text-2xl tracking-wide text-white/80">Weapons stock</span>
             </a>
-            <a href="/" onClick={(e) => handleClickLink(e, '/')} className="flex items-center gap-2 px-1 border-2 border-transparent hover:border-white/70">
+            <a href={ROUTES.INDEX} onClick={(e) => handleClickLink(e, '/')} className="flex items-center gap-2 px-1 border-2 border-transparent hover:border-white/70 transition-colors duration-300">
               <KeyboardButton button="O" />
               <span className="text-2xl tracking-wide text-white/80">Back to Orbit</span>
             </a>

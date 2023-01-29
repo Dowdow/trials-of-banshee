@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Sound;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AppController extends AbstractController
@@ -32,6 +34,38 @@ class AppController extends AbstractController
   #[Route('/weapons', name: 'app.weapons', methods: ['GET'])]
   public function weapons(): Response
   {
+    return $this->render('base.html.twig');
+  }
+
+  /**
+   * @return Response
+   */
+  #[Route('/sounds', name: 'app.sounds', methods: ['GET'])]
+  public function sounds(): Response
+  {
+    return $this->render('base.html.twig');
+  }
+
+  /**
+   * @return Response
+   */
+  #[Route('/sounds/add', name: 'app.sounds.add', methods: ['GET'])]
+  public function soundAdd(): Response
+  {
+    return $this->render('base.html.twig');
+  }
+
+  /**
+   * @param Sound $sound
+   * @return Response
+   */
+  #[Route('/sounds/edit/{id}', name: 'app.sounds.edit', methods: ['GET'])]
+  public function soundEdit(Sound $sound): Response
+  {
+    if ($sound === null) {
+      throw new NotFoundHttpException();
+    }
+
     return $this->render('base.html.twig');
   }
 }

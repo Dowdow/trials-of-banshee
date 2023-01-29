@@ -18,7 +18,7 @@ class WeaponFormatter
     }
 
     return [
-      'weapons' => $formattedWeapons,
+      'items' => $formattedWeapons,
       'total' => count($formattedWeapons),
     ];
   }
@@ -31,6 +31,7 @@ class WeaponFormatter
   {
     return [
       'id' => $weapon->getId(),
+      'hash' => $weapon->getHash(),
       'names' => $weapon->getNames(),
       'icon' => $weapon->getIcon(),
       'screenshot' => $weapon->getScreenshot(),

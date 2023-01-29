@@ -1,0 +1,35 @@
+export const WEAPON_DAMAGE_TYPE = {
+  KINETIC: 1,
+  ARC: 2,
+  SOLAR: 3,
+  VOID: 4,
+  STASIS: 6,
+};
+
+export const WEAPON_RARITY = {
+  BASIC: 2,
+  COMMON: 3,
+  RARE: 4,
+  LEGENDARY: 5,
+  EXOTIC: 6,
+};
+
+export const WEAPON_TYPE = {
+  AUTO: 6,
+  SHOTGUN: 7,
+  MACHINEGUN: 8,
+  HAND_CANNON: 9,
+  ROCKET_LAUNCHER: 10,
+  FUSION: 11,
+  SNIPER: 12,
+  PULSE: 13,
+  SCOUT: 14,
+  SIDEARM: 17,
+  SWORD: 18,
+  LINEAR_FUSION: 22,
+  GRENADE_LAUNCHER: 23,
+  SUBMACHINE_GUN: 24,
+  TRACE: 25,
+  BOW: 31,
+  GLAIVE: 33,
+};

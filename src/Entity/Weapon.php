@@ -2,17 +2,20 @@
 
 namespace App\Entity;
 
+use App\Repository\WeaponRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Class Weapon
  * @package App\Entity
- *
- * @ORM\Table(name="weapon",uniqueConstraints={
- *     @ORM\UniqueConstraint(name="destiny_hash_idx", columns={"destiny_hash"})
- * })
- * @ORM\Entity(repositoryClass="App\Repository\WeaponRepository")
  */
+#[ORM\Entity(repositoryClass: WeaponRepository::class)]
+#[ORM\Table(name: 'weapon')]
+#[UniqueEntity('destiny_hash')]
 class Weapon
 {
   public const TYPE_AUTO = 6;
@@ -45,181 +48,165 @@ class Weapon
   public const RARITY_LEGENDARY = 5;
   public const RARITY_EXOTIC = 6;
 
-  /**
-   * @var int|null
-   *
-   * @ORM\Column(name="id", type="integer")
-   * @ORM\Id
-   * @ORM\GeneratedValue(strategy="AUTO")
-   */
-  private ?int $id;
+  #[ORM\Id]
+  #[ORM\GeneratedValue(strategy: 'AUTO')]
+  #[ORM\Column]
+  private ?int $id = null;
 
-  /**
-   * @ORM\Column(name="destiny_hash", type="string", nullable=false)
-   */
-  private string $hash;
+  #[ORM\Column(name: 'destiny_hash', length: 255, unique: true)]
+  private ?string $hash = null;
 
-  /**
-   * @ORM\Column(name="names", type="json", nullable=false)
-   */
+  #[ORM\Column(type: Types::JSON)]
   private array $names = [];
 
-  /**
-   * @ORM\Column(name="weapon_type", type="integer", nullable=false)
-   */
-  private int $type;
+  #[ORM\Column(name: 'weapon_type')]
+  private ?int $type = null;
 
-  /**
-   * @ORM\Column(name="damage_type", type="integer", nullable=false)
-   */
-  private int $damageType;
+  #[ORM\Column]
+  private ?int $damageType = null;
 
-  /**
-   * @ORM\Column(name="rarity", type="integer", nullable=false)
-   */
-  private int $rarity;
+  #[ORM\Column]
+  private ?int $rarity = null;
 
-  /**
-   * @ORM\Column(name="icon", type="string", nullable=false)
-   */
-  private string $icon;
+  #[ORM\Column(length: 255)]
+  private ?string $icon = null;
 
-  /**
-   * @ORM\Column(name="screenshot", type="string", nullable=false)
-   */
-  private string $screenshot;
+  #[ORM\Column(length: 255)]
+  private ?string $screenshot = null;
 
-  /**
-   * @return int|null
-   */
+  #[ORM\Column]
+  private bool $hidden = false;
+
+  #[ORM\ManyToMany(targetEntity: Sound::class, inversedBy: 'weapons')]
+  private Collection $sounds;
+
+  public function __construct()
+  {
+    $this->sounds = new ArrayCollection();
+  }
+
   public function getId(): ?int
   {
     return $this->id;
   }
 
-  /**
-   * @return string
-   */
-  public function getHash(): string
+  public function getHash(): ?string
   {
     return $this->hash;
   }
 
-  /**
-   * @param string $hash
-   * @return $this
-   */
   public function setHash(string $hash): static
   {
     $this->hash = $hash;
     return $this;
   }
 
-  /**
-   * @return array
-   */
   public function getNames(): array
   {
     return $this->names;
   }
 
-  /**
-   * @param array $names
-   * @return $this
-   */
   public function setNames(array $names): static
   {
     $this->names = $names;
     return $this;
   }
 
-  /**
-   * @return int
-   */
-  public function getType(): int
+  public function getType(): ?int
   {
     return $this->type;
   }
 
-  /**
-   * @param int $type
-   * @return $this
-   */
   public function setType(int $type): static
   {
     $this->type = $type;
     return $this;
   }
 
-  /**
-   * @return int
-   */
-  public function getDamageType(): int
+  public function getDamageType(): ?int
   {
     return $this->damageType;
   }
 
-  /**
-   * @param int $damageType
-   * @return $this
-   */
   public function setDamageType(int $damageType): static
   {
     $this->damageType = $damageType;
     return $this;
   }
 
-  /**
-   * @return int
-   */
-  public function getRarity(): int
+  public function getRarity(): ?int
   {
     return $this->rarity;
   }
 
-  /**
-   * @param int $rarity
-   * @return $this
-   */
   public function setRarity(int $rarity): static
   {
     $this->rarity = $rarity;
     return $this;
   }
 
-  /**
-   * @return string
-   */
-  public function getIcon(): string
+  public function getIcon(): ?string
   {
     return $this->icon;
   }
 
-  /**
-   * @param string $icon
-   * @return $this
-   */
   public function setIcon(string $icon): static
   {
     $this->icon = $icon;
     return $this;
   }
 
-  /**
-   * @return string
-   */
-  public function getScreenshot(): string
+  public function getScreenshot(): ?string
   {
     return $this->screenshot;
   }
 
-  /**
-   * @param string $screenshot
-   * @return $this
-   */
   public function setScreenshot(string $screenshot): static
   {
     $this->screenshot = $screenshot;
+    return $this;
+  }
+
+  public function isHidden(): bool
+  {
+    return $this->hidden;
+  }
+
+  public function setHidden(bool $hidden): static
+  {
+    $this->hidden = $hidden;
+    return $this;
+  }
+
+  public function hasSound(Sound $sound): bool
+  {
+    return $this->sounds->contains($sound);
+  }
+
+  public function addSound(Sound $sound): static
+  {
+    if (!$this->sounds->contains($sound)) {
+      $this->sounds->add($sound);
+    }
+    return $this;
+  }
+
+  public function removeSound(Sound $sound): static
+  {
+    if ($this->sounds->contains($sound)) {
+      $this->sounds->removeElement($sound);
+    }
+    return $this;
+  }
+
+  public function getSounds(): Collection
+  {
+    return $this->sounds;
+  }
+
+  public function setSounds(Collection $sounds): static
+  {
+    $this->sounds = $sounds;
     return $this;
   }
 }

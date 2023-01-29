@@ -7,6 +7,8 @@ parameters:
     bungie_api_key: "%env(BUNGIE_API_KEY)%"
 
     d2cache_folder: "%kernel.project_dir%/d2cache"
+    uploads_folder: "%kernel.project_dir%/public/uploads"
+    uploads_sounds_folder: "%uploads_folder%/sounds"
 
 services:
     # default configuration for services in *this* file
