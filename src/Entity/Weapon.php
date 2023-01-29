@@ -80,9 +80,13 @@ class Weapon
   #[ORM\ManyToMany(targetEntity: Sound::class, mappedBy: 'weapons')]
   private Collection $sounds;
 
+  #[ORM\OneToMany(targetEntity: Bounty::class, mappedBy: 'weapon')]
+  private Collection $bounties;
+
   public function __construct()
   {
     $this->sounds = new ArrayCollection();
+    $this->bounties = new ArrayCollection();
   }
 
   public function getId(): ?int
@@ -209,6 +213,17 @@ class Weapon
   public function setSounds(Collection $sounds): static
   {
     $this->sounds = $sounds;
+    return $this;
+  }
+
+  public function getBounties(): Collection
+  {
+    return $this->bounties;
+  }
+
+  public function setBounties(Collection $bounties): static
+  {
+    $this->bounties = $bounties;
     return $this;
   }
 }

@@ -1,6 +1,6 @@
 import { SET_WEAPON_FILTERS_DAMAGE_TYPE, SET_WEAPON_FILTERS_HAS_SOUND, SET_WEAPON_FILTERS_QUERY, SET_WEAPON_FILTERS_RARITY, SET_WEAPON_FILTERS_TYPE } from '../actions/weaponFilters';
 
-const init = { damageType: 0, hasSound: null, query: '', rarity: 0, type: 0 };
+const init = { damageType: 0, hasSound: 0, query: '', rarity: 0, type: 0 };
 
 export default function weaponFilter(state = init, action = {}) {
   switch (action.type) {

@@ -1,9 +1,11 @@
 export const ROUTES = {
   INDEX: '/',
+  COLLECTION: '/collection',
   SOUND_ADD: '/sounds/add',
   SOUND_EDIT: '/sounds/edit/:id',
   SOUNDS: '/sounds',
   TRIALS: '/trials',
+  TRIUMPHS: '/triumphs',
   WEAPONS: '/weapons',
 };
 
