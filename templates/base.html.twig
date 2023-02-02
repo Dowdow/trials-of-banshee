@@ -1,29 +1,32 @@
 <!DOCTYPE html>
 <html lang="{{ app.request.locale }}">
-	<head>
-		<title>Trials of Banshee</title>
+  <head>
+    <title>Trials of Banshee</title>
 
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="description" content="Trials of Banshee">
-		<meta name="theme-color" content="#414142">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Trials of Banshee" />
+    <meta name="theme-color" content="#414142" />
 
-		<meta property="og:url" content="{{ app.request.uri }}">
-		<meta property="og:type" content="website">
-		<meta property="og:title" content="Trials of Banshee">
-		<meta property="og:description" content="Trials of Banshee">
-		<meta property="og:image" content="">
+    <meta property="og:url" content="{{ app.request.uri }}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Trials of Banshee" />
+    <meta property="og:description" content="Trials of Banshee" />
+    <meta property="og:image" content="" />
 
-		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-		<link rel="icon" href="/favicon.ico" type="image/x-icon">
-		<link rel="apple-touch-icon" href="icon/es_192.png">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="icon/es_192.png" />
 
-		<link rel="stylesheet" href="{{ asset('build/index.css') }}">
+    <link rel="stylesheet" href="{{ asset('build/index.css') }}" />
 
-		<script defer type="text/javascript" src="{{ asset('build/index.js') }}"></script>
-	</head>
-	<body>
-		<div id="root"></div>
-	</body>
-	<noscript>Your browser does not support JavaScript!</noscript>
+    <script type="text/javascript">
+    	window.PRELOADED_STATE = {{ getPreLoadedState()|raw }};
+    </script>
+    <script defer type="text/javascript" src="{{ asset('build/index.js') }}"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <noscript>Your browser does not support JavaScript!</noscript>
 </html>

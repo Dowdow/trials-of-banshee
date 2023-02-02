@@ -8,8 +8,12 @@ import App from './components/App';
 import reducers from './reducers/index';
 import '../css/index.css';
 
+const preloadedState = window.PRELOADED_STATE;
+delete window.PRELOADED_STATE;
+
 const store = configureStore({
   reducer: reducers,
+  preloadedState: { ...preloadedState },
   middleware: [thunk],
 });
 

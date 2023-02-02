@@ -6,6 +6,12 @@ export function useInterfaceMoveOnMouseMove() {
   const [y, setY] = useState(0);
 
   function update(event) {
+    if (!window.matchMedia('(pointer: fine)').matches) {
+      setX(0);
+      setY(0);
+      return;
+    }
+
     const wx = window.innerWidth;
     const wy = window.innerHeight;
     const maxMoveX = (wx / wy) >= 1 ? maxMove : maxMove * (wx / wy);
@@ -30,12 +36,19 @@ export function useInterfaceMoveOnMouseMove() {
     }
   }
 
+  function resize() {
+    setX(0);
+    setY(0);
+  }
+
   useEffect(() => {
     window.addEventListener('mouseenter', update);
     window.addEventListener('mousemove', update);
+    window.addEventListener('resize', resize);
     return () => {
       window.removeEventListener('mouseenter', update);
       window.removeEventListener('mousemove', update);
+      window.removeEventListener('resize', resize);
     };
   });
 
