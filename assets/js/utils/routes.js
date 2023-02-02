@@ -10,6 +10,8 @@ export const ROUTES = {
 };
 
 export const ROUTES_API = {
+  BOUNTIES_TODAY: '/api/bounties/today',
+  BOUNTY_GUESS: '/api/bounty/:id/guess',
   SOUND: '/api/sound/:id',
   SOUND_ADD: '/api/sounds/add',
   SOUND_EDIT: '/api/sounds/edit/:id',

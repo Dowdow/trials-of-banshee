@@ -67,17 +67,17 @@ export default function SoundsPage() {
 }
 
 function Sound({ s }) {
-  const audio = useRef();
+  const audioRef = useRef();
   const [playing, setPlaying] = useState(false);
 
   const weapons = useSelector((state) => state.weapons);
 
   const handlePlay = () => {
     if (playing) {
-      audio.current.currentTime = 0;
-      audio.current.pause();
+      audioRef.current.currentTime = 0;
+      audioRef.current.pause();
     } else {
-      audio.current.play();
+      audioRef.current.play();
     }
     setPlaying(!playing);
   };
@@ -96,7 +96,7 @@ function Sound({ s }) {
         <div className="flex flex-wrap gap-2 mt-2">
           {weapons.length !== 0 && s.weapons.map((w) => <Weapon key={w} w={weapons.find((fw) => fw.id === w)} />)}
         </div>
-        <audio ref={audio} src={`/uploads/sounds/${s.path}`} preload="auto" onEnded={() => setPlaying(false)}>
+        <audio ref={audioRef} src={`/uploads/sounds/${s.path}`} preload="auto" onEnded={() => setPlaying(false)}>
           <track kind="captions" />
         </audio>
       </div>

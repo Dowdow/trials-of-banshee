@@ -18,7 +18,7 @@ class BountyRepository extends EntityRepository
     $qb
       ->select('COUNT(b.id)')
       ->where($qb->expr()->eq('b.type', ':type'))
-      ->andWhere($qb->expr()->gte('b.dateStart', ':dateStart'))
+      ->andWhere($qb->expr()->eq('b.dateStart', ':dateStart'))
       ->setParameter('type', $type)
       ->setParameter('dateStart', $dateStart);
 

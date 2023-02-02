@@ -3,12 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Sound;
-use App\Entity\Weapon;
-use App\Form\SoundType;
 use App\Formatter\SoundFormatter;
-use App\Formatter\WeaponFormatter;
-use App\Repository\SoundRepository;
-use App\Repository\WeaponRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -17,25 +12,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/api')]
-class ApiController extends AbstractController
+class SoundApiController extends AbstractController
 {
-  /**
-   * @param ManagerRegistry $managerRegistry
-   * @param WeaponFormatter $weaponFormatter
-   * @return JsonResponse
-   */
-  #[Route('/weapons', name: 'api.weapons', methods: ['GET'])]
-  public function weapons(ManagerRegistry $managerRegistry, WeaponFormatter $weaponFormatter): JsonResponse
-  {
-    $em = $managerRegistry->getManager();
-    /** @var WeaponRepository */
-    $weaponRepository = $em->getRepository(Weapon::class);
-
-    $weapons = $weaponRepository->findBy(['hidden' => false]);
-
-    return new JsonResponse($weaponFormatter->formatWeapons($weapons));
-  }
-
   /**
    * @param ManagerRegistry $managerRegistry
    * @param SoundFormatter $soundFormatter

@@ -15,6 +15,8 @@ use Doctrine\ORM\Mapping as ORM;
 class Bounty
 {
   public const TYPE_DAILY = 0;
+  public const TYPE_ASPIRING = 1;
+  public const TYPE_GUNSMITH = 2;
 
   #[ORM\Id]
   #[ORM\GeneratedValue(strategy: 'AUTO')]

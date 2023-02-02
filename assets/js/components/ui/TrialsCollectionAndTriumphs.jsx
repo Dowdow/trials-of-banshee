@@ -5,7 +5,7 @@ import { ROUTES } from '../../utils/routes';
 import collection from '../../../img/misc/collection.jpg';
 import triumphs from '../../../img/misc/triumphs.png';
 
-export default function TrialsTop({ onLink }) {
+export default function TrialsCollectionAndTriumphs({ onLink }) {
   return (
     <div className="w-full ml-10">
       <div>
@@ -28,6 +28,6 @@ export default function TrialsTop({ onLink }) {
   );
 }
 
-TrialsTop.propTypes = {
+TrialsCollectionAndTriumphs.propTypes = {
   onLink: PropTypes.func.isRequired,
 };

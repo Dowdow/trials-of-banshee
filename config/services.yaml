@@ -5,6 +5,8 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     bungie_api_key: "%env(BUNGIE_API_KEY)%"
+    bungie_oauth_client_id: "%env(BUNGIE_OAUTH_CLIENT_ID)%"
+    bungie_oauth_client_secret: "%env(BUNGIE_OAUTH_CLIENT_SECRET)%"
 
     d2cache_folder: "%kernel.project_dir%/d2cache"
     uploads_folder: "%kernel.project_dir%/public/uploads"
@@ -39,3 +41,5 @@ services:
     App\Service\DestinyAPIClientService:
         arguments:
             $apiKey: "%bungie_api_key%"
+            $oauthClientId: "%bungie_oauth_client_id%"
+            $oauthClientSecret: "%bungie_oauth_client_secret%"

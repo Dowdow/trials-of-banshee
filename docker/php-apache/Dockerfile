@@ -25,7 +25,12 @@ RUN mv composer.phar /usr/local/bin/composer
 RUN wget https://get.symfony.com/cli/installer -O - | bash
 RUN mv /root/.symfony5/bin/symfony /usr/local/bin/symfony
 
+# SSL Certificates
+RUN openssl req -x509 -out /etc/ssl/certs/tob.crt -keyout /etc/ssl/private/tob.key -newkey rsa:2048 -nodes -sha256 -subj "/C=FR/ST=Paris/L=Paris/O=Security/OU=Development/CN=trials-of-banshee.local"
+
 # Apache vhosts
+RUN a2enmod ssl
+RUN a2enmod http2
 COPY tob.conf /etc/apache2/sites-available/tob.conf
 RUN a2ensite tob.conf
 
