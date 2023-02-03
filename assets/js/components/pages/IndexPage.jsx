@@ -1,20 +1,33 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import InitFade from '../ui/InitFade';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../actions/user';
 import { useInterfaceMoveOnMouseMove } from '../../hooks/mouse';
-import { useAuthenticated } from '../../hooks/user';
-import { ROUTES } from '../../utils/routes';
+import { useAuthenticated, useUser } from '../../hooks/user';
+import { ROUTES, ROUTES_API } from '../../utils/routes';
+import InitFade from '../ui/InitFade';
 import orbit from '../../../img/orbit.png';
 import defaultEmblem from '../../../img/emblem/default_emblem.jpg';
 
 export default function IndexPage() {
   const authenticated = useAuthenticated();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const user = useUser();
 
   const [launchFade, setLaunchFade] = useState(false);
   const [zoomEarth, setZoomEarth] = useState(false);
 
   const { x, y } = useInterfaceMoveOnMouseMove();
+
+  useEffect(() => {
+    if (authenticated) {
+      fetch(ROUTES_API.USER)
+        .then((response) => response.json())
+        .then((data) => dispatch(setUser(data)));
+    }
+  }, []);
+
   return (
     <>
       <div className="absolute w-full h-screen overflow-hidden z-0">
@@ -35,10 +48,10 @@ export default function IndexPage() {
               <div className="w-full md:w-[474px] mt-1">
                 {authenticated ? (
                   <div className="relative w-full h-24">
-                    <img src={defaultEmblem} alt="Default Emblem" className="w-full h-full object-cover" />
+                    <img src={user.emblemBackgroundPath ? `https://bungie.net${user.emblemBackgroundPath}` : defaultEmblem} alt="Character Emblem" className="w-full h-full object-cover" />
                     <div className="absolute top-1 left-24">
-                      <div className="text-2xl font-bold text-white drop-shadow-xl">Guardian</div>
-                      <div className="text-xl font-bold text-white/80 drop-shadow-xl">Clan</div>
+                      <div className="text-2xl font-bold text-white tracking-wider drop-shadow-xl">{user.displayName ? user.displayName : 'Guardian'}</div>
+                      <div className="text-xl font-bold text-white/80 tracking-wider drop-shadow-xl">Clan</div>
                     </div>
                   </div>
                 ) : (

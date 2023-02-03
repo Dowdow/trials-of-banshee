@@ -19,20 +19,20 @@ class DestinyWeaponsParserCommand extends Command
   public const WEAPON_ITEM_TYPE = 3;
 
   private EntityManagerInterface $em;
-  private DestinyAPIClientService $destinyAPIClientService;
+  private DestinyAPIClientService $destinyAPIClient;
   private string $d2CacheFolder;
 
   /**
    * DestinyDataCachingCommand constructor.
    * @param EntityManagerInterface $em
-   * @param DestinyAPIClientService $destinyAPIClientService
+   * @param DestinyAPIClientService $destinyAPIClient
    * @param string $d2CacheFolder
    */
-  public function __construct(EntityManagerInterface $em, DestinyAPIClientService $destinyAPIClientService, string $d2CacheFolder)
+  public function __construct(EntityManagerInterface $em, DestinyAPIClientService $destinyAPIClient, string $d2CacheFolder)
   {
     parent::__construct();
     $this->em = $em;
-    $this->destinyAPIClientService = $destinyAPIClientService;
+    $this->destinyAPIClient = $destinyAPIClient;
     $this->d2CacheFolder = $d2CacheFolder;
   }
 
@@ -44,7 +44,7 @@ class DestinyWeaponsParserCommand extends Command
   protected function execute(InputInterface $input, OutputInterface $output): int
   {
     $output->write('Retrieving Destiny available locales... ');
-    $locales = $this->destinyAPIClientService->getAvailableLocales()['Response'];
+    $locales = $this->destinyAPIClient->getAvailableLocales()['Response'];
     $output->writeln('Done');
 
     // Extract only usefull data from cached json

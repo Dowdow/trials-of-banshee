@@ -15,18 +15,18 @@ use Symfony\Component\Filesystem\Filesystem;
 )]
 class DestinyDataCachingCommand extends Command
 {
-  private DestinyAPIClientService $destinyAPIClientService;
+  private DestinyAPIClientService $destinyAPIClient;
   private string $d2CacheFolder;
 
   /**
    * DestinyDataCachingCommand constructor.
-   * @param DestinyAPIClientService $destinyAPIClientService
+   * @param DestinyAPIClientService $destinyAPIClient
    * @param string $d2CacheFolder
    */
-  public function __construct(DestinyAPIClientService $destinyAPIClientService, string $d2CacheFolder)
+  public function __construct(DestinyAPIClientService $destinyAPIClient, string $d2CacheFolder)
   {
     parent::__construct();
-    $this->destinyAPIClientService = $destinyAPIClientService;
+    $this->destinyAPIClient = $destinyAPIClient;
     $this->d2CacheFolder = $d2CacheFolder;
   }
 
@@ -41,7 +41,7 @@ class DestinyDataCachingCommand extends Command
     $filesystem = new Filesystem();
 
     $output->write('Downloading Destiny Manifest... ');
-    $destinyManifest = $this->destinyAPIClientService->getDestinyManifest()['Response'];
+    $destinyManifest = $this->destinyAPIClient->getDestinyManifest()['Response'];
     $output->writeln('Done');
 
     $manifestVersion = $destinyManifest['version'];

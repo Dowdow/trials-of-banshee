@@ -11,13 +11,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class SecurityController extends AbstractController
 {
   /**
-   * @param DestinyAPIClientService $destinyAPIClientService
+   * @param DestinyAPIClientService $destinyAPIClient
    * @return RedirectResponse
    */
   #[Route('/authorize', name: 'security.authorize')]
-  public function authorize(DestinyAPIClientService $destinyAPIClientService): RedirectResponse
+  public function authorize(DestinyAPIClientService $destinyAPIClient): RedirectResponse
   {
-    return $this->redirect($destinyAPIClientService->getAuthorizationUrl());
+    return $this->redirect($destinyAPIClient->getAuthorizationUrl());
   }
 
   /**

@@ -28,17 +28,35 @@ class User implements UserInterface
   #[ORM\Column(length: 255, unique: true)]
   private ?string $membershipId;
 
+  #[ORM\Column]
+  private ?string $displayName;
+
+  #[ORM\Column]
+  private ?string $emblemPath;
+
+  #[ORM\Column]
+  private ?string $emblemBackgroundPath;
+
+  #[ORM\Column]
+  private ?int $lightLevel;
+
+  #[ORM\Column]
+  private ?string $clanName;
+
+  #[ORM\Column(nullable: true)]
+  private ?DateTime $lastUpdated = null;
+
   #[ORM\Column(type: 'text')]
   private ?string $accessToken;
 
-  #[ORM\Column]
-  private ?DateTime $accessTokenExpiresAt;
+  #[ORM\Column(nullable: true)]
+  private ?DateTime $accessTokenExpiresAt = null;
 
   #[ORM\Column(type: 'text')]
   private ?string $refreshToken;
 
-  #[ORM\Column]
-  private ?DateTime $refreshTokenExpiresAt;
+  #[ORM\Column(nullable: true)]
+  private ?DateTime $refreshTokenExpiresAt = null;
 
   #[ORM\Column]
   private bool $admin = false;
@@ -59,6 +77,72 @@ class User implements UserInterface
     return $this;
   }
 
+  public function getDisplayName(): ?string
+  {
+    return $this->displayName;
+  }
+
+  public function setDisplayName(string $displayName): static
+  {
+    $this->displayName = $displayName;
+    return $this;
+  }
+
+  public function getEmblemPath(): ?string
+  {
+    return $this->emblemPath;
+  }
+
+  public function setEmblemPath(string $emblemPath): static
+  {
+    $this->emblemPath = $emblemPath;
+    return $this;
+  }
+
+  public function getEmblemBackgroundPath(): ?string
+  {
+    return $this->emblemBackgroundPath;
+  }
+
+  public function setEmblemBackgroundPath(string $emblemBackgroundPath): static
+  {
+    $this->emblemBackgroundPath = $emblemBackgroundPath;
+    return $this;
+  }
+
+  public function getLightLevel(): ?int
+  {
+    return $this->lightLevel;
+  }
+
+  public function setLightLevel(int $lightLevel): static
+  {
+    $this->lightLevel = $lightLevel;
+    return $this;
+  }
+
+  public function getClanName(): ?string
+  {
+    return $this->clanName;
+  }
+
+  public function setClanName(string $clanName): static
+  {
+    $this->clanName = $clanName;
+    return $this;
+  }
+
+  public function getLastUpdated(): ?DateTime
+  {
+    return $this->lastUpdated;
+  }
+
+  public function setLastUpdated(DateTime $lastUpdated): static
+  {
+    $this->lastUpdated = $lastUpdated;
+    return $this;
+  }
+
   public function getAccessToken(): ?string
   {
     return $this->accessToken;
@@ -70,6 +154,11 @@ class User implements UserInterface
     return $this;
   }
 
+  public function isAccessTokenExpired(): bool
+  {
+    return (new DateTime()) >= $this->accessTokenExpiresAt;
+  }
+
   public function getAccessTokenExpiresAt(): ?DateTime
   {
     return $this->accessTokenExpiresAt;
@@ -79,6 +168,11 @@ class User implements UserInterface
   {
     $this->accessTokenExpiresAt = $accessTokenExpiresAt;
     return $this;
+  }
+
+  public function isRefreshTokenExpired(): bool
+  {
+    return (new DateTime()) >= $this->refreshTokenExpiresAt;
   }
 
   public function getRefreshToken(): ?string

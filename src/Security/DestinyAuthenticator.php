@@ -3,6 +3,7 @@
 namespace App\Security;
 
 use App\Entity\User;
+use App\Exception\DestinyOauthTokensIncompleteException;
 use App\Repository\UserRepository;
 use App\Service\DestinyAPIClientService;
 use DateTime;
@@ -50,16 +51,13 @@ class DestinyAuthenticator extends AbstractAuthenticator
 
     $tokens = $this->destinyApiClient->getTokens($code);
 
-    $date = new DateTime();
-    $accessToken = $tokens['access_token'] ?? null;
-    $accessTokenExpiresAt = $tokens['expires_in'] ?? null;
-    $refreshToken = $tokens['refresh_token'] ?? null;
-    $refreshTokenExpiresAt = $tokens['refresh_expires_in'] ?? null;
-    $membershipId = $tokens['membership_id'] ?? null;
-
-    if ($accessToken === null || $accessTokenExpiresAt === null || $refreshToken === null || $refreshTokenExpiresAt === null || $membershipId === null) {
-      throw new AuthenticationCredentialsNotFoundException('Tokens not found');
+    try {
+      $this->destinyApiClient->checkOauthData($tokens);
+    } catch (DestinyOauthTokensIncompleteException $e) {
+      throw new AuthenticationCredentialsNotFoundException($e->getMessage());
     }
+
+    $membershipId = $tokens['membership_id'] ?? null;
 
     /** @var UserRepository */
     $userRepository = $this->em->getRepository(User::class);
@@ -67,15 +65,10 @@ class DestinyAuthenticator extends AbstractAuthenticator
     $user = $userRepository->findOneBy(['membershipId' => $membershipId]);
     if ($user === null) {
       $user = new User();
-      $user->setMembershipId($membershipId);
       $this->em->persist($user);
     }
 
-    $user
-      ->setAccessToken($accessToken)
-      ->setAccessTokenExpiresAt((clone $date)->modify("+{$accessTokenExpiresAt} seconds"))
-      ->setRefreshToken($refreshToken)
-      ->setRefreshTokenExpiresAt((clone $date)->modify("+{$refreshTokenExpiresAt} seconds"));
+    $this->destinyApiClient->updateUserWithOauthData($user, $tokens);
 
     $this->em->flush();
 
