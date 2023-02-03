@@ -29,6 +29,9 @@ class UserFormatter
       'emblemPath' => $user->getEmblemPath(),
       'emblemBackgroundPath' => $user->getEmblemBackgroundPath(),
       'lightLevel' => $user->getLightLevel(),
+      'characterClass' => $user->getCharacterClass(),
+      'characterGender' => $user->getCharacterGender(),
+      'characterRace' => $user->getCharacterRace(),
     ];
   }
 

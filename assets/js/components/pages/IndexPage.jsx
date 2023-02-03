@@ -5,6 +5,7 @@ import { setUser } from '../../actions/user';
 import { useInterfaceMoveOnMouseMove } from '../../hooks/mouse';
 import { useAuthenticated, useUser } from '../../hooks/user';
 import { ROUTES, ROUTES_API } from '../../utils/routes';
+import { characterClassName, characterGenderName, characterRaceName } from '../../utils/user';
 import InitFade from '../ui/InitFade';
 import orbit from '../../../img/orbit.png';
 import defaultEmblem from '../../../img/emblem/default_emblem.jpg';
@@ -51,7 +52,7 @@ export default function IndexPage() {
                     <img src={user.emblemBackgroundPath ? `https://bungie.net${user.emblemBackgroundPath}` : defaultEmblem} alt="Character Emblem" className="w-full h-full object-cover" loading="lazy" />
                     <div className="absolute top-1 left-24">
                       <div className="text-2xl font-bold text-white tracking-wider drop-shadow-xl">{user.displayName ? user.displayName : 'Guardian'}</div>
-                      <div className="text-xl font-bold text-white/80 tracking-wider drop-shadow-xl">Clan</div>
+                      <div className="text-xl text-white/80 tracking-wider drop-shadow-xl">{`${characterClassName(user.characterClass)} ${characterGenderName(user.characterGender)} ${characterRaceName(user.characterRace)}`}</div>
                     </div>
                   </div>
                 ) : (

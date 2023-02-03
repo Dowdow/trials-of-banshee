@@ -85,7 +85,10 @@ class UserApiController extends AbstractController
       $user
         ->setEmblemPath($charactersData[$lastedPlayedCharacterId]['emblemPath'])
         ->setEmblemBackgroundPath($charactersData[$lastedPlayedCharacterId]['emblemBackgroundPath'])
-        ->setLightLevel($charactersData[$lastedPlayedCharacterId]['light']);
+        ->setLightLevel($charactersData[$lastedPlayedCharacterId]['light'])
+        ->setCharacterClass($charactersData[$lastedPlayedCharacterId]['classType'])
+        ->setCharacterGender($charactersData[$lastedPlayedCharacterId]['genderType'])
+        ->setCharacterRace($charactersData[$lastedPlayedCharacterId]['raceType']);
     }
 
     $em = $managerRegistry->getManager();

@@ -20,6 +20,20 @@ class User implements UserInterface
   public const ROLE_ADMIN = 'ROLE_ADMIN';
   public const ROLE_USER = 'ROLE_USER';
 
+  public const CLASS_TITAN = 0;
+  public const CLASS_HUNTER = 1;
+  public const CLASS_WARLOCK = 2;
+  public const CLASS_UNKNOWN = 3;
+
+  public const GENDER_MALE = 0;
+  public const GENDER_FEMALE = 1;
+  public const GENDER_UNKNOWN = 2;
+
+  public const RACE_HUMAN = 0;
+  public const RACE_AWOKEN = 1;
+  public const RACE_EXO = 2;
+  public const RACE_UNKNOWN = 3;
+
   #[ORM\Id]
   #[ORM\GeneratedValue(strategy: 'AUTO')]
   #[ORM\Column]
@@ -41,7 +55,13 @@ class User implements UserInterface
   private ?int $lightLevel;
 
   #[ORM\Column]
-  private ?string $clanName;
+  private ?int $characterClass = self::CLASS_UNKNOWN;
+
+  #[ORM\Column]
+  private ?int $characterGender = self::GENDER_UNKNOWN;
+
+  #[ORM\Column]
+  private ?int $characterRace = self::RACE_UNKNOWN;
 
   #[ORM\Column(nullable: true)]
   private ?DateTime $lastUpdated = null;
@@ -121,14 +141,36 @@ class User implements UserInterface
     return $this;
   }
 
-  public function getClanName(): ?string
+  public function getCharacterClass(): ?int
   {
-    return $this->clanName;
+    return $this->characterClass;
   }
 
-  public function setClanName(string $clanName): static
+  public function setCharacterClass(int $characterClass): static
   {
-    $this->clanName = $clanName;
+    $this->characterClass = $characterClass;
+    return $this;
+  }
+
+  public function getCharacterGender(): ?int
+  {
+    return $this->characterGender;
+  }
+
+  public function setCharacterGender(int $characterGender): static
+  {
+    $this->characterGender = $characterGender;
+    return $this;
+  }
+
+  public function getCharacterRace(): ?int
+  {
+    return $this->characterRace;
+  }
+
+  public function setCharacterRace(int $characterRace): static
+  {
+    $this->characterRace = $characterRace;
     return $this;
   }
 

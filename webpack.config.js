@@ -1,5 +1,4 @@
 const path = require('path');
-// const CopyPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const WebpackAssetsManifest = require('webpack-assets-manifest');
 
@@ -21,7 +20,11 @@ const config = {
       },
       {
         test: /\.(png|jpe?g|gif)$/i,
-        use: ['file-loader'],
+        loader: 'file-loader',
+        options: {
+          outputPath: 'images',
+          name: '[name].[contenthash].[ext]',
+        },
       },
     ],
   },
@@ -34,24 +37,12 @@ const config = {
     clean: true,
   },
   plugins: [
-    /* new CopyPlugin({
-      patterns: [
-        path.resolve(__dirname, './templates/offline.html'),
-      ],
-    }), */
     new MiniCssExtractPlugin(),
     new WebpackAssetsManifest(),
   ],
 };
 
 module.exports = (env, argv) => {
-  if (argv.mode === 'development') {
-    config.devtool = 'eval-source-map';
-  }
-
-  if (argv.mode === 'production') {
-    config.devtool = false;
-  }
-
+  config.devtool = argv.mode === 'development' ? 'eval-source-map' : false;
   return config;
 };
