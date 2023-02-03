@@ -3,9 +3,21 @@
 namespace App\Formatter;
 
 use App\Entity\User;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class UserFormatter
 {
+  private AuthorizationCheckerInterface $authorizationChecker;
+
+  /**
+   * UserFormatter constructor.
+   * @param AuthorizationCheckerInterface $authorizationChecker
+   */
+  public function __construct(AuthorizationCheckerInterface $authorizationChecker)
+  {
+    $this->authorizationChecker = $authorizationChecker;
+  }
+
   /**
    * @param User $user
    * @return array
@@ -29,11 +41,13 @@ class UserFormatter
     if ($user === null) {
       return [
         'authenticated' => false,
+        'admin' => false,
       ];
     }
 
     return [
       'authenticated' => true,
+      'admin' => $this->authorizationChecker->isGranted(User::ROLE_ADMIN),
       ...$this->formatUser($user),
     ];
   }

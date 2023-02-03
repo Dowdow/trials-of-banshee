@@ -7,3 +7,7 @@ export function useUser() {
 export function useAuthenticated() {
   return useSelector((state) => state.user.authenticated);
 }
+
+export function useAdmin() {
+  return useSelector((state) => state.user.admin);
+}

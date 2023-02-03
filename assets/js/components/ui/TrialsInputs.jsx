@@ -53,7 +53,7 @@ export default function TrialsInputs() {
           {Object.entries(currentBounty.clues).map(([key, c]) => (
             <button key={key} type="button" onClick={handleClickClue} className="p-0.5 border-2 border-transparent hover:border-white/70 transition-colors duration-300">
               <div className="bg-white">
-                <img src={clue} alt="Clue" className="hover:opacity-70 transition-opacity duration-300" />
+                <img src={clue} alt="Clue" className="hover:opacity-70 transition-opacity duration-300" loading="lazy" />
               </div>
             </button>
           ))}
@@ -74,7 +74,7 @@ export default function TrialsInputs() {
 function WeaponGuess({ w, onClick }) {
   return (
     <button type="button" onClick={() => onClick(w.id)} className="flex items-center gap-2 p-1 border border-transparent hover:border-white transition-colors duration-300">
-      <img src={`https://bungie.net${w.icon}`} alt={w.names.fr} loading="lazy" className="w-10 h-10 border border-white/30" />
+      <img src={`https://bungie.net${w.icon}`} alt={w.names.fr} className="w-10 h-10 border border-white/30" loading="lazy" />
       <span className="text-white/90 text-start">{w.names.fr}</span>
     </button>
   );
@@ -83,7 +83,7 @@ function WeaponGuess({ w, onClick }) {
 function WeaponHistory({ w }) {
   return (
     <div className="p-0.5 border-2 border-transparent hover:border-white/70 transition-colors duration-300">
-      <img src={`https://bungie.net${w.icon}`} alt={w.names.fr} loading="lazy" className="w-20 h-20 border border-white/30" />
+      <img src={`https://bungie.net${w.icon}`} alt={w.names.fr} className="w-20 h-20 border border-white/30" loading="lazy" />
     </div>
   );
 }

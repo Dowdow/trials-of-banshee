@@ -3,12 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Sound;
+use App\Entity\User;
 use App\Formatter\SoundFormatter;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/api')]
@@ -22,6 +24,10 @@ class SoundApiController extends AbstractController
   #[Route('/sounds', name: 'api.sounds', methods: ['GET'])]
   public function sounds(ManagerRegistry $managerRegistry, SoundFormatter $soundFormatter): JsonResponse
   {
+    if (!$this->isGranted(User::ROLE_ADMIN)) {
+      throw new NotFoundHttpException();
+    }
+
     $em = $managerRegistry->getManager();
     /** @var SoundRepository */
     $soundRepository = $em->getRepository(Sound::class);
@@ -39,6 +45,10 @@ class SoundApiController extends AbstractController
   #[Route('/sound/{id}', name: 'api.sound', methods: ['GET'])]
   public function sound(Sound $sound, SoundFormatter $soundFormatter): JsonResponse
   {
+    if (!$this->isGranted(User::ROLE_ADMIN)) {
+      throw new NotFoundHttpException();
+    }
+
     if ($sound === null) {
       return new JsonResponse(['errors' => ['Sound not found']], 404);
     }
@@ -55,6 +65,10 @@ class SoundApiController extends AbstractController
   #[Route('/sounds/add', name: 'api.sounds.add', methods: ['POST'])]
   public function addSound(Request $request, ManagerRegistry $managerRegistry, SoundFormatter $soundFormatter): JsonResponse
   {
+    if (!$this->isGranted(User::ROLE_ADMIN)) {
+      throw new NotFoundHttpException();
+    }
+
     $sound = new Sound();
     $form = $this->createForm(SoundType::class, $sound);
 
@@ -103,6 +117,10 @@ class SoundApiController extends AbstractController
   #[Route('/sounds/edit/{id}', name: 'api.sounds.edit', methods: ['POST'])]
   public function editSound(Sound $sound, Request $request, ManagerRegistry $managerRegistry, SoundFormatter $soundFormatter): JsonResponse
   {
+    if (!$this->isGranted(User::ROLE_ADMIN)) {
+      throw new NotFoundHttpException();
+    }
+
     if ($sound === null) {
       return new JsonResponse(['errors' => ['Sound not found']], 404);
     }

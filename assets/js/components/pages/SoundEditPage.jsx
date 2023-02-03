@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { generatePath, Link, useNavigate, useParams } from 'react-router-dom';
 import { addSound, editSound } from '../../actions/sounds';
+import { useAdmin } from '../../hooks/user';
 import { ROUTES, ROUTES_API } from '../../utils/routes';
 import KeyboardButton from '../ui/KeyboardButton';
 import SoundForm from '../ui/SoundForm';
 
 export default function SoundEditPage() {
+  const admin = useAdmin();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -16,7 +18,7 @@ export default function SoundEditPage() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (sound === undefined) {
+    if (admin && sound === undefined) {
       fetch(generatePath(ROUTES_API.SOUND, { id }))
         .then((response) => response.json())
         .then((data) => dispatch(addSound(data)));
@@ -33,6 +35,10 @@ export default function SoundEditPage() {
       })
       .catch((err) => setError(err));
   };
+
+  if (!admin) {
+    return null;
+  }
 
   if (sound === undefined) {
     return <div>Sound not found</div>;

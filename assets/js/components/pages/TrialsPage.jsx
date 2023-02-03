@@ -40,7 +40,7 @@ export default function TrialsPage() {
   return (
     <div className={`${fadeOut && 'animate-fade-out'}`} onAnimationEnd={() => navigate(nextPage)}>
       <div className="absolute w-full h-screen overflow-hidden z-0">
-        <img src={banshee} alt="Banshee" className="w-full h-full object-cover" />
+        <img src={banshee} alt="Banshee" className="w-full h-full object-cover" loading="lazy" />
       </div>
 
       <InitFade />

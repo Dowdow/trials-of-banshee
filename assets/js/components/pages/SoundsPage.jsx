@@ -3,10 +3,12 @@ import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { generatePath, Link } from 'react-router-dom';
 import { setSounds } from '../../actions/sounds';
+import { useAdmin } from '../../hooks/user';
 import { ROUTES, ROUTES_API } from '../../utils/routes';
 import KeyboardButton from '../ui/KeyboardButton';
 
 export default function SoundsPage() {
+  const admin = useAdmin();
   const dispatch = useDispatch();
 
   const sounds = useSelector((state) => state.sounds);
@@ -14,28 +16,34 @@ export default function SoundsPage() {
   const [query, setQuery] = useState('');
 
   useEffect(() => {
-    fetch(ROUTES_API.SOUNDS)
-      .then((res) => res.json())
-      .then((data) => dispatch(setSounds(data.items)));
+    if (admin) {
+      fetch(ROUTES_API.SOUNDS)
+        .then((res) => res.json())
+        .then((data) => dispatch(setSounds(data.items)));
+    }
   }, []);
 
   const handleQuery = (e) => {
     setQuery(e.target.value);
   };
 
+  if (!admin) {
+    return null;
+  }
+
   return (
     <div className="bg-dark min-h-screen">
-      <div className="sticky top-0 flex justify-between items-center gap-6 w-full bg-dark-grey p-5">
-        <div className="flex items-center gap-6">
+      <div className="sticky top-0 flex justify-between items-center flex-wrap gap-3 md:gap-6 w-full bg-dark-grey p-3 md:p-5">
+        <div className="flex items-center flex-wrap gap-3 md:gap-6">
           <div>
-            <h1 className="mb-3 font-neue-haas-display-bold text-6xl text-white">Sounds</h1>
+            <h1 className="mb-1 md:mb-3 font-neue-haas-display-bold text-5xl md:text-6xl text-white">Sounds</h1>
             <div className="w-full h-0.5 bg-white/50" />
           </div>
-          <div className="flex items-center gap-6">
+          <div className="flex items-center flex-wrap gap-2 md:gap-6">
             <input type="text" value={query} onChange={handleQuery} className="p-2 text-lg bg-light-grey text-white outline-none" placeholder="Search a sound" />
           </div>
         </div>
-        <nav className="flex gap-3">
+        <nav className="flex flex-wrap gap-3">
           <Link to={ROUTES.SOUND_ADD} className="flex items-center gap-2 px-1 py-0.5 border-2 border-transparent hover:border-white/70 transition-colors duration-300">
             <KeyboardButton button="A" />
             <span className="text-xl tracking-wide text-white/80">Add a Sound</span>
@@ -55,7 +63,7 @@ export default function SoundsPage() {
         </nav>
       </div>
       <div className="container mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-5 py-5 px-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-5 p-3 md:py-5">
           {sounds
             .filter((s) => s.name.toLowerCase().includes(query.toLowerCase()) || s.description.toLowerCase().includes(query.toLowerCase()))
             .sort((a, b) => a.name.localeCompare(b.name))
@@ -107,7 +115,7 @@ function Sound({ s }) {
 function Weapon({ w }) {
   return (
     <button type="button" className="flex items-center gap-1 p-1 border border-white/30">
-      <img src={`https://bungie.net${w.icon}`} alt={w.names.fr} loading="lazy" className="w-8 h-8" />
+      <img src={`https://bungie.net${w.icon}`} alt={w.names.fr} className="w-8 h-8" loading="lazy" />
       <span className="tracking-wide text-white">{w.names.fr}</span>
     </button>
   );

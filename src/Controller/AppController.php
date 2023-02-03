@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Sound;
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -61,6 +62,10 @@ class AppController extends AbstractController
   #[Route('/sounds', name: 'app.sounds', methods: ['GET'])]
   public function sounds(): Response
   {
+    if (!$this->isGranted(User::ROLE_ADMIN)) {
+      throw new NotFoundHttpException();
+    }
+
     return $this->render('base.html.twig');
   }
 
@@ -70,6 +75,10 @@ class AppController extends AbstractController
   #[Route('/sounds/add', name: 'app.sounds.add', methods: ['GET'])]
   public function soundAdd(): Response
   {
+    if (!$this->isGranted(User::ROLE_ADMIN)) {
+      throw new NotFoundHttpException();
+    }
+
     return $this->render('base.html.twig');
   }
 
@@ -80,7 +89,7 @@ class AppController extends AbstractController
   #[Route('/sounds/edit/{id}', name: 'app.sounds.edit', methods: ['GET'])]
   public function soundEdit(Sound $sound): Response
   {
-    if ($sound === null) {
+    if (!$this->isGranted(User::ROLE_ADMIN) || $sound === null) {
       throw new NotFoundHttpException();
     }
 

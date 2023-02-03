@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { addSound } from '../../actions/sounds';
+import { useAdmin } from '../../hooks/user';
 import { ROUTES, ROUTES_API } from '../../utils/routes';
 import KeyboardButton from '../ui/KeyboardButton';
 import SoundForm from '../ui/SoundForm';
 
 export default function SoundAddPage() {
+  const admin = useAdmin();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -22,6 +24,10 @@ export default function SoundAddPage() {
       })
       .catch((err) => setError(err));
   };
+
+  if (!admin) {
+    return null;
+  }
 
   return (
     <div className="bg-dark min-h-screen">

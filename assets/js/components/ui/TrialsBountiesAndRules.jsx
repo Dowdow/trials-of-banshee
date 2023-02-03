@@ -39,7 +39,7 @@ function Bounty({ b }) {
   return (
     <button type="button" onClick={() => dispatch(setCurrentBounty(b.id))} className="p-0.5 border-2 border-transparent hover:border-white/70 transition-colors duration-300">
       <div className="bg-white">
-        <img src={bountyImageFromType(b.type)} alt={bountyNameFromType(b.type)} className="hover:opacity-70 transition-opacity duration-300" />
+        <img src={bountyImageFromType(b.type)} alt={bountyNameFromType(b.type)} className="hover:opacity-70 transition-opacity duration-300" loading="lazy" />
       </div>
     </button>
   );

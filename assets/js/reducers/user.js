@@ -1,6 +1,6 @@
 import { SET_USER } from '../actions/user';
 
-const init = { authenticated: false };
+const init = { admin: false, authenticated: false };
 
 export default function user(state = init, action = {}) {
   switch (action.type) {

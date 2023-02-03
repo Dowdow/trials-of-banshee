@@ -93,7 +93,7 @@ export default function SoundForm({ onSubmit, sound = null, error = null }) {
 function Weapon({ w, action }) {
   return (
     <button type="button" onClick={action} className="flex items-center gap-1 p-1 bg-transparent hover:bg-light-grey border border-white/30 hover:border-white/80 transition-colors cursor-pointer">
-      <img src={`https://bungie.net${w.icon}`} alt={w.names.fr} loading="lazy" className="w-8 h-8" />
+      <img src={`https://bungie.net${w.icon}`} alt={w.names.fr} className="w-8 h-8" loading="lazy" />
       <span className="tracking-wide text-white">{w.names.fr}</span>
     </button>
   );

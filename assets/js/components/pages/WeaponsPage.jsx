@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { setDamageType, setHasSound, setQuery, setRarity, setType } from '../../actions/weaponFilters';
+import { useAdmin } from '../../hooks/user';
 import { WEAPON_DAMAGE_TYPE, WEAPON_DAMAGE_TYPE_IMAGE, WEAPON_DAMAGE_TYPE_NAME, WEAPON_RARITY, WEAPON_TYPE, WEAPON_TYPE_NAME } from '../../utils/weapons';
 import { ROUTES } from '../../utils/routes';
 import KeyboardButton from '../ui/KeyboardButton';
@@ -10,6 +11,7 @@ import promo from '../../../img/misc/promotion.png';
 import releg from '../../../img/misc/relegation.png';
 
 export default function WeaponsPage() {
+  const admin = useAdmin();
   const dispatch = useDispatch();
 
   const weapons = useSelector((state) => state.weapons);
@@ -37,13 +39,13 @@ export default function WeaponsPage() {
 
   return (
     <div className="bg-dark min-h-screen">
-      <div className="sticky top-0 flex justify-between items-center gap-6 w-full bg-dark-grey p-5">
-        <div className="flex items-center gap-6">
+      <div className="sticky top-0 flex justify-between items-center flex-wrap gap-3 md:gap-6 w-full p-3 md:p-5 bg-dark-grey">
+        <div className="flex items-center flex-wrap gap-3 md:gap-6">
           <div>
-            <h1 className="mb-3 font-neue-haas-display-bold text-6xl text-white">Weapons</h1>
+            <h1 className="mb-1 md:mb-3 font-neue-haas-display-bold text-5xl md:text-6xl text-white">Weapons</h1>
             <div className="w-full h-0.5 bg-white/50" />
           </div>
-          <div className="flex items-center gap-6">
+          <div className="flex items-center flex-wrap gap-2 md:gap-6">
             <input type="text" value={query} onChange={handleQuery} className="p-2 text-lg bg-light-grey text-white outline-none" placeholder="Search a weapon" />
             <select value={rarity} onChange={handleRarity} className="p-2 text-lg bg-light-grey text-white outline-none">
               <option value={0}>All Rarity</option>
@@ -88,11 +90,13 @@ export default function WeaponsPage() {
             </select>
           </div>
         </div>
-        <nav className="flex gap-3">
-          <Link to={ROUTES.SOUNDS} className="flex items-center gap-2 px-1 py-0.5 border-2 border-transparent hover:border-white/70 transition-colors duration-300">
-            <KeyboardButton button="S" />
-            <span className="text-xl tracking-wide text-white/80">Go to Sounds</span>
-          </Link>
+        <nav className="flex flex-wrap gap-3">
+          {admin && (
+            <Link to={ROUTES.SOUNDS} className="flex items-center gap-2 px-1 py-0.5 border-2 border-transparent hover:border-white/70 transition-colors duration-300">
+              <KeyboardButton button="S" />
+              <span className="text-xl tracking-wide text-white/80">Go to Sounds</span>
+            </Link>
+          )}
           <Link to={ROUTES.TRIALS} className="flex items-center gap-2 px-1 py-0.5 border-2 border-transparent hover:border-white/70 transition-colors duration-300">
             <KeyboardButton button="B" />
             <span className="text-xl tracking-wide text-white/80">Back to the Trials</span>
@@ -104,7 +108,7 @@ export default function WeaponsPage() {
         </nav>
       </div>
       <div className="container mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-5 py-5 px-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-5 p-3 md:py-5">
           {weapons
             .filter((w) => w.names.fr.toLocaleLowerCase().includes(query.toLocaleLowerCase()))
             .filter((w) => {
@@ -127,13 +131,13 @@ function Weapon({ w }) {
   return (
     <a href={`https://www.light.gg/db/items/${w.hash}`} target="_blank" rel="noreferrer" className="p-1 border-2 border-transparent hover:border-white/80 transition-colors duration-300 cursor-pointer">
       <div className="flex gap-5 p-5 bg-transparent hover:bg-light-grey border border-white/30 hover:border-white/80 transition-colors">
-        <img src={`https://bungie.net${w.icon}`} alt={w.names.fr} loading="lazy" className="w-20 h-20 border border-white/30" />
+        <img src={`https://bungie.net${w.icon}`} alt={w.names.fr} className="w-20 h-20 border border-white/30" loading="lazy" />
         <div className="flex flex-col overflow-hidden">
           <span className="text-lg tracking-wide text-white whitespace-nowrap text-ellipsis">{w.names.fr}</span>
           <span className="text-white/60">{WEAPON_TYPE_NAME[w.type]}</span>
           <div className="flex items-center gap-2 mt-1">
-            <img src={WEAPON_DAMAGE_TYPE_IMAGE[w.damageType]} alt={WEAPON_DAMAGE_TYPE_NAME[w.damageType]} className="w-5 h-5" />
-            <img src={w.hasSound ? promo : releg} alt={w.hasSound ? 'This weapon have a sound' : 'This weapon does not have a sound'} className="w-5 h-5" />
+            <img src={WEAPON_DAMAGE_TYPE_IMAGE[w.damageType]} alt={WEAPON_DAMAGE_TYPE_NAME[w.damageType]} className="w-5 h-5" loading="lazy" />
+            <img src={w.hasSound ? promo : releg} alt={w.hasSound ? 'This weapon have a sound' : 'This weapon does not have a sound'} className="w-5 h-5" loading="lazy" />
           </div>
         </div>
       </div>

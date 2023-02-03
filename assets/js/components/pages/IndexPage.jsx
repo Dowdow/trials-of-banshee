@@ -31,7 +31,7 @@ export default function IndexPage() {
   return (
     <>
       <div className="absolute w-full h-screen overflow-hidden z-0">
-        <img src={orbit} alt="Orbit" className={`w-full h-full object-cover ${zoomEarth && 'animate-zoom'}`} onAnimationEnd={() => navigate('/trials')} />
+        <img src={orbit} alt="Orbit" className={`w-full h-full object-cover ${zoomEarth && 'animate-zoom'}`} onAnimationEnd={() => navigate('/trials')} loading="lazy" />
       </div>
 
       <InitFade />
@@ -48,7 +48,7 @@ export default function IndexPage() {
               <div className="w-full md:w-[474px] mt-1">
                 {authenticated ? (
                   <div className="relative w-full h-24">
-                    <img src={user.emblemBackgroundPath ? `https://bungie.net${user.emblemBackgroundPath}` : defaultEmblem} alt="Character Emblem" className="w-full h-full object-cover" />
+                    <img src={user.emblemBackgroundPath ? `https://bungie.net${user.emblemBackgroundPath}` : defaultEmblem} alt="Character Emblem" className="w-full h-full object-cover" loading="lazy" />
                     <div className="absolute top-1 left-24">
                       <div className="text-2xl font-bold text-white tracking-wider drop-shadow-xl">{user.displayName ? user.displayName : 'Guardian'}</div>
                       <div className="text-xl font-bold text-white/80 tracking-wider drop-shadow-xl">Clan</div>
