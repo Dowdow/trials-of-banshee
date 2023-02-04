@@ -46,9 +46,9 @@ export default function TrialsPage() {
       <InitFade />
 
       <div className="absolute bottom-24 left-12 pl-12" style={{ transform: `translateX(${x}px) translateY(${y}px)` }}>
-        <div className="ml-3 text-lg font-bold tracking-widest text-white drop-shadow-lg uppercase select-none">Gunsmith</div>
-        <div className="w-full h-2 bg-white/90 drop-shadow-sm mb-2" />
-        <div className="font-neue-haas-display-bold text-7xl uppercase text-white drop-shadow select-none">Banshee-44</div>
+        <div className="ml-3 text-lg font-bold tracking-widest text-white text-shadow-sm shadow-light-grey/30 uppercase select-none">Gunsmith</div>
+        <div className="w-full h-2 bg-white/90 text-shadow-sm shadow-light-grey/30 mb-2" />
+        <div className="font-neue-haas-display-bold text-7xl uppercase text-white text-shadow-sm shadow-light-grey/30 select-none">Banshee-44</div>
         <div className="h-0.5 w-[95%] ml-3 bg-white/70 mt-3" />
       </div>
 

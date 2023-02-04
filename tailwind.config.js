@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+const plugin = require('tailwindcss/plugin');
 
 module.exports = {
   content: [
@@ -23,6 +24,7 @@ module.exports = {
       'light-grey': '#28292B',
       red: '#FF4136',
       white: '#f3f3f3',
+      yellow: '#cfbd47',
     },
     extend: {
       fontFamily: {
@@ -52,7 +54,23 @@ module.exports = {
           '100%': { transform: 'scale(2.5) rotate(15deg)', opacity: 0 },
         },
       },
+      textShadow: {
+        sm: '0 1px 2px var(--tw-shadow-color)',
+        DEFAULT: '0 2px 2px var(--tw-shadow-color)',
+        lg: '0 4px 4px var(--tw-shadow-color)',
+      },
     },
   },
-  plugins: [],
+  plugins: [
+    plugin(({ matchUtilities, theme }) => {
+      matchUtilities(
+        {
+          'text-shadow': (value) => ({
+            textShadow: value,
+          }),
+        },
+        { values: theme('textShadow') },
+      );
+    }),
+  ],
 };

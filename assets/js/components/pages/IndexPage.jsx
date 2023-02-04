@@ -51,8 +51,12 @@ export default function IndexPage() {
                   <div className="relative w-full h-24">
                     <img src={user.emblemBackgroundPath ? `https://bungie.net${user.emblemBackgroundPath}` : defaultEmblem} alt="Character Emblem" className="w-full h-full object-cover" loading="lazy" />
                     <div className="absolute top-1 left-24">
-                      <div className="text-2xl font-bold text-white tracking-wider drop-shadow-xl">{user.displayName ? user.displayName : 'Guardian'}</div>
-                      <div className="text-xl text-white/80 tracking-wider drop-shadow-xl">{`${characterClassName(user.characterClass)} ${characterGenderName(user.characterGender)} ${characterRaceName(user.characterRace)}`}</div>
+                      <div className="text-2xl font-bold text-white tracking-wider text-shadow-sm shadow-light-grey/50 select-none">{user.displayName ? user.displayName : 'Guardian'}</div>
+                      <div className="text-xl text-white/80 tracking-wider text-shadow-sm shadow-light-grey/50 select-none">{`${characterClassName(user.characterClass)} ${characterGenderName(user.characterGender)} ${characterRaceName(user.characterRace)}`}</div>
+                    </div>
+                    <div className="absolute top-1 right-1.5 flex gap-1">
+                      <div className="w-2.5 h-2.5 mt-1.5 border-4 border-yellow rotate-45 shadow-sm shadow-light-grey/50" />
+                      <div className="font-bold text-4xl text-yellow text-shadow-sm shadow-light-grey/50 tracking-wide">{user.lightLevel}</div>
                     </div>
                   </div>
                 ) : (
