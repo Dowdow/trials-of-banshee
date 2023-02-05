@@ -8,6 +8,12 @@ export const BOUNTY_TYPE = {
   GUNSMITH: 2,
 };
 
+export const CLUE_TYPE = {
+  RARITY: 'rarity',
+  DAMAGE_TYPE: 'damageType',
+  WEAPON_TYPE: 'weaponType',
+};
+
 export function bountyNameFromType(type) {
   switch (type) {
     case BOUNTY_TYPE.DAILY:

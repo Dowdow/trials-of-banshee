@@ -6,7 +6,9 @@ use App\Entity\Bounty;
 use App\Entity\BountyCompletion;
 use App\Entity\User;
 use App\Entity\Weapon;
+use App\Exception\ClueNotFoundFromRequestException;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class BountyService
@@ -23,22 +25,6 @@ class BountyService
   {
     $this->em = $em;
     $this->requestStack = $requestStack;
-  }
-
-  /**
-   * @param Bounty $bounty
-   * @param Weapon $weapon
-   * @return bool
-   */
-  public function isWeaponCorrect(Bounty $bounty, Weapon $weapon): bool
-  {
-    $bountySounds = $bounty->getWeapon()->getSounds();
-    foreach ($bountySounds as $sound) {
-      if ($weapon->hasSound($sound)) {
-        return true;
-      }
-    }
-    return false;
   }
 
   /**
@@ -106,5 +92,52 @@ class BountyService
       'clues' => $bountyCompletion->getClues(),
       'history' => $bountyCompletion->getHistory(),
     ]);
+  }
+
+  /**
+   * @param Bounty $bounty
+   * @param Weapon $weapon
+   * @return bool
+   */
+  public function isWeaponCorrect(Bounty $bounty, Weapon $weapon): bool
+  {
+    $bountySounds = $bounty->getWeapon()->getSounds();
+    foreach ($bountySounds as $sound) {
+      if ($weapon->hasSound($sound)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * @param Request $request
+   * @return string
+   */
+  public function retrieveClueTypeFromRequest(Request $request): string
+  {
+    $content = json_decode($request->getContent(), true);
+    $clueType = $content['clueType'] ?? null;
+    if ($clueType === null) {
+      throw new ClueNotFoundFromRequestException('`clueType` needed for the clue');
+    }
+    if (!in_array($clueType, BountyCompletion::CLUE_TYPES)) {
+      throw new ClueNotFoundFromRequestException('Invalid clueType');
+    }
+    return $clueType;
+  }
+
+  /**
+   * @param BountyCompletion $bountyCompletion
+   * @param string $clueType
+   */
+  public function isClueValid(BountyCompletion $bountyCompletion, string $clueType): bool
+  {
+    if ($bountyCompletion->hasClue($clueType)) return false;
+    $attempts = $bountyCompletion->getAttempts();
+    if ($clueType === BountyCompletion::CLUE_RARITY && $attempts >= 2) return true;
+    if ($clueType === BountyCompletion::CLUE_DAMAGE_TYPE && $attempts >= 4) return true;
+    if ($clueType === BountyCompletion::CLUE_WEAPON_TYPE && $attempts >= 6) return true;
+    return false;
   }
 }

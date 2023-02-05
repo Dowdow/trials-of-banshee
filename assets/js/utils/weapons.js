@@ -8,6 +8,10 @@ import stasis from '../../img/damage/stasis.png';
 import stasisTransparent from '../../img/damage/stasis_trans.png';
 import voidD from '../../img/damage/void.png';
 import voidTransparent from '../../img/damage/void_trans.png';
+import common from '../../img/rarity/common.jpg';
+import rare from '../../img/rarity/rare.jpg';
+import legendary from '../../img/rarity/legendary.jpg';
+import exotic from '../../img/rarity/exotic.jpg';
 
 export const WEAPON_DAMAGE_TYPE = {
   KINETIC: 1,
@@ -47,6 +51,22 @@ export const WEAPON_RARITY = {
   RARE: 4,
   LEGENDARY: 5,
   EXOTIC: 6,
+};
+
+export const WEAPON_RARITY_NAME = {
+  2: 'Basic',
+  3: 'Common',
+  4: 'Rare',
+  5: 'Legendary',
+  6: 'Exotic',
+};
+
+export const WEAPON_RARITY_IMAGE = {
+  2: '',
+  3: common,
+  4: rare,
+  5: legendary,
+  6: exotic,
 };
 
 export const WEAPON_TYPE = {

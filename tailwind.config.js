@@ -12,6 +12,9 @@ module.exports = {
       'fade-short': 'fade-short 200ms ease-in-out normal forwards',
       'fade-out': 'fade-out 300ms ease-in-out normal forwards',
       launch: 'launch 1.6s ease-in-out infinite',
+      spin: 'spin 5s linear infinite',
+      'spin-back': 'spin-back 5s linear infinite',
+      'spin-big': 'spin-big 20s linear infinite',
       zoom: 'zoom 1s ease-in normal forwards',
     },
     colors: {
@@ -23,6 +26,7 @@ module.exports = {
       green: '#3E6442',
       'light-blue': '#8ECACB',
       'light-grey': '#28292B',
+      purple: '#5e4373',
       red: '#FF4136',
       white: '#f3f3f3',
       yellow: '#cfbd47',
@@ -49,6 +53,20 @@ module.exports = {
         launch: {
           '0%, 100%': { background: '#3E6442' },
           '50%': { background: '#3E6442E5' },
+        },
+        spin: {
+          '0%, 12.5%': { transform: 'rotate(0deg)' },
+          '37.5%, 62.5%': { transform: 'rotate(45deg)' },
+          '87.5%, 100%': { transform: 'rotate(90deg)' },
+        },
+        'spin-back': {
+          '0%, 12.5%': { transform: 'rotate(45deg)' },
+          '37.5%, 62.5%': { transform: 'rotate(0deg)' },
+          '87.5%, 100%': { transform: 'rotate(-45deg)' },
+        },
+        'spin-big': {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(90deg)' },
         },
         zoom: {
           '0%': { transform: 'scale(1) rotate(0)', opacity: 1 },

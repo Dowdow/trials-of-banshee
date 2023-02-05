@@ -13,6 +13,12 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'bounty_completion')]
 class BountyCompletion
 {
+  public const CLUE_RARITY = 'rarity';
+  public const CLUE_DAMAGE_TYPE = 'damageType';
+  public const CLUE_WEAPON_TYPE = 'weaponType';
+
+  public const CLUE_TYPES = [self::CLUE_RARITY, self::CLUE_DAMAGE_TYPE, self::CLUE_WEAPON_TYPE];
+
   #[ORM\Id]
   #[ORM\GeneratedValue(strategy: 'AUTO')]
   #[ORM\Column]
@@ -83,9 +89,22 @@ class BountyCompletion
     return $this;
   }
 
+  public function hasClue(string $clueType): bool
+  {
+    return isset($this->clues[$clueType]);
+  }
+
   public function getClues(): array
   {
     return $this->clues;
+  }
+
+  public function addClue(string $clueType, int $clueValue): static
+  {
+    if (!isset($this->clues[$clueType])) {
+      $this->clues[$clueType] = $clueValue;
+    }
+    return $this;
   }
 
   public function setClues(array $clues): static
