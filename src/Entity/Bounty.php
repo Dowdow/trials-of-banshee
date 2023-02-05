@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\BountyRepository;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -31,6 +33,14 @@ class Bounty
 
   #[ORM\ManyToOne(targetEntity: Weapon::class, inversedBy: 'bounties')]
   private ?Weapon $weapon = null;
+
+  #[ORM\OneToMany(targetEntity: BountyCompletion::class, mappedBy: 'bounty')]
+  private Collection $bountyCompletions;
+
+  public function __construct()
+  {
+    $this->bountyCompletions = new ArrayCollection();
+  }
 
   public function getId(): ?int
   {
@@ -67,6 +77,17 @@ class Bounty
   public function setWeapon(Weapon $weapon): static
   {
     $this->weapon = $weapon;
+    return $this;
+  }
+
+  public function getBountyCompletions(): Collection
+  {
+    return $this->bountyCompletions;
+  }
+
+  public function setBountyCompletions(Collection $bountyCompletions): static
+  {
+    $this->bountyCompletions = $bountyCompletions;
     return $this;
   }
 }

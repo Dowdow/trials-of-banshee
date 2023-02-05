@@ -1,27 +1,31 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { generatePath } from 'react-router-dom';
+import { updateBounty } from '../../actions/bounties';
 import { useCurrentBounty } from '../../hooks/bounty';
 import { ROUTES_API } from '../../utils/routes';
 import clue from '../../../img/bounty/clue.jpg';
 
 export default function TrialsInputs() {
   const dispatch = useDispatch();
+  const inputRef = useRef();
 
   const currentBounty = useCurrentBounty();
   const weapons = useSelector((state) => state.weapons);
 
-  const [guess, setGuess] = useState('');
+  const [guessInput, setGuessInput] = useState('');
 
   const handleClickGuess = (weaponId) => {
+    setGuessInput('');
+    inputRef.current.focus();
     fetch(generatePath(ROUTES_API.BOUNTY_GUESS, { id: currentBounty.id }), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ weaponId }),
     })
       .then((response) => response.json())
-      .then((data) => console.log(data));
+      .then((data) => dispatch(updateBounty(data)));
   };
 
   const handleClickClue = () => {
@@ -34,13 +38,13 @@ export default function TrialsInputs() {
         <h2 className="text-2xl tracking-wide text-white/70 uppercase select-none">Guess</h2>
         <div className="w-full h-0.5 bg-white/60" />
         <div className="relative mt-4">
-          <input type="text" value={guess} onChange={(e) => setGuess(e.target.value)} className="w-full p-2 text-lg bg-light-grey/30 border border-white/30 hover:border-white/50 focus:border-white/70 text-white transition-colors duration-300 outline-none" placeholder="Type a weapon name" autoComplete="off" />
-          {guess !== '' && (
+          <input ref={inputRef} type="text" value={guessInput} disabled={currentBounty.completed} onChange={(e) => setGuessInput(e.target.value)} className="w-full p-2 text-lg bg-light-grey/30 border border-white/30 hover:border-white/50 focus:border-white/70 text-white transition-colors duration-300 disabled:cursor-not-allowed outline-none" placeholder="Type a weapon name" autoComplete="off" />
+          {guessInput !== '' && (
             <div className="absolute grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-1 w-full max-h-80 p-2 bg-light-grey/95 border-b border-x border-white/70 overflow-y-scroll overflow-x-hidden z-50">
               {weapons
                 .filter((w) => w.hasSound)
                 .filter((w) => !currentBounty.history.includes(w.id))
-                .filter((w) => w.names.fr.toLowerCase().includes(guess.toLowerCase()))
+                .filter((w) => w.names.fr.toLowerCase().includes(guessInput.toLowerCase()))
                 .map((w) => <WeaponGuess key={w.id} w={w} onClick={handleClickGuess} />)}
             </div>
           )}
@@ -50,19 +54,27 @@ export default function TrialsInputs() {
         <h2 className="text-2xl tracking-wide text-white/70 uppercase select-none">Clues</h2>
         <div className="w-full h-0.5 bg-white/60" />
         <div className="flex gap-1 mt-4 -ml-1">
-          {Object.entries(currentBounty.clues).map(([key, c]) => (
-            <button key={key} type="button" onClick={handleClickClue} className="p-0.5 border-2 border-transparent hover:border-white/70 transition-colors duration-300">
-              <div className="bg-white">
-                <img src={clue} alt="Clue" className="hover:opacity-70 transition-opacity duration-300" loading="lazy" />
-              </div>
-            </button>
-          ))}
+          <button type="button" onClick={handleClickClue} className="p-0.5 border-2 border-transparent hover:border-white/70 transition-colors duration-300">
+            <div className="bg-white">
+              <img src={clue} alt="Clue" className="hover:opacity-70 transition-opacity duration-300" loading="lazy" />
+            </div>
+          </button>
+          <button type="button" onClick={handleClickClue} className="p-0.5 border-2 border-transparent hover:border-white/70 transition-colors duration-300">
+            <div className="bg-white">
+              <img src={clue} alt="Clue" className="hover:opacity-70 transition-opacity duration-300" loading="lazy" />
+            </div>
+          </button>
+          <button type="button" onClick={handleClickClue} className="p-0.5 border-2 border-transparent hover:border-white/70 transition-colors duration-300">
+            <div className="bg-white">
+              <img src={clue} alt="Clue" className="hover:opacity-70 transition-opacity duration-300" loading="lazy" />
+            </div>
+          </button>
         </div>
       </div>
       <div className="mt-8">
         <h2 className="text-2xl tracking-wide text-white/70 uppercase select-none">History</h2>
         <div className="w-full h-0.5 bg-white/60" />
-        <div className="flex gap-1 mt-4">
+        <div className="flex flex-row-reverse justify-end gap-1 mt-4">
           {currentBounty.history.map((w) => <WeaponHistory key={w} w={weapons.find((fw) => fw.id === w)} />)}
           {currentBounty.history.length === 0 && (<div className="text-lg text-white/70">No history</div>)}
         </div>

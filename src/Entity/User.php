@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -80,6 +82,14 @@ class User implements UserInterface
 
   #[ORM\Column]
   private bool $admin = false;
+
+  #[ORM\OneToMany(targetEntity: BountyCompletion::class, mappedBy: 'user')]
+  private Collection $bountyCompletions;
+
+  public function __construct()
+  {
+    $this->bountyCompletions = new ArrayCollection();
+  }
 
   public function getId(): ?int
   {
@@ -247,6 +257,17 @@ class User implements UserInterface
   public function setAdmin(bool $admin): static
   {
     $this->admin = $admin;
+    return $this;
+  }
+
+  public function getBountyCompletions(): Collection
+  {
+    return $this->bountyCompletions;
+  }
+
+  public function setBountyCompletions(Collection $bountyCompletions): static
+  {
+    $this->bountyCompletions = $bountyCompletions;
     return $this;
   }
 

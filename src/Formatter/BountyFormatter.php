@@ -3,18 +3,57 @@
 namespace App\Formatter;
 
 use App\Entity\Bounty;
+use App\Entity\BountyCompletion;
+use App\Entity\User;
+use App\Service\BountyService;
 
 class BountyFormatter
 {
+  private BountyService $bountyService;
+
   /**
-   * @param array $bounties
+   * BountyFormatter
+   * @param BountyService $bountyService
+   */
+  public function __construct(BountyService $bountyService)
+  {
+    $this->bountyService = $bountyService;
+  }
+
+  /**
+   * @param User $user
+   * @param Bounty[] $bounties
    * @return array
    */
-  public function formatTodayBounties(array $bounties): array
+  public function formatBounties(User $user, array $bounties): array
   {
     $formattedBounties = [];
     foreach ($bounties as $bounty) {
-      $formattedBounties[] = $this->formatTodayBounty($bounty);
+      $bountyCompletion = $this->bountyService->findOrCreateBountyCompletion($bounty, $user);
+      $formattedBounties[] = $this->formatBounty($bounty, $bountyCompletion);
+    }
+
+    return [
+      'items' => $formattedBounties,
+      'total' => count($formattedBounties),
+    ];
+  }
+
+  /**
+   * @param Bounty[] $bounties
+   * @return array
+   */
+  public function formatBountiesNotAuthenticated(array $bounties): array
+  {
+    $formattedBounties = [];
+    foreach ($bounties as $bounty) {
+      if ($bounty->getType() === Bounty::TYPE_DAILY) {
+        $bountyCompletion = $this->bountyService->findOrCreateBountyCompletionWithSesion($bounty);
+        $this->bountyService->saveBountyCompletionWithSession($bounty, $bountyCompletion);
+        $formattedBounties[] = $this->formatBounty($bounty, $bountyCompletion);
+      } else {
+        $formattedBounties[] = $this->formatBountyNotAuthenticated($bounty);
+      }
     }
 
     return [
@@ -25,21 +64,33 @@ class BountyFormatter
 
   /**
    * @param Bounty $bounty
+   * @param BountyCompletion|null $bountyCompletion
    * @return array
    */
-  public function formatTodayBounty(Bounty $bounty): array
+  public function formatBounty(Bounty $bounty, ?BountyCompletion $bountyCompletion = null): array
   {
     return [
       'id' => $bounty->getId(),
       'type' => $bounty->getType(),
       'audio' => $bounty->getWeapon()?->getSounds()?->first()?->getPath(),
-      'tries' => 0,
-      'clues' => [
-        'damageType' => null,
-        'rarity' => null,
-        'type' => null,
-      ],
-      'history' => [],
+      'attempts' => $bountyCompletion?->getAttempts() ?? 0,
+      'completed' => $bountyCompletion?->isCompleted() ?? false,
+      'succeeded' => $bountyCompletion?->isSucceeded() ?? null,
+      'clues' => $bountyCompletion?->getClues() ?? [],
+      'history' => $bountyCompletion?->getHistory() ?? [],
+    ];
+  }
+
+  /**
+   * @param Bounty $bounty
+   * @return array
+   */
+  public function formatBountyNotAuthenticated(Bounty $bounty): array
+  {
+    return [
+      'id' => $bounty->getId(),
+      'type' => $bounty->getType(),
+      'audio' => $bounty->getType() === Bounty::TYPE_DAILY ? $bounty->getWeapon()?->getSounds()?->first()?->getPath() : null,
     ];
   }
 }

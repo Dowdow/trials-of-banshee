@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { setCurrentBounty } from '../../actions/bounties';
 import { useTodayBounties } from '../../hooks/bounty';
+import { useAuthenticated } from '../../hooks/user';
 import { bountyImageFromType, bountyNameFromType, BOUNTY_TYPE } from '../../utils/bounties';
+import { isBountyCompleted } from '../../utils/localStorage';
 import gunsmith from '../../../img/misc/gunsmith.png';
 
 export default function TrialsBountiesAndRules() {
@@ -34,12 +36,28 @@ export default function TrialsBountiesAndRules() {
 }
 
 function Bounty({ b }) {
+  const authenticated = useAuthenticated();
   const dispatch = useDispatch();
 
+  const completed = useMemo(() => b.completed || isBountyCompleted(b.id), [b.id, b.completed]);
+  const disabled = useMemo(() => completed || (!authenticated && (b.type === BOUNTY_TYPE.ASPIRING || b.type === BOUNTY_TYPE.GUNSMITH)), [authenticated, completed, b.type]);
+
+  const handleClick = () => {
+    if (authenticated || (!authenticated && b.type === BOUNTY_TYPE.DAILY)) {
+      dispatch(setCurrentBounty(b.id));
+    }
+  };
+
   return (
-    <button type="button" onClick={() => dispatch(setCurrentBounty(b.id))} className="p-0.5 border-2 border-transparent hover:border-white/70 transition-colors duration-300">
-      <div className="bg-white">
-        <img src={bountyImageFromType(b.type)} alt={bountyNameFromType(b.type)} className="hover:opacity-70 transition-opacity duration-300" loading="lazy" />
+    <button type="button" onClick={handleClick} className="p-0.5 border-2 border-transparent hover:border-white/70 disabled:hover:border-white/30 transition-colors duration-300 disabled:cursor-not-allowed" disabled={disabled}>
+      <div className={`relative overflow-hidden ${disabled ? 'bg-dark-grey' : 'bg-white'}`}>
+        <img src={bountyImageFromType(b.type)} alt={bountyNameFromType(b.type)} className={`${disabled && 'opacity-70'} hover:opacity-70 transition-opacity duration-300`} loading="lazy" />
+        {completed && (
+          <>
+            <div className="absolute -bottom-10 -right-10 bg-light-blue h-20 w-20 shadow-dark-grey rotate-45" />
+            <div className="absolute bottom-3.5 right-2.5 h-2.5 w-4 border-l-4 border-b-4 border-white -rotate-45" />
+          </>
+        )}
       </div>
     </button>
   );
@@ -49,5 +67,6 @@ Bounty.propTypes = {
   b: PropTypes.shape({
     id: PropTypes.number.isRequired,
     type: PropTypes.number.isRequired,
+    completed: PropTypes.bool,
   }).isRequired,
 };

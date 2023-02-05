@@ -187,6 +187,9 @@ class Weapon
     return $this->sounds->contains($sound);
   }
 
+  /**
+   * @return Collection|Sound[]
+   */
   public function getSounds(): Collection
   {
     return $this->sounds;
@@ -216,6 +219,9 @@ class Weapon
     return $this;
   }
 
+  /**
+   * @return Collection|Bounty[]
+   */
   public function getBounties(): Collection
   {
     return $this->bounties;

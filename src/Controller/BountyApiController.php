@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Bounty;
-use App\Entity\Weapon;
+use App\Entity\User;
+use App\Exception\WeaponNotFoundFromRequestException;
 use App\Formatter\BountyFormatter;
 use App\Repository\BountyRepository;
-use App\Repository\WeaponRepository;
+use App\Service\BountyService;
+use App\Service\WeaponService;
 use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,7 +25,7 @@ class BountyApiController extends AbstractController
    * @return JsonResponse
    */
   #[Route('/bounties/today', name: 'api.bounties.today', methods: ['GET'])]
-  public function bountiesToday(ManagerRegistry $managerRegistry, BountyFormatter $bountyFormatter): JsonResponse
+  public function bountiesToday(Request $request, ManagerRegistry $managerRegistry, BountyFormatter $bountyFormatter): JsonResponse
   {
     $em = $managerRegistry->getManager();
     /** @var BountyRepository */
@@ -39,51 +41,99 @@ class BountyApiController extends AbstractController
 
     $bounties = $bountyRepository->findBy(['dateStart' => $todayBountyDate]);
 
-    // TODO If connected check if already completed
+    // $request->getSession()->remove('bounty_9');
 
-    return new JsonResponse($bountyFormatter->formatTodayBounties($bounties));
+    if (!$this->isGranted(User::ROLE_USER)) {
+      return new JsonResponse($bountyFormatter->formatBountiesNotAuthenticated($bounties));
+    }
+
+    /** @var User */
+    $user = $this->getUser();
+    return new JsonResponse($bountyFormatter->formatBounties($user, $bounties));
   }
 
   /**
+   * @param Bounty $bounty
+   * @param Request $request
+   * @param ManagerRegistry $managerRegistry
+   * @param BountyService $bountyService
+   * @param WeaponService $weaponService
+   * @param BountyFormatter $bountyFormatter
    * @return JsonResponse
    */
   #[Route('/bounty/{id}/guess', name: 'api.bounty.guess', methods: ['POST'])]
-  public function bountyGuess(Bounty $bounty, Request $request, ManagerRegistry $managerRegistry, BountyFormatter $bountyFormatter): JsonResponse
+  public function bountyGuess(Bounty $bounty, Request $request, ManagerRegistry $managerRegistry, BountyService $bountyService, WeaponService $weaponService, BountyFormatter $bountyFormatter): JsonResponse
   {
     if ($bounty === null) {
       return new JsonResponse(['errors' => ['Bounty not found']], 404);
     }
 
-    // Si pas connecté et bounty autre que daily c'est interdit
+    $isConnected = $this->isGranted(User::ROLE_USER);
 
-    // On ne check pas si le bounty a expiré car le joueur peut avoir du retard 
-    // Par contre on check qu'il ne fasse pas le bounty en avance
+    // Check if User is connected to play aspiring and gunsmith bounties
+    if (!$isConnected && in_array($bounty->getType(), [Bounty::TYPE_ASPIRING, Bounty::TYPE_GUNSMITH])) {
+      return new JsonResponse(['errors' => ['You need to be authenticated to do this Bounty']], 403);
+    }
+
+    // Check if the User play the Bounty when it's available (can play older bounties)
     $date = new DateTime();
     if ($date < $bounty->getDateStart()) {
       return new JsonResponse(['errors' => ['Bounty not available yet. Be patient Guardian']], 400);
     }
 
-    $content = json_decode($request->getContent(), true);
-    $weaponId = $content['weaponId'] ?? null;
+    // Retrieve the guessed Weapon
+    try {
+      $weapon = $weaponService->retrieveWeaponFromRequest($request);
+    } catch (WeaponNotFoundFromRequestException $e) {
+      return new JsonResponse(['errors' => [$e->getMessage()]], 400);
+    }
 
-    if ($weaponId === null) {
-      return new JsonResponse(['errors' => ['`weaponId` needed for the guess']], 400);
+    // Check if the Weapon is a correct answer 
+    $isWeaponCorrect = $bountyService->isWeaponCorrect($bounty, $weapon);
+
+    // BountyCompletion object creation (From database or request)
+    if ($isConnected) {
+      /** @var User */
+      $user = $this->getUser();
+      $bountyCompletion = $bountyService->findOrCreateBountyCompletion($bounty, $user, true);
+    } else {
+      $bountyCompletion = $bountyService->findOrCreateBountyCompletionWithSesion($bounty);
+    }
+
+    // Check if the Bounty is not already completed
+    if ($bountyCompletion->isCompleted()) {
+      return new JsonResponse(['errors' => ['Bounty already completed']], 400);
+    }
+
+    $bountyCompletion
+      ->addAttempt()
+      ->addHistory($weapon->getId())
+      ->setCompleted($isWeaponCorrect);
+
+    // Early return for localstorage player
+    if (!$isConnected) {
+      $bountyService->saveBountyCompletionWithSession($bounty, $bountyCompletion);
+      return new JsonResponse($bountyFormatter->formatBounty($bounty, $bountyCompletion));
+    }
+
+    if ($bounty->getType() === Bounty::TYPE_DAILY) {
+      // Pas de check à faire
+      // Ajout du loot en conséquence
+    } elseif ($bounty->getType() === Bounty::TYPE_ASPIRING) {
+      if ($isWeaponCorrect) {
+        $bountyCompletion->setSucceeded($bountyCompletion->getAttempts() < 4);
+      }
+      // Ajout du loot en conséquence
+    } elseif ($bounty->getType() === Bounty::TYPE_GUNSMITH) {
+      if ($isWeaponCorrect) {
+        $bountyCompletion->setSucceeded($bountyCompletion->getAttempts() < 2);
+      }
+      // Ajout du loot en conséquence
     }
 
     $em = $managerRegistry->getManager();
-    /** @var WeaponRepository */
-    $weaponRepository = $em->getRepository(Weapon::class);
+    $em->flush();
 
-    $weapon = $weaponRepository->findOneBy(['id' => $weaponId, 'hidden' => false]);
-    if ($weapon === null) {
-      return new JsonResponse(['errors' => ['Weapon not found']], 404);
-    }
-
-
-    // TODO si bonne réponse
-
-    // TODO si mauvaise réponse on renvoit le bounty + trie +1 + history
-
-    return new JsonResponse($bountyFormatter->formatTodayBounty($bounty));
+    return new JsonResponse($bountyFormatter->formatBounty($bounty, $bountyCompletion));
   }
 }

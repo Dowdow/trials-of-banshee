@@ -56,7 +56,7 @@ export default function IndexPage() {
                     </div>
                     <div className="absolute top-1 right-1.5 flex gap-1">
                       <div className="w-2.5 h-2.5 mt-1.5 border-4 border-yellow rotate-45 shadow-sm shadow-light-grey/50" />
-                      <div className="font-bold text-4xl text-yellow text-shadow-sm shadow-light-grey/50 tracking-wide">{user.lightLevel}</div>
+                      <div className="font-bold text-4xl text-yellow text-shadow-sm shadow-light-grey/50 tracking-wide select-none">{user.lightLevel}</div>
                     </div>
                   </div>
                 ) : (

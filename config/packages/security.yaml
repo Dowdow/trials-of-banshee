@@ -21,3 +21,5 @@ security:
                 secret: "%kernel.secret%"
                 always_remember_me: true
                 signature_properties: ["accessToken", "refreshToken"]
+            logout:
+                path: security.logout
