@@ -23,9 +23,9 @@ export default function TrialsAudio() {
   if (currentBounty === null) return null;
 
   return (
-    <div className="w-full ml-10">
+    <div className="w-full">
       <div>
-        <h2 className="text-2xl tracking-wide text-white/70 uppercase select-none">{bountyNameFromType(currentBounty.type)}</h2>
+        <h2 className="text-xl md:text-2xl tracking-wide text-white/70 uppercase select-none">{bountyNameFromType(currentBounty.type)}</h2>
         <div className="w-full h-0.5 bg-white/60" />
       </div>
       <div className="flex justify-between gap-16">

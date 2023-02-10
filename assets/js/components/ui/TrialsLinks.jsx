@@ -6,14 +6,14 @@ import KeyboardButton from './KeyboardButton';
 
 export default function TrialsLinks({ onLink }) {
   return (
-    <div className="flex justify-end items-center gap-3 pt-3">
+    <div className="flex justify-between md:justify-end items-center gap-3 pt-2">
       <Link to={ROUTES.WEAPONS} onClick={(e) => onLink(e, ROUTES.WEAPONS)} className="flex items-center gap-2 px-1 border-2 border-transparent hover:border-white/70 transition-colors duration-300">
         <KeyboardButton button="W" />
-        <span className="text-2xl tracking-wide text-white/80">Weapons stock</span>
+        <span className="text-xl md:text-2xl tracking-wide text-white/80">Weapons stock</span>
       </Link>
       <Link to={ROUTES.INDEX} onClick={(e) => onLink(e, ROUTES.INDEX)} className="flex items-center gap-2 px-1 border-2 border-transparent hover:border-white/70 transition-colors duration-300">
         <KeyboardButton button="O" />
-        <span className="text-2xl tracking-wide text-white/80">Back to Orbit</span>
+        <span className="text-xl md:text-2xl tracking-wide text-white/80">Back to Orbit</span>
       </Link>
     </div>
   );

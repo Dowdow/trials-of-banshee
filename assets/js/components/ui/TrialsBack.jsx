@@ -11,7 +11,7 @@ export default function TrialsBack() {
   };
 
   return (
-    <div className="flex justify-end items-center gap-3 pt-3">
+    <div className="flex justify-end items-center gap-3 pt-2">
       <button type="button" onClick={handleBack} className="flex items-center gap-2 px-1 border-2 border-transparent hover:border-white/70 transition-colors duration-300">
         <KeyboardButton button="B" />
         <span className="text-2xl tracking-wide text-white/80">Back</span>

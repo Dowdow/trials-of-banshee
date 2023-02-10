@@ -47,9 +47,9 @@ export default function TrialsInputs() {
   };
 
   return (
-    <div className="w-full pt-10 pl-10">
+    <div className="w-full">
       <div>
-        <h2 className="text-2xl tracking-wide text-white/70 uppercase select-none">Guess</h2>
+        <h2 className="text-xl md:text-2xl tracking-wide text-white/70 uppercase select-none">Guess</h2>
         <div className="w-full h-0.5 bg-white/60" />
         <div className="relative mt-4">
           <input ref={inputRef} type="text" value={guessInput} disabled={currentBounty.completed} onChange={(e) => setGuessInput(e.target.value)} className="w-full p-2 text-lg bg-light-grey/30 border border-white/30 hover:border-white/50 focus:border-white/70 text-white transition-colors duration-300 disabled:cursor-not-allowed outline-none" placeholder="Type a weapon name" autoComplete="off" />
@@ -65,7 +65,7 @@ export default function TrialsInputs() {
         </div>
       </div>
       <div className="mt-8">
-        <h2 className="text-2xl tracking-wide text-white/70 uppercase select-none">Clues</h2>
+        <h2 className="text-xl md:text-2xl tracking-wide text-white/70 uppercase select-none">Clues</h2>
         <div className="w-full h-0.5 bg-white/60" />
         <div className="flex gap-1 mt-4 -ml-1">
           <Clue used={clueRarityUsed} disabled={clueRarityDisabled} onClick={() => handleClickClue(CLUE_TYPE.RARITY)} />
@@ -74,7 +74,7 @@ export default function TrialsInputs() {
         </div>
       </div>
       <div className="mt-8">
-        <h2 className="text-2xl tracking-wide text-white/70 uppercase select-none">History</h2>
+        <h2 className="text-xl md:text-2xl tracking-wide text-white/70 uppercase select-none">History</h2>
         <div className="w-full h-0.5 bg-white/60" />
         {currentBounty.history.length === 0 && (<div className="mt-4 text-lg text-white/70">No history</div>)}
         <div className="flex flex-row-reverse justify-end flex-wrap gap-1 mt-4 -ml-1">

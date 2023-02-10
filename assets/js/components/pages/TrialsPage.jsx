@@ -38,14 +38,14 @@ export default function TrialsPage() {
   };
 
   return (
-    <div className={`${fadeOut && 'animate-fade-out'}`} onAnimationEnd={() => navigate(nextPage)}>
+    <div className={`overflow-hidden ${fadeOut && 'animate-fade-out'}`} onAnimationEnd={() => navigate(nextPage)}>
       <div className="absolute w-full h-screen overflow-hidden z-0">
         <img src={banshee} alt="Banshee" className="w-full h-full object-cover" loading="lazy" />
       </div>
 
       <InitFade />
 
-      <div className="absolute bottom-24 left-12 pl-12" style={{ transform: `translateX(${x}px) translateY(${y}px)` }}>
+      <div className="hidden md:block absolute md:bottom-52 xl:bottom-24 md:-left-32 xl:left-12 xl:pl-12 md:-rotate-90 xl:rotate-0" style={{ translate: `${x}px ${y}px` }}>
         <div className="ml-3 text-lg font-bold tracking-widest text-white text-shadow-sm shadow-light-grey/30 uppercase select-none">Gunsmith</div>
         <div className="w-full h-2 bg-white/90 text-shadow-sm shadow-light-grey/30 mb-2" />
         <div className="font-neue-haas-display-bold text-7xl uppercase text-white text-shadow-sm shadow-light-grey/30 select-none">Banshee-44</div>
@@ -53,18 +53,18 @@ export default function TrialsPage() {
       </div>
 
       <div className="relative w-full h-screen overflow-hidden">
-        <div className="absolute -top-3 left-1/2 w-[52%] h-[102vh] flex flex-col backdrop-blur-lg" style={{ transform: `translateX(${x}px) translateY(${y}px)` }}>
-          <div className="w-full h-[30%] bg-blue/80 flex items-center pt-3 pr-20">
+        <div className="absolute -top-3 -left-2 md:left-1/4 lg:left-1/3 xl:left-1/2 w-[103%] md:w-[77%] lg:w-[68%] xl:w-[52%] h-[103%] flex flex-col backdrop-blur-lg" style={{ translate: `${x}px ${y}px` }}>
+          <div className="w-full h-[30%] bg-blue/80 flex items-center px-6 md:pt-3 md:pl-10 md:pr-20">
             {currentBounty
               ? <TrialsAudio />
               : <TrialsCollectionAndTriumphs onLink={handleClickLink} />}
           </div>
-          <div className="w-full h-[63%] bg-blue/50 pr-20">
+          <div className="w-full h-[63%] bg-blue/50 px-6 pt-10 md:pl-10 md:pr-20">
             {currentBounty
               ? <TrialsInputs />
               : <TrialsBountiesAndRules />}
           </div>
-          <div className="w-full h-[7%] bg-blue/30 pr-14">
+          <div className="w-full h-[7%] bg-blue/30 px-6 md:pl-0 md:pr-14">
             {currentBounty
               ? <TrialsBack />
               : <TrialsLinks onLink={handleClickLink} />}

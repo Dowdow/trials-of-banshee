@@ -38,7 +38,7 @@ export default function IndexPage() {
       <InitFade />
 
       <div className={`relative w-full h-screen backdrop-blur-sm overflow-hidden ${launchFade && 'animate-fade'}`} onAnimationEnd={(e) => e.animationName === 'fade' && setZoomEarth(true)}>
-        <div className="relative w-full h-screen flex flex-col justify-between p-5 md:p-8 lg:px-12 lg:pb-14" style={{ transform: `translateX(${x}px) translateY(${y}px)` }}>
+        <div className="relative w-full h-screen flex flex-col justify-between p-5 md:p-8 lg:px-12 lg:pb-14" style={{ translate: `${x}px ${y}px` }}>
           <div className="flex flex-col-reverse md:flex-row justify-between">
             <div>
               <button type="button">I</button>
