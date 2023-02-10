@@ -1,13 +1,10 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { setCurrentBounty } from '../../actions/bounties';
+import PropTypes from 'prop-types';
 import KeyboardButton from './KeyboardButton';
 
-export default function TrialsBack() {
-  const dispatch = useDispatch();
-
+export default function TrialsBack({ onClick }) {
   const handleBack = () => {
-    dispatch(setCurrentBounty(null));
+    onClick(null);
   };
 
   return (
@@ -19,3 +16,7 @@ export default function TrialsBack() {
     </div>
   );
 }
+
+TrialsBack.propTypes = {
+  onClick: PropTypes.func.isRequired,
+};

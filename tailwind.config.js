@@ -12,6 +12,8 @@ module.exports = {
       'fade-short': 'fade-short 200ms ease-in-out normal forwards',
       'fade-out': 'fade-out 300ms ease-in-out normal forwards',
       launch: 'launch 1.6s ease-in-out infinite',
+      'slide-in': 'slide-in 150ms ease-in normal forwards',
+      'slide-out': 'slide-out 150ms ease-in normal forwards',
       spin: 'spin 5s linear infinite',
       'spin-back': 'spin-back 5s linear infinite',
       'spin-big': 'spin-big 20s linear infinite',
@@ -60,6 +62,14 @@ module.exports = {
         launch: {
           '0%, 100%': { background: '#3E6442' },
           '50%': { background: '#3E6442E5' },
+        },
+        'slide-in': {
+          '0%': { opacity: 0, translate: '50px 0px' },
+          '100%': { opacity: 1, translate: '0px 0px' },
+        },
+        'slide-out': {
+          '0%': { opacity: 1, translate: '0px 0px' },
+          '100%': { opacity: 0, translate: '50px 0px' },
         },
         spin: {
           '0%, 12.5%': { transform: 'rotate(0deg)' },

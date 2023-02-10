@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { setBounties } from '../../actions/bounties';
+import { setBounties, setCurrentBounty } from '../../actions/bounties';
 import { useCurrentBounty } from '../../hooks/bounty';
 import { useInterfaceMoveOnMouseMove } from '../../hooks/mouse';
 import { ROUTES_API } from '../../utils/routes';
@@ -22,6 +22,9 @@ export default function TrialsPage() {
 
   const [fadeOut, setFadeOut] = useState(false);
   const [nextPage, setNextPage] = useState(null);
+  const [slideIn, setSlideIn] = useState(true);
+  const [slideOut, setSlideOut] = useState(false);
+  const [nextId, setNextId] = useState(null);
 
   const { x, y } = useInterfaceMoveOnMouseMove();
 
@@ -35,6 +38,22 @@ export default function TrialsPage() {
     e.preventDefault();
     setNextPage(route);
     setFadeOut(true);
+  };
+
+  const handleClickBounty = (id) => {
+    setSlideOut(true);
+    setNextId(id);
+  };
+
+  const handleSlideAnimationEnd = (e) => {
+    if (e.animationName === 'slide-in') {
+      setSlideIn(false);
+    }
+    if (e.animationName === 'slide-out') {
+      setSlideOut(false);
+      dispatch(setCurrentBounty(nextId));
+      setSlideIn(true);
+    }
   };
 
   return (
@@ -55,19 +74,25 @@ export default function TrialsPage() {
       <div className="relative w-full h-screen overflow-hidden">
         <div className="absolute -top-3 -left-2 md:left-1/4 lg:left-1/3 xl:left-1/2 w-[103%] md:w-[77%] lg:w-[68%] xl:w-[52%] h-[103%] flex flex-col backdrop-blur-lg" style={{ translate: `${x}px ${y}px` }}>
           <div className="w-full h-[30%] bg-blue/80 flex items-center px-6 md:pt-3 md:pl-10 md:pr-20">
-            {currentBounty
-              ? <TrialsAudio />
-              : <TrialsCollectionAndTriumphs onLink={handleClickLink} />}
+            <div className={`w-full ${slideIn && 'animate-slide-in'} ${slideOut && 'animate-slide-out'}`} onAnimationEnd={handleSlideAnimationEnd}>
+              {currentBounty
+                ? <TrialsAudio />
+                : <TrialsCollectionAndTriumphs onLink={handleClickLink} />}
+            </div>
           </div>
           <div className="w-full h-[63%] bg-blue/50 px-6 pt-10 md:pl-10 md:pr-20">
-            {currentBounty
-              ? <TrialsInputs />
-              : <TrialsBountiesAndRules />}
+            <div className={`w-full ${slideIn && 'animate-slide-in'} ${slideOut && 'animate-slide-out'}`}>
+              {currentBounty
+                ? <TrialsInputs />
+                : <TrialsBountiesAndRules onClick={handleClickBounty} />}
+            </div>
           </div>
           <div className="w-full h-[7%] bg-blue/30 px-6 md:pl-0 md:pr-14">
-            {currentBounty
-              ? <TrialsBack />
-              : <TrialsLinks onLink={handleClickLink} />}
+            <div className={`w-full ${slideIn && 'animate-slide-in'} ${slideOut && 'animate-slide-out'}`}>
+              {currentBounty
+                ? <TrialsBack onClick={handleClickBounty} />
+                : <TrialsLinks onLink={handleClickLink} />}
+            </div>
           </div>
         </div>
       </div>

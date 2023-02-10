@@ -1,14 +1,12 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
-import { setCurrentBounty } from '../../actions/bounties';
 import { useTodayBounties } from '../../hooks/bounty';
 import { useAuthenticated } from '../../hooks/user';
 import { bountyImageFromType, bountyNameFromType, BOUNTY_TYPE } from '../../utils/bounties';
 import { isBountyCompleted } from '../../utils/localStorage';
 import gunsmith from '../../../img/misc/gunsmith.png';
 
-export default function TrialsBountiesAndRules() {
+export default function TrialsBountiesAndRules({ onClick }) {
   const bounties = useTodayBounties();
 
   return (
@@ -17,9 +15,9 @@ export default function TrialsBountiesAndRules() {
         <h2 className="text-xl md:text-2xl tracking-wide text-white/70 uppercase select-none">Bounties</h2>
         <div className="w-full h-0.5 bg-white/60" />
         <div className="flex gap-1 mt-4 -ml-1">
-          {bounties.filter((b) => b.type === BOUNTY_TYPE.DAILY).map((b) => <Bounty key={b.id} b={b} />)}
-          {bounties.filter((b) => b.type === BOUNTY_TYPE.ASPIRING).map((b) => <Bounty key={b.id} b={b} />)}
-          {bounties.filter((b) => b.type === BOUNTY_TYPE.GUNSMITH).map((b) => <Bounty key={b.id} b={b} />)}
+          {bounties.filter((b) => b.type === BOUNTY_TYPE.DAILY).map((b) => <Bounty key={b.id} b={b} onClick={onClick} />)}
+          {bounties.filter((b) => b.type === BOUNTY_TYPE.ASPIRING).map((b) => <Bounty key={b.id} b={b} onClick={onClick} />)}
+          {bounties.filter((b) => b.type === BOUNTY_TYPE.GUNSMITH).map((b) => <Bounty key={b.id} b={b} onClick={onClick} />)}
           {bounties.length === 0 && (<div className="text-lg text-white/70 ml-1">No bounties available today</div>)}
         </div>
       </div>
@@ -35,16 +33,15 @@ export default function TrialsBountiesAndRules() {
   );
 }
 
-function Bounty({ b }) {
+function Bounty({ b, onClick }) {
   const authenticated = useAuthenticated();
-  const dispatch = useDispatch();
 
   const completed = useMemo(() => b.completed || isBountyCompleted(b.id), [b.id, b.completed]);
   const disabled = useMemo(() => completed || (!authenticated && (b.type === BOUNTY_TYPE.ASPIRING || b.type === BOUNTY_TYPE.GUNSMITH)), [authenticated, completed, b.type]);
 
   const handleClick = () => {
     if (authenticated || (!authenticated && b.type === BOUNTY_TYPE.DAILY)) {
-      dispatch(setCurrentBounty(b.id));
+      onClick(b.id);
     }
   };
 
@@ -63,10 +60,15 @@ function Bounty({ b }) {
   );
 }
 
+TrialsBountiesAndRules.propTypes = {
+  onClick: PropTypes.func.isRequired,
+};
+
 Bounty.propTypes = {
   b: PropTypes.shape({
     id: PropTypes.number.isRequired,
     type: PropTypes.number.isRequired,
     completed: PropTypes.bool,
   }).isRequired,
+  onClick: PropTypes.func.isRequired,
 };
