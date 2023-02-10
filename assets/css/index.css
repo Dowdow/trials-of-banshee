@@ -18,4 +18,15 @@
   body {
     @apply bg-black font-neue-haas-display-roman;
   }
+
+  .triumph-background-gradient {
+    background-size: 40px 40px;
+    background-image:
+      linear-gradient(to right, #28292B 1px, transparent 1px),
+      linear-gradient(to bottom, #28292B 1px, #1C1D1F 1px);
+  }
+
+  .triumph-gradient {
+    background: linear-gradient(-45deg, #1C1D1F 0%, #28292B 75%, transparent 75%, transparent 100%);
+  }
 }

@@ -26,6 +26,7 @@ module.exports = {
       green: '#3E6442',
       'light-blue': '#8ECACB',
       'light-grey': '#28292B',
+      pink: '#aa52ba',
       purple: '#5e4373',
       red: '#FF4136',
       white: '#f3f3f3',
@@ -35,6 +36,12 @@ module.exports = {
       fontFamily: {
         'neue-haas-display-bold': 'Neue Haas Display Bold',
         'neue-haas-display-roman': 'Neue Haas Display Roman',
+      },
+      gridTemplateColumns: {
+        triumph: '2.5rem 1fr 2.5rem',
+      },
+      gridTemplateRows: {
+        triumph: '3rem 1fr',
       },
       keyframes: {
         fade: {
