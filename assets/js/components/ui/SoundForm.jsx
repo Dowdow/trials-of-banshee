@@ -56,15 +56,15 @@ export default function SoundForm({ onSubmit, sound = null, error = null }) {
       <form onSubmit={handleSubmit} className="w-full p-6 text-white/70">
         <div className="flex flex-col mb-3">
           <label className="text-lg font-bold border-b-2 border-white/30 mb-2">Name</label>
-          <input type="text" value={name} onChange={handleChangeName} className="p-2 text-lg bg-light-grey text-white outline-none" placeholder="Sound name" />
+          <input type="text" value={name} onChange={handleChangeName} className="p-2 text-lg bg-light-grey text-white" placeholder="Sound name" />
         </div>
         <div className="flex flex-col mb-3">
           <label className="text-lg font-bold border-b-2 border-white/30 mb-2">Description</label>
-          <textarea value={description} onChange={handleChangeDescription} className="p-2 text-lg bg-light-grey text-white outline-none" placeholder="Sound description" />
+          <textarea value={description} onChange={handleChangeDescription} className="p-2 text-lg bg-light-grey text-white" placeholder="Sound description" />
         </div>
         <div className="flex flex-col mb-3">
           <label className="text-lg font-bold border-b-2 border-white/30 mb-2">Audio file</label>
-          <input type="file" accept="audio/*" onChange={handleChangeFile} className="p-2 text-lg bg-light-grey text-white outline-none" />
+          <input type="file" accept="audio/*" onChange={handleChangeFile} className="p-2 text-lg bg-light-grey text-white" />
         </div>
         <div className="flex flex-col mb-10">
           <label className="text-lg font-bold border-b-2 border-white/30 mb-2">Weapons</label>
@@ -75,7 +75,7 @@ export default function SoundForm({ onSubmit, sound = null, error = null }) {
 
           <div className="w-full h-1 bg-dark-grey my-2" />
 
-          <input type="text" value={query} onChange={handleChangeQuery} className="p-2 text-lg bg-light-grey text-white outline-none" placeholder="Type a weapon name" />
+          <input type="text" value={query} onChange={handleChangeQuery} className="p-2 text-lg bg-light-grey text-white" placeholder="Type a weapon name" />
           <div className="flex flex-wrap gap-1 mt-2">
             {query !== '' && allWeapons
               .filter((w) => w.names.fr.toLowerCase().includes(query.toLowerCase()))

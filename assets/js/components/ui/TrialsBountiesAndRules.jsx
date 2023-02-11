@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTodayBounties } from '../../hooks/bounty';
 import { useAuthenticated } from '../../hooks/user';
@@ -39,16 +39,24 @@ function Bounty({ b, onClick }) {
   const completed = useMemo(() => b.completed || isBountyCompleted(b.id), [b.id, b.completed]);
   const disabled = useMemo(() => completed || (!authenticated && (b.type === BOUNTY_TYPE.ASPIRING || b.type === BOUNTY_TYPE.GUNSMITH)), [authenticated, completed, b.type]);
 
+  const [animationClick, setAnimationClick] = useState(false);
+
   const handleClick = () => {
+    if (authenticated || (!authenticated && b.type === BOUNTY_TYPE.DAILY)) {
+      setAnimationClick(true);
+    }
+  };
+
+  const handleAnimationEnd = () => {
     if (authenticated || (!authenticated && b.type === BOUNTY_TYPE.DAILY)) {
       onClick(b.id);
     }
   };
 
   return (
-    <button type="button" onClick={handleClick} className="p-0.5 border-2 border-transparent hover:border-white/70 disabled:hover:border-white/30 transition-colors duration-300 disabled:cursor-not-allowed" disabled={disabled}>
-      <div className={`relative overflow-hidden ${disabled ? 'bg-dark-grey' : 'bg-white'}`}>
-        <img src={bountyImageFromType(b.type)} alt={bountyNameFromType(b.type)} className={`${disabled && 'opacity-70'} hover:opacity-70 transition-opacity duration-300`} loading="lazy" />
+    <button type="button" onClick={handleClick} className={`p-0.5 border-2 border-transparent disabled:hover:border-white/30 ${animationClick ? 'hover:border-transparent' : 'hover:border-white/70'} transition-colors duration-300 disabled:cursor-not-allowed`} disabled={disabled} onAnimationEnd={handleAnimationEnd}>
+      <div className={`relative overflow-hidden ${animationClick && 'animate-bounty'} ${disabled ? 'bg-dark-grey' : 'bg-white'}`}>
+        <img src={bountyImageFromType(b.type)} alt={bountyNameFromType(b.type)} className={`${animationClick ? 'opacity-0 hover:opacity-0' : 'hover:opacity-70'} ${disabled && 'opacity-70'} transition-opacity duration-300`} loading="lazy" />
         {completed && (
           <>
             <div className="absolute -bottom-10 -right-10 bg-light-blue h-20 w-20 shadow-dark-grey rotate-45" />

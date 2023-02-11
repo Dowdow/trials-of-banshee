@@ -40,7 +40,7 @@ export default function SoundsPage() {
             <div className="w-full h-0.5 bg-white/50" />
           </div>
           <div className="flex items-center flex-wrap gap-2 md:gap-6">
-            <input type="text" value={query} onChange={handleQuery} className="p-2 text-lg bg-light-grey text-white outline-none" placeholder="Search a sound" />
+            <input type="text" value={query} onChange={handleQuery} className="p-2 text-lg bg-light-grey text-white" placeholder="Search a sound" />
           </div>
         </div>
         <nav className="flex flex-wrap gap-3">

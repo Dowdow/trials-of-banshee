@@ -5,7 +5,7 @@ import mouse from '../../../img/misc/mouse.png';
 export default function PlayButton({ playing, onClick }) {
   const [hover, setHover] = useState(false);
   return (
-    <button type="button" onClick={onClick} className="relative flex justify-center items-center w-20 h-20 outline-none" onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
+    <button type="button" onClick={onClick} className="relative flex justify-center items-center w-20 h-20" onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
       <div className={`absolute w-20 h-20 border animate-spin transition-colors duration-300 ${hover || playing ? 'border-white/80' : 'border-white/40'}`} />
       <div className={`absolute w-20 h-20 border animate-spin-back transition-colors duration-300 ${hover || playing ? 'border-white/80' : 'border-white/40'}`} />
       <div className={`absolute w-36 h-36 border rounded-full transition-colors duration-500 ${hover || playing ? 'border-white/70' : 'border-white/40'}`} />

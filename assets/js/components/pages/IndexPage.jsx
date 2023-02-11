@@ -49,7 +49,7 @@ export default function IndexPage() {
               <div className="w-full md:w-[474px] mt-1">
                 {authenticated ? (
                   <div className="relative w-full h-24">
-                    <img src={user.emblemBackgroundPath ? `https://bungie.net${user.emblemBackgroundPath}` : defaultEmblem} alt="Character Emblem" className="w-full h-full object-cover" loading="lazy" />
+                    <img src={user.emblemBackgroundPath ? `https://bungie.net${user.emblemBackgroundPath}` : defaultEmblem} alt="Character Emblem" className="w-full h-full object-left object-cover" loading="lazy" />
                     <div className="absolute top-1 left-24">
                       <div className="text-2xl font-bold text-white tracking-wider text-shadow-sm shadow-light-grey/50 select-none">{user.displayName ? user.displayName : 'Guardian'}</div>
                       <div className="text-xl text-white/80 tracking-wider text-shadow-sm shadow-light-grey/50 select-none">{`${characterClassName(user.characterClass)} ${characterGenderName(user.characterGender)} ${characterRaceName(user.characterRace)}`}</div>

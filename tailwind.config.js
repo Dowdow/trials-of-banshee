@@ -8,12 +8,13 @@ module.exports = {
   ],
   theme: {
     animation: {
+      bounty: 'bounty 300ms ease-in-out normal forwards',
       fade: 'fade 1s ease-in-out normal forwards',
       'fade-short': 'fade-short 200ms ease-in-out normal forwards',
       'fade-out': 'fade-out 300ms ease-in-out normal forwards',
       launch: 'launch 1.6s ease-in-out infinite',
-      'slide-in': 'slide-in 150ms ease-in normal forwards',
-      'slide-out': 'slide-out 150ms ease-in normal forwards',
+      'slide-in': 'slide-in 150ms ease-in-out normal forwards',
+      'slide-out': 'slide-out 150ms ease-in-out normal forwards',
       spin: 'spin 5s linear infinite',
       'spin-back': 'spin-back 5s linear infinite',
       'spin-big': 'spin-big 20s linear infinite',
@@ -46,6 +47,11 @@ module.exports = {
         triumph: '3rem 1fr',
       },
       keyframes: {
+        bounty: {
+          '0%': { scale: '1.5' },
+          '50%': { scale: '1', translate: '0 0', opacity: '1' },
+          '100%': { translate: '0 20px', opacity: '0' },
+        },
         fade: {
           '0%': { opacity: '1' },
           '30%': { opacity: '1' },

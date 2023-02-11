@@ -19,6 +19,14 @@
     @apply bg-black font-neue-haas-display-roman;
   }
 
+  button,
+  input,
+  select,
+  textarea {
+    @apply outline-none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
   .triumph-background-gradient {
     background-size: 40px 40px;
     background-image:

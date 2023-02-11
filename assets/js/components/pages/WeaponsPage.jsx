@@ -46,8 +46,8 @@ export default function WeaponsPage() {
             <div className="w-full h-0.5 bg-white/50" />
           </div>
           <div className="flex items-center flex-wrap gap-2 md:gap-6">
-            <input type="text" value={query} onChange={handleQuery} className="p-2 text-lg bg-light-grey text-white outline-none" placeholder="Search a weapon" />
-            <select value={rarity} onChange={handleRarity} className="p-2 text-lg bg-light-grey text-white outline-none">
+            <input type="text" value={query} onChange={handleQuery} className="p-2 text-lg bg-light-grey text-white" placeholder="Search a weapon" />
+            <select value={rarity} onChange={handleRarity} className="p-2 text-lg bg-light-grey text-white">
               <option value={0}>All Rarity</option>
               <option value={WEAPON_RARITY.EXOTIC}>Exotic</option>
               <option value={WEAPON_RARITY.LEGENDARY}>Legendary</option>
@@ -55,7 +55,7 @@ export default function WeaponsPage() {
               <option value={WEAPON_RARITY.COMMON}>Common</option>
               <option value={WEAPON_RARITY.BASIC}>Basic</option>
             </select>
-            <select value={damageType} onChange={handleDamageType} className="p-2 text-lg bg-light-grey text-white outline-none">
+            <select value={damageType} onChange={handleDamageType} className="p-2 text-lg bg-light-grey text-white">
               <option value={0}>All Damage Type</option>
               <option value={WEAPON_DAMAGE_TYPE.KINETIC}>Kinetic</option>
               <option value={WEAPON_DAMAGE_TYPE.ARC}>Arc</option>
@@ -63,7 +63,7 @@ export default function WeaponsPage() {
               <option value={WEAPON_DAMAGE_TYPE.STASIS}>Stasis</option>
               <option value={WEAPON_DAMAGE_TYPE.VOID}>Void</option>
             </select>
-            <select value={type} onChange={handleType} className="p-2 text-lg bg-light-grey text-white outline-none">
+            <select value={type} onChange={handleType} className="p-2 text-lg bg-light-grey text-white">
               <option value={0}>All Weapon Type</option>
               <option value={WEAPON_TYPE.AUTO}>Auto</option>
               <option value={WEAPON_TYPE.SHOTGUN}>Shotgun</option>
@@ -83,7 +83,7 @@ export default function WeaponsPage() {
               <option value={WEAPON_TYPE.BOW}>Bow</option>
               <option value={WEAPON_TYPE.GLAIVE}>Glaive</option>
             </select>
-            <select value={hasSound} onChange={handleHasSound} className="p-2 text-lg bg-light-grey text-white outline-none">
+            <select value={hasSound} onChange={handleHasSound} className="p-2 text-lg bg-light-grey text-white">
               <option value={0}>All</option>
               <option value={1}>With Sound</option>
               <option value={2}>Without Sound</option>

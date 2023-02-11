@@ -52,7 +52,7 @@ export default function TrialsInputs() {
         <h2 className="text-xl md:text-2xl tracking-wide text-white/70 uppercase select-none">Guess</h2>
         <div className="w-full h-0.5 bg-white/60" />
         <div className="relative mt-4">
-          <input ref={inputRef} type="text" value={guessInput} disabled={currentBounty.completed} onChange={(e) => setGuessInput(e.target.value)} className="w-full p-2 text-lg bg-light-grey/30 border border-white/30 hover:border-white/50 focus:border-white/70 text-white transition-colors duration-300 disabled:cursor-not-allowed outline-none" placeholder="Type a weapon name" autoComplete="off" />
+          <input ref={inputRef} type="text" value={guessInput} disabled={currentBounty.completed} onChange={(e) => setGuessInput(e.target.value)} className="w-full p-2 text-lg bg-light-grey/30 border border-white/30 hover:border-white/50 focus:border-white/70 text-white transition-colors duration-300 disabled:cursor-not-allowed" placeholder="Type a weapon name" autoComplete="off" />
           {guessInput !== '' && (
             <div className="absolute grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-1 w-full max-h-80 p-2 bg-light-grey/95 border-b border-x border-white/70 overflow-y-scroll overflow-x-hidden z-50">
               {weapons
@@ -95,10 +95,21 @@ function WeaponGuess({ w, onClick }) {
 }
 
 function Clue({ used, disabled, onClick }) {
+  const [animationClick, setAnimationClick] = useState(false);
+
+  const handleClick = () => {
+    setAnimationClick(true);
+  };
+
+  const handleAnimationEnd = () => {
+    onClick();
+    setAnimationClick(false);
+  };
+
   return (
-    <button type="button" onClick={onClick} className="p-0.5 border-2 border-transparent hover:border-white/70 disabled:hover:border-white/30 transition-colors duration-300 disabled:cursor-not-allowed" disabled={disabled}>
-      <div className={`relative overflow-hidden ${disabled ? 'bg-dark-grey' : 'bg-white'}`}>
-        <img src={clue} alt="Clue" className={`${disabled && 'opacity-70'} hover:opacity-70 transition-opacity duration-300`} loading="lazy" />
+    <button type="button" onClick={handleClick} className={`p-0.5 border-2 border-transparent disabled:hover:border-white/30 ${animationClick ? 'hover:border-transparent' : 'hover:border-white/70'} transition-colors duration-300 disabled:cursor-not-allowed`} disabled={disabled} onAnimationEnd={handleAnimationEnd}>
+      <div className={`relative overflow-hidden ${animationClick && 'animate-bounty'} ${disabled ? 'bg-dark-grey' : 'bg-white'}`}>
+        <img src={clue} alt="Clue" className={`${animationClick ? 'opacity-0 hover:opacity-0' : 'hover:opacity-70'} ${disabled && 'opacity-70'} transition-opacity duration-300`} loading="lazy" />
         {used && (
           <>
             <div className="absolute -bottom-10 -right-10 bg-light-blue h-20 w-20 shadow-dark-grey rotate-45" />
