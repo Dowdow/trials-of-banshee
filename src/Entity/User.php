@@ -83,7 +83,7 @@ class User implements UserInterface
   #[ORM\Column]
   private bool $admin = false;
 
-  #[ORM\OneToMany(targetEntity: BountyCompletion::class, mappedBy: 'user')]
+  #[ORM\OneToMany(mappedBy: 'user', targetEntity: BountyCompletion::class)]
   private Collection $bountyCompletions;
 
   public function __construct()

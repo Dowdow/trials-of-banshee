@@ -83,13 +83,13 @@ class AppController extends AbstractController
   }
 
   /**
-   * @param Sound $sound
+   * @param Sound|null $sound
    * @return Response
    */
   #[Route('/sounds/edit/{id}', name: 'app.sounds.edit', methods: ['GET'])]
-  public function soundEdit(Sound $sound): Response
+  public function soundEdit(?Sound $sound): Response
   {
-    if (!$this->isGranted(User::ROLE_ADMIN) || $sound === null) {
+    if ($sound === null || !$this->isGranted(User::ROLE_ADMIN)) {
       throw new NotFoundHttpException();
     }
 

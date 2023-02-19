@@ -9,6 +9,7 @@
 /vendor/
 ###< symfony/framework-bundle ###
 
+.idea
 npm-debug.log*
 node_modules
 /public/build/

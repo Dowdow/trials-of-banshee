@@ -34,7 +34,7 @@ class Bounty
   #[ORM\ManyToOne(targetEntity: Weapon::class, inversedBy: 'bounties')]
   private ?Weapon $weapon = null;
 
-  #[ORM\OneToMany(targetEntity: BountyCompletion::class, mappedBy: 'bounty')]
+  #[ORM\OneToMany(mappedBy: 'bounty', targetEntity: BountyCompletion::class)]
   private Collection $bountyCompletions;
 
   public function __construct()

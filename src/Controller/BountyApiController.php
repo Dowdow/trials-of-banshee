@@ -30,12 +30,12 @@ class BountyApiController extends AbstractController
   public function bountiesToday(ManagerRegistry $managerRegistry, BountyFormatter $bountyFormatter): JsonResponse
   {
     $em = $managerRegistry->getManager();
-    /** @var BountyRepository */
+    /** @var BountyRepository $bountyRepository */
     $bountyRepository = $em->getRepository(Bounty::class);
 
     $currentDateTime = new DateTime();
     $todayBountyDate = clone $currentDateTime;
-    $todayBountyDate->setTime(17, 0, 0, 0);
+    $todayBountyDate->setTime(17, 0);
 
     if ($currentDateTime < $todayBountyDate) {
       $todayBountyDate->modify('-1 day');
@@ -47,13 +47,13 @@ class BountyApiController extends AbstractController
       return new JsonResponse($bountyFormatter->formatBountiesNotAuthenticated($bounties));
     }
 
-    /** @var User */
+    /** @var User $user */
     $user = $this->getUser();
     return new JsonResponse($bountyFormatter->formatBounties($user, $bounties));
   }
 
   /**
-   * @param Bounty $bounty
+   * @param Bounty|null $bounty
    * @param Request $request
    * @param ManagerRegistry $managerRegistry
    * @param BountyService $bountyService
@@ -62,7 +62,7 @@ class BountyApiController extends AbstractController
    * @return JsonResponse
    */
   #[Route('/bounty/{id}/guess', name: 'api.bounty.guess', methods: ['POST'])]
-  public function bountyGuess(Bounty $bounty, Request $request, ManagerRegistry $managerRegistry, BountyService $bountyService, WeaponService $weaponService, BountyFormatter $bountyFormatter): JsonResponse
+  public function bountyGuess(?Bounty $bounty, Request $request, ManagerRegistry $managerRegistry, BountyService $bountyService, WeaponService $weaponService, BountyFormatter $bountyFormatter): JsonResponse
   {
     if ($bounty === null) {
       return new JsonResponse(['errors' => ['Bounty not found']], 404);
@@ -71,7 +71,7 @@ class BountyApiController extends AbstractController
     $isConnected = $this->isGranted(User::ROLE_USER);
 
     // Check if User is connected to play aspiring and gunsmith bounties
-    if (!$isConnected && in_array($bounty->getType(), [Bounty::TYPE_ASPIRING, Bounty::TYPE_GUNSMITH])) {
+    if (!$isConnected && in_array($bounty->getType(), [Bounty::TYPE_ASPIRING, Bounty::TYPE_GUNSMITH], true)) {
       return new JsonResponse(['errors' => ['You need to be authenticated to do this Bounty']], 403);
     }
 
@@ -88,12 +88,12 @@ class BountyApiController extends AbstractController
       return new JsonResponse(['errors' => [$e->getMessage()]], 400);
     }
 
-    // Check if the Weapon is a correct answer 
+    // Check if the Weapon is a correct answer
     $isWeaponCorrect = $bountyService->isWeaponCorrect($bounty, $weapon);
 
     // BountyCompletion object creation (From database or request)
     if ($isConnected) {
-      /** @var User */
+      /** @var User $user */
       $user = $this->getUser();
       $bountyCompletion = $bountyService->findOrCreateBountyCompletion($bounty, $user, true);
     } else {
@@ -138,7 +138,7 @@ class BountyApiController extends AbstractController
   }
 
   /**
-   * @param Bounty $bounty
+   * @param Bounty|null $bounty
    * @param Request $request
    * @param ManagerRegistry $managerRegistry
    * @param BountyService $bountyService
@@ -146,7 +146,7 @@ class BountyApiController extends AbstractController
    * @return JsonResponse
    */
   #[Route('/bounty/{id}/clue')]
-  public function bountyClue(Bounty $bounty, Request $request, ManagerRegistry $managerRegistry, BountyService $bountyService, BountyFormatter $bountyFormatter): JsonResponse
+  public function bountyClue(?Bounty $bounty, Request $request, ManagerRegistry $managerRegistry, BountyService $bountyService, BountyFormatter $bountyFormatter): JsonResponse
   {
     if ($bounty === null) {
       return new JsonResponse(['errors' => ['Bounty not found']], 404);
@@ -155,7 +155,7 @@ class BountyApiController extends AbstractController
     $isConnected = $this->isGranted(User::ROLE_USER);
 
     // Check if User is connected to play aspiring and gunsmith bounties
-    if (!$isConnected && in_array($bounty->getType(), [Bounty::TYPE_ASPIRING, Bounty::TYPE_GUNSMITH])) {
+    if (!$isConnected && in_array($bounty->getType(), [Bounty::TYPE_ASPIRING, Bounty::TYPE_GUNSMITH], true)) {
       return new JsonResponse(['errors' => ['You need to be authenticated to do this Bounty']], 403);
     }
 
@@ -174,7 +174,7 @@ class BountyApiController extends AbstractController
 
     // BountyCompletion object creation (From database or request)
     if ($isConnected) {
-      /** @var User */
+      /** @var User $user */
       $user = $this->getUser();
       $bountyCompletion = $bountyService->findOrCreateBountyCompletion($bounty, $user, true);
     } else {

@@ -38,13 +38,13 @@ class BountyCreateCommand extends Command
    */
   protected function execute(InputInterface $input, OutputInterface $output): int
   {
-    /** @var BountyRepository */
+    /** @var BountyRepository $bountyRepository */
     $bountyRepository = $this->em->getRepository(Bounty::class);
-    /** @var WeaponRepository */
+    /** @var WeaponRepository $weaponRepository */
     $weaponRepository = $this->em->getRepository(Weapon::class);
 
     $date = new DateTime();
-    $date->setTime(17, 0, 0, 0);
+    $date->setTime(17, 0);
     $output->writeln('Current date is ' . $date->format('d-m-Y H:i'));
 
     $this->createBounty($bountyRepository, $weaponRepository, $output, $date, Bounty::TYPE_DAILY, 'Daily');

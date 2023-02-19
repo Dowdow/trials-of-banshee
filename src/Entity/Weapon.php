@@ -80,7 +80,7 @@ class Weapon
   #[ORM\ManyToMany(targetEntity: Sound::class, mappedBy: 'weapons')]
   private Collection $sounds;
 
-  #[ORM\OneToMany(targetEntity: Bounty::class, mappedBy: 'weapon')]
+  #[ORM\OneToMany(mappedBy: 'weapon', targetEntity: Bounty::class)]
   private Collection $bounties;
 
   public function __construct()

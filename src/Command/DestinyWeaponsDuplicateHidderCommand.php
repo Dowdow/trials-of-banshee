@@ -38,7 +38,7 @@ class DestinyWeaponsDuplicateHidderCommand extends Command
   protected function execute(InputInterface $input, OutputInterface $output): int
   {
     $output->write('Retrieving all weapons... ');
-    /** @var WeaponRepository */
+    /** @var WeaponRepository $weaponRepository */
     $weaponRepository = $this->em->getRepository(Weapon::class);
     $weapons = $weaponRepository->findAll();
     $output->writeln('Done');
@@ -77,7 +77,9 @@ class DestinyWeaponsDuplicateHidderCommand extends Command
   private function contains(string $haystack, array $needles): bool
   {
     foreach ($needles as $n) {
-      if (str_contains($haystack, $n)) return true;
+      if (str_contains($haystack, $n)) {
+        return true;
+      }
     }
     return false;
   }

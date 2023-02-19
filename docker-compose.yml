@@ -5,8 +5,8 @@ services:
     build: ./docker/php-apache
     container_name: tob-php-apache
     ports:
-      - 80:80
-      - 443:443
+      - "80:80"
+      - "443:443"
     expose:
       - 80
       - 443
@@ -23,7 +23,7 @@ services:
       MYSQL_USER: tob
       MYSQL_PASSWORD: tob
     ports:
-      - 3306
+      - "3306"
     expose:
       - 3306
     volumes:

@@ -4,10 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Sound;
 use App\Entity\User;
+use App\Form\SoundType;
 use App\Formatter\SoundFormatter;
+use App\Repository\SoundRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -29,7 +32,7 @@ class SoundApiController extends AbstractController
     }
 
     $em = $managerRegistry->getManager();
-    /** @var SoundRepository */
+    /** @var SoundRepository $soundRepository */
     $soundRepository = $em->getRepository(Sound::class);
 
     $sounds = $soundRepository->findAll();
@@ -38,12 +41,12 @@ class SoundApiController extends AbstractController
   }
 
   /**
-   * @param Sound $sound
+   * @param Sound|null $sound
    * @param SoundFormatter $soundFormatter
    * @return JsonResponse
    */
   #[Route('/sound/{id}', name: 'api.sound', methods: ['GET'])]
-  public function sound(Sound $sound, SoundFormatter $soundFormatter): JsonResponse
+  public function sound(?Sound $sound, SoundFormatter $soundFormatter): JsonResponse
   {
     if (!$this->isGranted(User::ROLE_ADMIN)) {
       throw new NotFoundHttpException();
@@ -80,10 +83,10 @@ class SoundApiController extends AbstractController
     ]);
 
     if ($form->isSubmitted() && $form->isValid()) {
-      /** @var UploadedFile */
+      /** @var UploadedFile $file */
       $file = $form->get('file')->getData();
       if ($file) {
-        $fileName = uniqid() . '.' . $file->guessExtension();
+        $fileName = uniqid('', true) . '.' . $file->guessExtension();
         try {
           $file->move($this->getParameter('uploads_sounds_folder'), $fileName);
         } catch (FileException $e) {
@@ -108,14 +111,14 @@ class SoundApiController extends AbstractController
   }
 
   /**
-   * @param Sound $sound
+   * @param Sound|null $sound
    * @param Request $request
    * @param ManagerRegistry $managerRegistry
    * @param SoundFormatter $soundFormatter
    * @return JsonResponse
    */
   #[Route('/sounds/edit/{id}', name: 'api.sounds.edit', methods: ['POST'])]
-  public function editSound(Sound $sound, Request $request, ManagerRegistry $managerRegistry, SoundFormatter $soundFormatter): JsonResponse
+  public function editSound(?Sound $sound, Request $request, ManagerRegistry $managerRegistry, SoundFormatter $soundFormatter): JsonResponse
   {
     if (!$this->isGranted(User::ROLE_ADMIN)) {
       throw new NotFoundHttpException();
@@ -135,10 +138,10 @@ class SoundApiController extends AbstractController
     ]);
 
     if ($form->isSubmitted() && $form->isValid()) {
-      /** @var UploadedFile */
+      /** @var UploadedFile $file */
       $file = $form->get('file')->getData();
       if ($file) {
-        $fileName = uniqid() . '.' . $file->guessExtension();
+        $fileName = uniqid('', true) . '.' . $file->guessExtension();
         try {
           $file->move($this->getParameter('uploads_sounds_folder'), $fileName);
         } catch (FileException $e) {

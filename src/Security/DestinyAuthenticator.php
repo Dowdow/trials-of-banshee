@@ -6,7 +6,6 @@ use App\Entity\User;
 use App\Exception\DestinyOauthTokensIncompleteException;
 use App\Repository\UserRepository;
 use App\Service\DestinyAPIClientService;
-use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -59,9 +58,9 @@ class DestinyAuthenticator extends AbstractAuthenticator
 
     $membershipId = $tokens['membership_id'] ?? null;
 
-    /** @var UserRepository */
+    /** @var UserRepository $userRepository */
     $userRepository = $this->em->getRepository(User::class);
-    /** @var User|null */
+    /** @var User|null $user */
     $user = $userRepository->findOneBy(['membershipId' => $membershipId]);
     if ($user === null) {
       $user = new User();

@@ -5,6 +5,7 @@ namespace App\Command;
 use App\Entity\Weapon;
 use App\Service\DestinyAPIClientService;
 use Doctrine\ORM\EntityManagerInterface;
+use JsonException;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -51,9 +52,15 @@ class DestinyWeaponsParserCommand extends Command
     $parsedItems = [];
     foreach ($locales as $locale) {
       $output->write('Parsing "' . $locale . '" items... ');
-      $items = json_decode(file_get_contents($this->d2CacheFolder . '/' . $locale . '.json'), true);
+      try {
+        $items = json_decode(file_get_contents($this->d2CacheFolder . '/' . $locale . '.json'), true, 512, JSON_THROW_ON_ERROR);
+      } catch (JsonException $e) {
+        $items = [];
+      }
       foreach ($items as $item) {
-        if ($item['itemType'] !== self::WEAPON_ITEM_TYPE) continue;
+        if ($item['itemType'] !== self::WEAPON_ITEM_TYPE) {
+          continue;
+        }
 
         if (isset($parsedItems[$item['hash']])) {
           $parsedItems[$item['hash']]['names'][$locale] = $item['displayProperties']['name'];

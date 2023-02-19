@@ -8,6 +8,7 @@ use App\Formatter\UserFormatter;
 use App\Service\DestinyAPIClientService;
 use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,7 +17,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserApiController extends AbstractController
 {
   /**
+   * @param ManagerRegistry $managerRegistry
+   * @param DestinyAPIClientService $destinyAPIClient
+   * @param UserFormatter $userFormatter
    * @return JsonResponse
+   * @throws Exception
    */
   #[Route('/user', name: 'api.user.get', methods: ['GET'])]
   public function get(ManagerRegistry $managerRegistry, DestinyAPIClientService $destinyAPIClient, UserFormatter $userFormatter): JsonResponse
@@ -25,7 +30,7 @@ class UserApiController extends AbstractController
       return new JsonResponse(['errors' => ['Not authenticated']], 403);
     }
 
-    /** @var User */
+    /** @var User $user */
     $user = $this->getUser();
 
     $lastUpdated = $user->getLastUpdated();

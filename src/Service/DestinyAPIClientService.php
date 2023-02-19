@@ -170,9 +170,9 @@ class DestinyAPIClientService
     $user
       ->setMembershipId($membershipId)
       ->setAccessToken($accessToken)
-      ->setAccessTokenExpiresAt((clone $date)->modify("+{$accessTokenExpiresAt} seconds"))
+      ->setAccessTokenExpiresAt((clone $date)->modify("+$accessTokenExpiresAt seconds"))
       ->setRefreshToken($refreshToken)
-      ->setRefreshTokenExpiresAt((clone $date)->modify("+{$refreshTokenExpiresAt} seconds"));
+      ->setRefreshTokenExpiresAt((clone $date)->modify("+$refreshTokenExpiresAt seconds"));
   }
 
   /**
@@ -208,7 +208,7 @@ class DestinyAPIClientService
    */
   public function getDestiny2Profile(User $user, string $destinyMembershipId, string $destinyMembershipType): array
   {
-    return $this->getWithOauth($user->getAccessToken(), "/Destiny2/{$destinyMembershipType}/Profile/{$destinyMembershipId}/", [
+    return $this->getWithOauth($user->getAccessToken(), "/Destiny2/$destinyMembershipType/Profile/$destinyMembershipId/", [
       'components' => '200'
     ]);
   }

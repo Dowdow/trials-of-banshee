@@ -57,7 +57,7 @@ class BountyCompletion
 
   public function addAttempt(): static
   {
-    $this->attempts += 1;
+    ++$this->attempts;
     return $this;
   }
 

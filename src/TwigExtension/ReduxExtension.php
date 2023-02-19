@@ -3,6 +3,7 @@
 namespace App\TwigExtension;
 
 use App\Service\UserService;
+use JsonException;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -24,7 +25,11 @@ class ReduxExtension extends AbstractExtension
       'user' => $this->userService->getUserRedux()
     ];
 
-    return json_encode($preLoadedState);
+    try {
+      return json_encode($preLoadedState, JSON_THROW_ON_ERROR);
+    } catch (JsonException $e) {
+      return [];
+    }
   }
 
   public function getFunctions(): array
