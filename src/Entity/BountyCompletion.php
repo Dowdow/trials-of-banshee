@@ -30,6 +30,9 @@ class BountyCompletion
   #[ORM\Column]
   private bool $completed = false;
 
+  #[ORM\Column]
+  private bool $perfectMatch = false;
+
   #[ORM\Column(nullable: true)]
   private ?bool $succeeded = null;
 
@@ -75,6 +78,17 @@ class BountyCompletion
   public function setCompleted(bool $completed): static
   {
     $this->completed = $completed;
+    return $this;
+  }
+
+  public function isPerfectMatch(): bool
+  {
+    return $this->perfectMatch;
+  }
+
+  public function setPerfectMatch(bool $perfectMatch): static
+  {
+    $this->perfectMatch = $perfectMatch;
     return $this;
   }
 

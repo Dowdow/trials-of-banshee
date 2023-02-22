@@ -32,6 +32,8 @@ class UserFormatter
       'characterClass' => $user->getCharacterClass(),
       'characterGender' => $user->getCharacterGender(),
       'characterRace' => $user->getCharacterRace(),
+      'collections' => $user->getCollections(),
+      'triumphs' => $user->getTriumphs(),
     ];
   }
 

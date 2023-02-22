@@ -80,6 +80,12 @@ class User implements UserInterface
   #[ORM\Column(nullable: true)]
   private ?DateTime $refreshTokenExpiresAt = null;
 
+  #[ORM\Column(type: 'json')]
+  private ?array $collections = [];
+
+  #[ORM\Column(type: 'json')]
+  private ?array $triumphs = [];
+
   #[ORM\Column]
   private bool $admin = false;
 
@@ -246,6 +252,28 @@ class User implements UserInterface
   public function setRefreshTokenExpiresAt(DateTime $refreshTokenExpiresAt): static
   {
     $this->refreshTokenExpiresAt = $refreshTokenExpiresAt;
+    return $this;
+  }
+
+  public function getCollections(): array
+  {
+    return $this->collections ?? [];
+  }
+
+  public function setCollections(array $collections): static
+  {
+    $this->collections = $collections;
+    return $this;
+  }
+
+  public function getTriumphs(): array
+  {
+    return $this->triumphs ?? [];
+  }
+
+  public function setTriumphs(array $triumphs): static
+  {
+    $this->triumphs = $triumphs;
     return $this;
   }
 

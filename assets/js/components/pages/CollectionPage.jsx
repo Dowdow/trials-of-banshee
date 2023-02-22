@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Link, useNavigate } from 'react-router-dom';
 import { useInterfaceMoveOnMouseMove } from '../../hooks/mouse';
+import { useEngramCollection } from '../../hooks/user';
+import { ENGRAMS, ENGRAM_IMAGES } from '../../utils/collections';
 import { ROUTES } from '../../utils/routes';
 import InitFade from '../ui/InitFade';
 import KeyboardButton from '../ui/KeyboardButton';
@@ -8,6 +11,7 @@ import EngramEmpty from '../ui/EngramEmpty';
 import emptyEngram from '../../../img/engram/empty_engram.svg';
 
 export default function CollectionPage() {
+  const engrams = useEngramCollection();
   const navigate = useNavigate();
 
   const [fadeOut, setFadeOut] = useState(false);
@@ -24,13 +28,13 @@ export default function CollectionPage() {
   return (
     <div className={`relative w-full h-screen overflow-hidden ${fadeOut && 'animate-fade-out'}`} onAnimationEnd={() => navigate(nextPage)}>
       <InitFade />
-      <div className="relative w-full h-screen collection-gradient overflow-y-scroll lg:overflow-hidden">
+      <div className="relative w-full h-screen collection-gradient overflow-y-scroll lg:overflow-hidden noscrollbar">
         <div className="relative flex flex-col lg:flex-row w-[105%] lg:w-[102%] h-auto lg:h-[102%] -mt-3 -ml-3" style={{ translate: `${x}px ${y}px` }}>
           <div className="relative w-full lg:w-1/3 h-full flex bg-yellow/20 border-b lg:border-b-0 lg:border-r border-white/30 overflow-hidden">
-            <img src={emptyEngram} alt="Empty engram" className="absolute w-full lg:w-auto lg:h-[90%] object-cover opacity-30" />
+            <img src={emptyEngram} alt="Empty engram" className="absolute w-full lg:w-auto lg:h-[90%] self-center object-cover opacity-30" />
             <div className="w-28 lg:w-56 lg:h-full bg-yellow/60" />
             <div className="flex flex-col justify-center lg:items-center gap-y-3 lg:gap-y-20 py-6 md:pr-8 lg:py-0 px-4 lg:px-10">
-              <h1 className="text-5xl font-neue-haas-display-bold text-white tracking-wide uppercase select-none">Collection</h1>
+              <h1 className="text-5xl font-bold text-white tracking-widest uppercase select-none">Collection</h1>
               <div className="hidden lg:flex justify-center items-center w-60 h-60 bg-dark-grey border-8 border-yellow rotate-45">
                 <div className="flex justify-center items-center w-52 h-52 bg-light-grey border-4 border-yellow">
                   <div className="text-9xl -rotate-45 select-none">
@@ -43,11 +47,38 @@ export default function CollectionPage() {
               </div>
             </div>
           </div>
-          <div className="w-full lg:w-2/3 flex justify-center items-center pb-16 lg:pb-0 overflow-y-scroll">
-            <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-7 gap-10 p-5 lg:px-10">
-              {[...Array(30).keys()].map((engram) => (
-                <EngramEmpty key={engram} />
-              ))}
+          <div className="w-full lg:w-2/3 flex justify-center items-center pb-16 lg:pb-0 overflow-y-scroll noscrollbar">
+            <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-7 gap-10 p-5 lg:pl-10 lg:pr-14">
+              <Engram type="bestOfY1Engram" active={engrams.bestOfY1Engram ?? false} />
+              <Engram type="brightEngram" active={engrams.brightEngram ?? false} />
+              <Engram type="commonEngram" active={engrams.commonEngram ?? false} />
+              <Engram type="crimsonEngram" active={engrams.crimsonEngram ?? false} />
+              <Engram type="crucibleEngram" active={engrams.crucibleEngram ?? false} />
+              <Engram type="dawningEngram" active={engrams.dawningEngram ?? false} />
+              <Engram type="ephemeralEngram" active={engrams.ephemeralEngram ?? false} />
+              <Engram type="etchedEngram" active={engrams.etchedEngram ?? false} />
+              <Engram type="eververseEngram" active={engrams.eververseEngram ?? false} />
+              <Engram type="exoticEngram" active={engrams.exoticEngram ?? false} />
+              <Engram type="fondMemoriesEngram" active={engrams.fondMemoriesEngram ?? false} />
+              <Engram type="gambitEngram" active={engrams.gambitEngram ?? false} />
+              <Engram type="illuminatedEngram" active={engrams.illuminatedEngram ?? false} />
+              <Engram type="ironBannerEngram" active={engrams.ironBannerEngram ?? false} />
+              <Engram type="jubilantEngram" active={engrams.jubilantEngram ?? false} />
+              <Engram type="legendaryEngram" active={engrams.legendaryEngram ?? false} />
+              <Engram type="luminousEngram" active={engrams.luminousEngram ?? false} />
+              <Engram type="mnemonicEngram" active={engrams.mnemonicEngram ?? false} />
+              <Engram type="nostalgicEngram" active={engrams.nostalgicEngram ?? false} />
+              <Engram type="notoriousEngram" active={engrams.notoriousEngram ?? false} />
+              <Engram type="primeEngram" active={engrams.primeEngram ?? false} />
+              <Engram type="prototypeEngram" active={engrams.prototypeEngram ?? false} />
+              <Engram type="rareEngram" active={engrams.rareEngram ?? false} />
+              <Engram type="solsticeEngram" active={engrams.solsticeEngram ?? false} />
+              <Engram type="spiderSpecialEngram" active={engrams.spiderSpecialEngram ?? false} />
+              <Engram type="steadfastEngram" active={engrams.steadfastEngram ?? false} />
+              <Engram type="trialsEngram" active={engrams.trialsEngram ?? false} />
+              <Engram type="umbralEngram" active={engrams.umbralEngram ?? false} />
+              <Engram type="unknownEngram" active={engrams.unknownEngram ?? false} />
+              <Engram type="winterdriftEngram" active={engrams.winterdriftEngram ?? false} />
             </div>
           </div>
           <div className="absolute left-0 lg:left-auto bottom-0 lg:-bottom-4 w-full lg:w-[102%] p-2 pr-5 md:pr-10 lg:pt-2 lg:pb-6 lg:px-20 flex justify-end bg-dark-grey/70">
@@ -61,3 +92,15 @@ export default function CollectionPage() {
     </div>
   );
 }
+
+function Engram({ type, active = false }) {
+  if (!active) {
+    return <EngramEmpty />;
+  }
+  return <img src={ENGRAM_IMAGES[type]} alt={ENGRAMS[type]} className="w-24 h-24 hover:brightness-125 transition-all duration-300" />;
+}
+
+Engram.propTypes = {
+  type: PropTypes.string.isRequired,
+  active: PropTypes.bool.isRequired,
+};

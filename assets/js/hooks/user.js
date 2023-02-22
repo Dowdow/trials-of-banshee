@@ -11,3 +11,11 @@ export function useAuthenticated() {
 export function useAdmin() {
   return useSelector((state) => state.user.admin);
 }
+
+export function useEngramCollection() {
+  return useSelector((state) => state.user.collections.engrams ?? {});
+}
+
+export function useTriumphs() {
+  return useSelector((state) => state.user.triumphs ?? {});
+}

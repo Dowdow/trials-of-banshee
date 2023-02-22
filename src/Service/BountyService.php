@@ -113,6 +113,17 @@ class BountyService
   }
 
   /**
+   * @param Bounty $bounty
+   * @param Weapon $weapon
+   * @return bool
+   */
+  public function isWeaponPerfectMatch(Bounty $bounty, Weapon $weapon): bool
+  {
+    $bountyWeapon = $bounty->getWeapon();
+    return $bountyWeapon && $bountyWeapon->getId() === $weapon->getId();
+  }
+
+  /**
    * @param Request $request
    * @return string
    * @throws ClueNotFoundFromRequestException

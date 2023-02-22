@@ -75,6 +75,7 @@ class BountyFormatter
       'audio' => $bounty->getWeapon()?->getSounds()?->first()?->getPath(),
       'attempts' => $bountyCompletion?->getAttempts() ?? 0,
       'completed' => $bountyCompletion?->isCompleted() ?? false,
+      'perfectMatch' => $bountyCompletion?->isPerfectMatch() ?? false,
       'succeeded' => $bountyCompletion?->isSucceeded(),
       'clues' => $bountyCompletion?->getClues() ?? [],
       'history' => $bountyCompletion?->getHistory() ?? [],
