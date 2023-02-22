@@ -23,7 +23,7 @@ services:
       MYSQL_USER: tob
       MYSQL_PASSWORD: tob
     ports:
-      - "3306"
+      - "3306:3306"
     expose:
       - 3306
     volumes:

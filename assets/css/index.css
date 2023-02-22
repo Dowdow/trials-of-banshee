@@ -27,6 +27,11 @@
     -webkit-tap-highlight-color: transparent;
   }
 
+  .collection-gradient {
+    background: #28292B;
+    background: radial-gradient(circle, #28292B 0%, #1C1D1F 100%);
+  }
+
   .triumph-background-gradient {
     background-size: 40px 40px;
     background-image:
