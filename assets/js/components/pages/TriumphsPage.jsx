@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link, useNavigate } from 'react-router-dom';
 import { useInterfaceMoveOnMouseMove } from '../../hooks/mouse';
-import { useTriumphs } from '../../hooks/user';
+import { useSeal, useTriumphs } from '../../hooks/user';
 import { ROUTES } from '../../utils/routes';
 import InitFade from '../ui/InitFade';
 import KeyboardButton from '../ui/KeyboardButton';
@@ -11,6 +11,7 @@ import triumphIcon from '../../../img/misc/triumph_gun.png';
 
 export default function TriumphsPage() {
   const navigate = useNavigate();
+  const { nb, total, percent, completed } = useSeal();
   const triumphs = useTriumphs();
 
   const [fadeOut, setFadeOut] = useState(false);
@@ -48,13 +49,13 @@ export default function TriumphsPage() {
             </div>
             <div>
               <div className="flex justify-between text-xl text-white/60 tracking-wider uppercase">
-                <div>Progression du sceau</div>
-                <div>4/6</div>
+                <div>Seal progress</div>
+                <div>{`${nb}/${total}`}</div>
               </div>
               <div className="w-full h-2 mt-1 bg-white/20">
-                <div className="w-3/4 h-2 bg-pink" />
+                <div className="h-2 bg-pink" style={{ width: `${percent}%` }} />
               </div>
-              <div className="p-2 mt-3 bg-white/20 border-2 border-white/50 font-bold text-lg text-white/50 tracking-wider">Gunsmith</div>
+              <div className={`p-2 mt-3 border-2 font-bold text-lg tracking-wider ${completed ? 'bg-pink/60 border-pink text-white/80' : 'bg-white/20 border-white/50 text-white/50'}`}>Gunsmith</div>
             </div>
           </div>
           <div className="hidden lg:block ml-10 border-r-2 border-white/10" />
