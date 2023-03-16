@@ -6,6 +6,8 @@ import solar from '../../img/damage/solar.png';
 import solarTransparent from '../../img/damage/solar_trans.png';
 import stasis from '../../img/damage/stasis.png';
 import stasisTransparent from '../../img/damage/stasis_trans.png';
+import strand from '../../img/damage/strand.png';
+import strandTransparent from '../../img/damage/strand_trans.png';
 import voidD from '../../img/damage/void.png';
 import voidTransparent from '../../img/damage/void_trans.png';
 import common from '../../img/rarity/common.jpg';
@@ -19,6 +21,7 @@ export const WEAPON_DAMAGE_TYPE = {
   SOLAR: 3,
   VOID: 4,
   STASIS: 6,
+  STRAND: 7,
 };
 
 export const WEAPON_DAMAGE_TYPE_NAME = {
@@ -27,6 +30,7 @@ export const WEAPON_DAMAGE_TYPE_NAME = {
   3: 'Solar',
   4: 'Void',
   6: 'Stasis',
+  7: 'Strand',
 };
 
 export const WEAPON_DAMAGE_TYPE_IMAGE = {
@@ -35,6 +39,7 @@ export const WEAPON_DAMAGE_TYPE_IMAGE = {
   3: solar,
   4: voidD,
   6: stasis,
+  7: strand,
 };
 
 export const WEAPON_DAMAGE_TYPE_IMAGE_TRANSPARENT = {
@@ -43,6 +48,7 @@ export const WEAPON_DAMAGE_TYPE_IMAGE_TRANSPARENT = {
   3: solarTransparent,
   4: voidTransparent,
   6: stasisTransparent,
+  7: strandTransparent,
 };
 
 export const WEAPON_RARITY = {

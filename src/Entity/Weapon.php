@@ -41,6 +41,7 @@ class Weapon
   public const DAMAGE_TYPE_SOLAR = 3;
   public const DAMAGE_TYPE_VOID = 4;
   public const DAMAGE_TYPE_STASIS = 6;
+  public const DAMAGE_TYPE_STRAND = 7;
 
   public const RARITY_BASIC = 2;
   public const RARITY_COMMON = 3;

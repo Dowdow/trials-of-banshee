@@ -61,6 +61,7 @@ export default function WeaponsPage() {
               <option value={WEAPON_DAMAGE_TYPE.ARC}>Arc</option>
               <option value={WEAPON_DAMAGE_TYPE.SOLAR}>Solar</option>
               <option value={WEAPON_DAMAGE_TYPE.STASIS}>Stasis</option>
+              <option value={WEAPON_DAMAGE_TYPE.STRAND}>Strand</option>
               <option value={WEAPON_DAMAGE_TYPE.VOID}>Void</option>
             </select>
             <select value={type} onChange={handleType} className="p-2 text-lg bg-light-grey text-white">
