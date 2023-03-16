@@ -3,7 +3,8 @@
 namespace App\Security;
 
 use App\Entity\User;
-use App\Exception\DestinyOauthTokensIncompleteException;
+use App\Exception\DestinyClient\DestinyOauthTokensException;
+use App\Exception\DestinyClient\DestinyOauthTokensIncompleteException;
 use App\Repository\UserRepository;
 use App\Service\DestinyAPIClientService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -48,7 +49,11 @@ class DestinyAuthenticator extends AbstractAuthenticator
 
     $code = $request->query->get('code');
 
-    $tokens = $this->destinyApiClient->getTokens($code);
+    try {
+      $tokens = $this->destinyApiClient->getTokens($code);
+    } catch (DestinyOauthTokensException $e) {
+      throw new AuthenticationCredentialsNotFoundException($e->getMessage());
+    }
 
     try {
       $this->destinyApiClient->checkOauthData($tokens);
@@ -67,7 +72,11 @@ class DestinyAuthenticator extends AbstractAuthenticator
       $this->em->persist($user);
     }
 
-    $this->destinyApiClient->updateUserWithOauthData($user, $tokens);
+    try {
+      $this->destinyApiClient->updateUserWithOauthData($user, $tokens);
+    } catch (DestinyOauthTokensIncompleteException $e) {
+      throw new AuthenticationException($e->getMessage());
+    }
 
     $this->em->flush();
 

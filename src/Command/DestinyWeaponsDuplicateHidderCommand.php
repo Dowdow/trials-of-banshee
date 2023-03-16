@@ -53,7 +53,9 @@ class DestinyWeaponsDuplicateHidderCommand extends Command
       foreach ($weapons as $weapon2) {
         $id1 = $weapon1->getId();
         $id2 = $weapon2->getId();
-        if ($id1 === $id2) continue;
+        if ($id1 === $id2) {
+          continue;
+        }
         if ($weapon1->getNames()['en'] === $weapon2->getNames()['en']) {
           if ($id1 > $id2) {
             $weapon2->setHidden(true);

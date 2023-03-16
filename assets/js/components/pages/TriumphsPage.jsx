@@ -67,10 +67,10 @@ export default function TriumphsPage() {
             <div className="grow overflow-y-hidden lg:overflow-y-scroll 2xl:overflow-y-hidden">
               <div className="grid grid-cols-1 2xl:grid-cols-2 gap-1.5">
                 <Triumph title="Collection Badge" description="Collect all engrams by completing bounties" badge completed={triumphs.collectionBadge ?? false} />
-                <TriumphProgress title="Daily Bounties" description="Complete 100 daily bounties" value={triumphs.bounties ?? 0} min={0} max={100} />
-                <TriumphProgress title="Aspiring Gunsmith Bounties" description="Complete successfully 25 aspiring gunsmith bounties" value={triumphs.aspiringBounties ?? 0} min={0} max={25} />
-                <TriumphProgress title="True Gunsmith Bounties" description="Complete successfully 10 true gunsmith bounties" value={triumphs.trueGunsmithBounties ?? 0} min={0} max={10} />
-                <TriumphProgress title="Perfect Matches" description="Complete 75 bounties with a perfect weapon match" value={triumphs.perfectMatches ?? 0} min={0} max={75} />
+                <TriumphProgress title="Daily Bounties" description="Complete 100 daily bounties" completed={triumphs.bountiesClaimed ?? false} value={triumphs.bounties ?? 0} min={0} max={100} />
+                <TriumphProgress title="Aspiring Gunsmith Bounties" description="Complete successfully 25 aspiring gunsmith bounties" completed={triumphs.aspiringBountiesClaimed ?? false} value={triumphs.aspiringBounties ?? 0} min={0} max={50} />
+                <TriumphProgress title="True Gunsmith Bounties" description="Complete successfully 10 true gunsmith bounties" completed={triumphs.trueGunsmithBountiesCompleted ?? false} value={triumphs.trueGunsmithBounties ?? 0} min={0} max={25} />
+                <TriumphProgress title="Perfect Matches" description="Complete 75 bounties with a perfect weapon match" completed={triumphs.perfectMatchesClaimed ?? false} value={triumphs.perfectMatches ?? 0} min={0} max={75} />
                 <Triumph title="Secret Bounty" description="Find and complete the secret bounty" completed={triumphs.xurBounty ?? false} />
               </div>
             </div>
@@ -105,8 +105,7 @@ function Triumph({ title, description, badge = false, completed = false }) {
   );
 }
 
-function TriumphProgress({ title, description, value = 0, min = 0, max = 100 }) {
-  const completed = useMemo(() => value >= max, [value, max]);
+function TriumphProgress({ title, description, completed = false, value = 0, min = 0, max = 100 }) {
   const percent = useMemo(() => Math.min(Math.max(100 * ((value - min) / (max - min)), 0), 100), [value, min, max]);
   return (
     <div className={`flex flex-col justify-between bg-white/10 border ${completed ? 'border-yellow' : 'border-white/30'}`}>
@@ -140,12 +139,14 @@ Triumph.defaultProps = {
 TriumphProgress.propTypes = {
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
+  completed: PropTypes.bool,
   value: PropTypes.number,
   min: PropTypes.number,
   max: PropTypes.number,
 };
 
 TriumphProgress.defaultProps = {
+  completed: false,
   value: 0,
   min: 0,
   max: 100,

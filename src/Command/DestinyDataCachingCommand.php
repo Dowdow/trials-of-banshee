@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Exception\DestinyClient\DestinyGetDestinyManifestException;
 use App\Service\DestinyAPIClientService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -41,7 +42,13 @@ class DestinyDataCachingCommand extends Command
     $filesystem = new Filesystem();
 
     $output->write('Downloading Destiny Manifest... ');
-    $destinyManifest = $this->destinyAPIClient->getDestinyManifest()['Response'];
+    try {
+      $destinyManifest = $this->destinyAPIClient->getDestinyManifest()['Response'];
+    } catch (DestinyGetDestinyManifestException $e) {
+      // TODO Log Exception
+      $output->writeln('Error while trying to get the Destiny Manifest file. Exiting...');
+      return Command::FAILURE;
+    }
     $output->writeln('Done');
 
     $manifestVersion = $destinyManifest['version'];
@@ -59,7 +66,7 @@ class DestinyDataCachingCommand extends Command
         $data = file_get_contents('https://bungie.net' . $path['DestinyInventoryItemDefinition']);
         file_put_contents($this->d2CacheFolder . '/' . $lang . '.json', $data);
         unset($data);
-        $output->writeln('Done');
+        $output->writeln("Done $lang");
       }
 
       $output->write('Caching version file... ');

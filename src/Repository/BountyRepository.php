@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use DateTime;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 
 class BountyRepository extends EntityRepository
 {
@@ -22,6 +24,11 @@ class BountyRepository extends EntityRepository
       ->setParameter('type', $type)
       ->setParameter('dateStart', $dateStart);
 
-    return $qb->getQuery()->getSingleScalarResult() > 0;
+    try {
+      return $qb->getQuery()->getSingleScalarResult() > 0;
+    } catch (NoResultException|NonUniqueResultException $e) {
+      // TODO Log Exception or throw a specific one
+      return false;
+    }
   }
 }

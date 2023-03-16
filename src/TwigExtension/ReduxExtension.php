@@ -28,7 +28,7 @@ class ReduxExtension extends AbstractExtension
     try {
       return json_encode($preLoadedState, JSON_THROW_ON_ERROR);
     } catch (JsonException $e) {
-      return [];
+      return '';
     }
   }
 

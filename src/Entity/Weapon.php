@@ -190,7 +190,7 @@ class Weapon
   /**
    * @return Collection|Sound[]
    */
-  public function getSounds(): Collection
+  public function getSounds(): Collection|array
   {
     return $this->sounds;
   }
@@ -222,7 +222,7 @@ class Weapon
   /**
    * @return Collection|Bounty[]
    */
-  public function getBounties(): Collection
+  public function getBounties(): Collection|array
   {
     return $this->bounties;
   }

@@ -9,8 +9,10 @@ module.exports = {
   theme: {
     animation: {
       bounty: 'bounty 300ms ease-in-out normal forwards',
+      'completed-in': 'fade-in 100ms ease-out normal forwards',
+      'completed-out': 'fade-out 100ms ease-out normal forwards',
       fade: 'fade 1s ease-in-out normal forwards',
-      'fade-short': 'fade-short 200ms ease-in-out normal forwards',
+      'fade-short': 'fade-out 200ms ease-in-out normal forwards',
       'fade-out': 'fade-out 300ms ease-in-out normal forwards',
       launch: 'launch 1.6s ease-in-out infinite',
       'slide-in': 'slide-in 150ms ease-in-out normal forwards',
@@ -57,13 +59,13 @@ module.exports = {
           '30%': { opacity: '1' },
           '100%': { opacity: '0' },
         },
-        'fade-short': {
-          '0%': { opacity: '1' },
-          '100%': { opacity: '0' },
+        'fade-in': {
+          '0%': { opacity: 0 },
+          '100%': { opacity: 1 },
         },
         'fade-out': {
-          '0%': { opacity: '1' },
-          '100%': { opacity: '0' },
+          '0%': { opacity: 1 },
+          '100%': { opacity: 0 },
         },
         launch: {
           '0%, 100%': { background: '#3E6442' },

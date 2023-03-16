@@ -74,22 +74,23 @@ class CollectionService
   /**
    * Select a random engram
    * @param User $user
-   * @return void
+   * @return string
    */
-  public function rewardDailyBountyCompletionEngram(User $user): void
+  public function rewardDailyBountyCompletionEngram(User $user): string
   {
     $collections = $user->getCollections();
     $engram = self::ENGRAMS[array_rand(self::ENGRAMS)];
     $collections['engrams'][$engram] = true;
     $user->setCollections($collections);
+    return $engram;
   }
 
   /**
    * Select either a random or a non owned engram
    * @param User $user
-   * @return void
+   * @return string
    */
-  public function rewardAspiringBountyCompletionEngram(User $user): void
+  public function rewardAspiringBountyCompletionEngram(User $user): string
   {
     try {
       $rand = random_int(0, 1);
@@ -98,18 +99,18 @@ class CollectionService
     }
 
     if ($rand === 0) {
-      $this->rewardDailyBountyCompletionEngram($user);
-    } else {
-      $this->rewardGunsmithBountyCompletionEngram($user);
+      return $this->rewardDailyBountyCompletionEngram($user);
     }
+
+    return $this->rewardGunsmithBountyCompletionEngram($user);
   }
 
   /**
    * Select a non owned engram
    * @param User $user
-   * @return void
+   * @return string
    */
-  public function rewardGunsmithBountyCompletionEngram(User $user): void
+  public function rewardGunsmithBountyCompletionEngram(User $user): string
   {
     $collections = $user->getCollections();
     $ownedEngrams = $collections['engrams'] ?? [];
@@ -122,5 +123,6 @@ class CollectionService
     $engram = $engrams[array_rand($engrams)];
     $collections['engrams'][$engram] = true;
     $user->setCollections($collections);
+    return $engram;
   }
 }

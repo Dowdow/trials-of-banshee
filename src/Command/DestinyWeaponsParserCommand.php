@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Entity\Weapon;
+use App\Exception\DestinyClient\DestinyGetAvailableLocalesException;
 use App\Service\DestinyAPIClientService;
 use Doctrine\ORM\EntityManagerInterface;
 use JsonException;
@@ -45,7 +46,13 @@ class DestinyWeaponsParserCommand extends Command
   protected function execute(InputInterface $input, OutputInterface $output): int
   {
     $output->write('Retrieving Destiny available locales... ');
-    $locales = $this->destinyAPIClient->getAvailableLocales()['Response'];
+    try {
+      $locales = $this->destinyAPIClient->getAvailableLocales()['Response'];
+    } catch (DestinyGetAvailableLocalesException $e) {
+      // TODO Log Exception
+      $output->writeln('Unable to get Destiny available locales. Exiting...');
+      return Command::FAILURE;
+    }
     $output->writeln('Done');
 
     // Extract only usefull data from cached json
@@ -55,6 +62,7 @@ class DestinyWeaponsParserCommand extends Command
       try {
         $items = json_decode(file_get_contents($this->d2CacheFolder . '/' . $locale . '.json'), true, 512, JSON_THROW_ON_ERROR);
       } catch (JsonException $e) {
+        // TODO Log Exception
         $items = [];
       }
       foreach ($items as $item) {
@@ -80,7 +88,7 @@ class DestinyWeaponsParserCommand extends Command
         ];
       }
       unset($items);
-      $output->writeln('Done');
+      $output->writeln("Done $locale");
     }
 
     // Update existing weapons

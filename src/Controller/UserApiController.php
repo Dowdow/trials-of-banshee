@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Exception\DestinyOauthTokensExpiredException;
+use App\Exception\DestinyClient\DestinyGetDestiny2ProfileException;
+use App\Exception\DestinyClient\DestinyGetMembershipsForCurrentUserException;
+use App\Exception\DestinyClient\DestinyOauthTokensExpiredException;
 use App\Formatter\UserFormatter;
 use App\Service\DestinyAPIClientService;
 use DateTime;
@@ -21,7 +23,6 @@ class UserApiController extends AbstractController
    * @param DestinyAPIClientService $destinyAPIClient
    * @param UserFormatter $userFormatter
    * @return JsonResponse
-   * @throws Exception
    */
   #[Route('/user', name: 'api.user.get', methods: ['GET'])]
   public function get(ManagerRegistry $managerRegistry, DestinyAPIClientService $destinyAPIClient, UserFormatter $userFormatter): JsonResponse
@@ -46,12 +47,18 @@ class UserApiController extends AbstractController
       try {
         $destinyAPIClient->refreshTokens($user);
       } catch (DestinyOauthTokensExpiredException $e) {
+        // TODO Log Exception
         return new JsonResponse(['errors' => ['Tokens expired']], 419);
       }
     }
 
     // Getting Destiny Membemship ID and Type
-    $membershipData = $destinyAPIClient->getMembershipsForCurrentUser($user)['Response'];
+    try {
+      $membershipData = $destinyAPIClient->getMembershipsForCurrentUser($user)['Response'];
+    } catch (DestinyGetMembershipsForCurrentUserException $e) {
+      // TODO Log Exception
+      return new JsonResponse(['errors' => ["Can't get Destiny memberships for current user"]], 503);
+    }
 
     $destinyMembershipId = null;
     $destinyMembershipType = null;
@@ -70,13 +77,23 @@ class UserApiController extends AbstractController
     }
 
     // Getting Destiny characters
-    $profileData = $destinyAPIClient->getDestiny2Profile($user, $destinyMembershipId, $destinyMembershipType)['Response'];
+    try {
+      $profileData = $destinyAPIClient->getDestiny2Profile($user, $destinyMembershipId, $destinyMembershipType)['Response'];
+    } catch (DestinyGetDestiny2ProfileException $e) {
+      // TODO Log Exception
+      return new JsonResponse(['errors' => ["Can't get Destiny 2 profile"]], 503);
+    }
 
     $lastedPlayedCharacterId = null;
     $mostRecentDateLastPlayed = null;
     $charactersData = $profileData['characters']['data'] ?? [];
     foreach ($charactersData as $character) {
-      $dateLastPlayed = new DateTime($character['dateLastPlayed']);
+      try {
+        $dateLastPlayed = new DateTime($character['dateLastPlayed']);
+      } catch (Exception $e) {
+        // TODO Log Exception
+        $dateLastPlayed = null;
+      }
       if ($lastedPlayedCharacterId === null || $dateLastPlayed > $mostRecentDateLastPlayed) {
         $lastedPlayedCharacterId = $character['characterId'];
         $mostRecentDateLastPlayed = $dateLastPlayed;

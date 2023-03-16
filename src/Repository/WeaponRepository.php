@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 
 class WeaponRepository extends EntityRepository
 {
@@ -22,7 +24,12 @@ class WeaponRepository extends EntityRepository
       ->setMaxResults(1)
       ->setParameter('hidden', false);
 
-    $minBounties = $qb2->getQuery()->getSingleScalarResult();
+    try {
+      $minBounties = $qb2->getQuery()->getSingleScalarResult();
+    } catch (NoResultException|NonUniqueResultException $e) {
+      // TODO Log Exception or throw a specific one
+      $minBounties = 0;
+    }
 
     $qb = $this->createQueryBuilder('w');
     $qb

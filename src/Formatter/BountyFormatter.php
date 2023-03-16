@@ -65,9 +65,10 @@ class BountyFormatter
   /**
    * @param Bounty $bounty
    * @param BountyCompletion|null $bountyCompletion
+   * @param string|null $loot
    * @return array
    */
-  public function formatBounty(Bounty $bounty, ?BountyCompletion $bountyCompletion = null): array
+  public function formatBounty(Bounty $bounty, ?BountyCompletion $bountyCompletion = null, ?string $loot = null): array
   {
     return [
       'id' => $bounty->getId(),
@@ -79,6 +80,7 @@ class BountyFormatter
       'succeeded' => $bountyCompletion?->isSucceeded(),
       'clues' => $bountyCompletion?->getClues() ?? [],
       'history' => $bountyCompletion?->getHistory() ?? [],
+      'loot' => $loot,
     ];
   }
 

@@ -3,11 +3,22 @@
 namespace App\Service;
 
 use App\Entity\User;
-use App\Exception\DestinyOauthTokensExpiredException;
-use App\Exception\DestinyOauthTokensIncompleteException;
+use App\Exception\DestinyClient\DestinyGetAvailableLocalesException;
+use App\Exception\DestinyClient\DestinyGetDestiny2ProfileException;
+use App\Exception\DestinyClient\DestinyGetDestinyManifestException;
+use App\Exception\DestinyClient\DestinyGetException;
+use App\Exception\DestinyClient\DestinyGetMembershipsForCurrentUserException;
+use App\Exception\DestinyClient\DestinyGetWithOauthException;
+use App\Exception\DestinyClient\DestinyOauthTokensException;
+use App\Exception\DestinyClient\DestinyOauthTokensExpiredException;
+use App\Exception\DestinyClient\DestinyOauthTokensIncompleteException;
 use DateTime;
-use Exception;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class DestinyAPIClientService
@@ -44,18 +55,22 @@ class DestinyAPIClientService
    * @param string $path
    * @param array $params
    * @return array
+   * @throws DestinyGetException
    */
   private function get(string $path, array $params = []): array
   {
     $url = self::API_ROOT_PATH . $path;
-    $response = $this->httpClient->request('GET', $url, [
-      'query' => $params,
-      'headers' => [
-        'X-API-Key' => $this->apiKey,
-      ],
-    ]);
-
-    return $response->toArray();
+    try {
+      $response = $this->httpClient->request('GET', $url, [
+        'query' => $params,
+        'headers' => [
+          'X-API-Key' => $this->apiKey,
+        ],
+      ]);
+      return $response->toArray();
+    } catch (TransportExceptionInterface|ClientExceptionInterface|DecodingExceptionInterface|RedirectionExceptionInterface|ServerExceptionInterface $e) {
+      throw new DestinyGetException($e);
+    }
   }
 
   /**
@@ -63,19 +78,23 @@ class DestinyAPIClientService
    * @param string $path
    * @param array $params
    * @return array
+   * @throws DestinyGetWithOauthException
    */
   private function getWithOauth(string $accessToken, string $path, array $params = []): array
   {
     $url = self::API_ROOT_PATH . $path;
-    $response = $this->httpClient->request('GET', $url, [
-      'auth_bearer' => $accessToken,
-      'query' => $params,
-      'headers' => [
-        'X-API-Key' => $this->apiKey,
-      ],
-    ]);
-
-    return $response->toArray();
+    try {
+      $response = $this->httpClient->request('GET', $url, [
+        'auth_bearer' => $accessToken,
+        'query' => $params,
+        'headers' => [
+          'X-API-Key' => $this->apiKey,
+        ],
+      ]);
+      return $response->toArray();
+    } catch (TransportExceptionInterface|ClientExceptionInterface|DecodingExceptionInterface|RedirectionExceptionInterface|ServerExceptionInterface $e) {
+      throw new DestinyGetWithOauthException($e);
+    }
   }
 
   /**
@@ -92,44 +111,48 @@ class DestinyAPIClientService
   /**
    * @param string $code
    * @return array
+   * @throws DestinyOauthTokensException
    */
   public function getTokens(string $code): array
   {
-    $response = $this->httpClient->request('POST', self::OAUTH_TOKEN_URL, [
-      'auth_basic' => [$this->oauthClientId, $this->oauthClientSecret],
-      'headers' => [
-        'Content-Type' => 'application/x-www-form-urlencoded',
-      ],
-      'body' => [
-        'grant_type' => 'authorization_code',
-        'code' => $code,
-      ],
-    ]);
-
-    return $response->toArray();
+    try {
+      $response = $this->httpClient->request('POST', self::OAUTH_TOKEN_URL, [
+        'auth_basic' => [$this->oauthClientId, $this->oauthClientSecret],
+        'headers' => [
+          'Content-Type' => 'application/x-www-form-urlencoded',
+        ],
+        'body' => [
+          'grant_type' => 'authorization_code',
+          'code' => $code,
+        ],
+      ]);
+      return $response->toArray();
+    } catch (TransportExceptionInterface|ClientExceptionInterface|DecodingExceptionInterface|RedirectionExceptionInterface|ServerExceptionInterface $e) {
+      throw new DestinyOauthTokensException($e);
+    }
   }
 
   /**
    * @param User $user
    * @return void
+   * @throws DestinyOauthTokensExpiredException
    */
   public function refreshTokens(User $user): void
   {
-    $response = $this->httpClient->request('POST', self::OAUTH_TOKEN_URL, [
-      'auth_basic' => [$this->oauthClientId, $this->oauthClientSecret],
-      'headers' => [
-        'Content-Type' => 'application/x-www-form-urlencoded',
-      ],
-      'body' => [
-        'grant_type' => 'refresh_token',
-        'refresh_token' => $user->getRefreshToken(),
-      ],
-    ]);
-
     try {
+      $response = $this->httpClient->request('POST', self::OAUTH_TOKEN_URL, [
+        'auth_basic' => [$this->oauthClientId, $this->oauthClientSecret],
+        'headers' => [
+          'Content-Type' => 'application/x-www-form-urlencoded',
+        ],
+        'body' => [
+          'grant_type' => 'refresh_token',
+          'refresh_token' => $user->getRefreshToken(),
+        ],
+      ]);
       $tokens = $response->toArray();
       $this->updateUserWithOauthData($user, $tokens);
-    } catch (Exception $e) {
+    } catch (TransportExceptionInterface|ClientExceptionInterface|ServerExceptionInterface|RedirectionExceptionInterface|DecodingExceptionInterface|DestinyOauthTokensIncompleteException $e) {
       throw new DestinyOauthTokensExpiredException($e->getMessage());
     }
   }
@@ -137,6 +160,7 @@ class DestinyAPIClientService
   /**
    * @param array $tokens
    * @return void
+   * @throws DestinyOauthTokensIncompleteException
    */
   public function checkOauthData(array $tokens): void
   {
@@ -155,6 +179,7 @@ class DestinyAPIClientService
    * @param User $user
    * @param array $tokens
    * @return void
+   * @throws DestinyOauthTokensIncompleteException
    */
   public function updateUserWithOauthData(User $user, array $tokens): void
   {
@@ -177,27 +202,42 @@ class DestinyAPIClientService
 
   /**
    * @return array
+   * @throws DestinyGetAvailableLocalesException
    */
   public function getAvailableLocales(): array
   {
-    return $this->get('/GetAvailableLocales/');
+    try {
+      return $this->get('/GetAvailableLocales/');
+    } catch (DestinyGetException $e) {
+      throw new DestinyGetAvailableLocalesException($e);
+    }
   }
 
   /**
    * @return array
+   * @throws DestinyGetDestinyManifestException
    */
   public function getDestinyManifest(): array
   {
-    return $this->get('/Destiny2/Manifest/');
+    try {
+      return $this->get('/Destiny2/Manifest/');
+    } catch (DestinyGetException $e) {
+      throw new DestinyGetDestinyManifestException($e);
+    }
   }
 
   /**
    * @param User $user
    * @return array
+   * @throws DestinyGetMembershipsForCurrentUserException
    */
   public function getMembershipsForCurrentUser(User $user): array
   {
-    return $this->getWithOauth($user->getAccessToken(), '/User/GetMembershipsForCurrentUser/');
+    try {
+      return $this->getWithOauth($user->getAccessToken(), '/User/GetMembershipsForCurrentUser/');
+    } catch (DestinyGetWithOauthException $e) {
+      throw new DestinyGetMembershipsForCurrentUserException($e);
+    }
   }
 
   /**
@@ -205,11 +245,16 @@ class DestinyAPIClientService
    * @param string $destinyMembershipId
    * @param string $destinyMembershipType
    * @return array
+   * @throws DestinyGetDestiny2ProfileException
    */
   public function getDestiny2Profile(User $user, string $destinyMembershipId, string $destinyMembershipType): array
   {
-    return $this->getWithOauth($user->getAccessToken(), "/Destiny2/$destinyMembershipType/Profile/$destinyMembershipId/", [
-      'components' => '200'
-    ]);
+    try {
+      return $this->getWithOauth($user->getAccessToken(), "/Destiny2/$destinyMembershipType/Profile/$destinyMembershipId/", [
+        'components' => '200'
+      ]);
+    } catch (DestinyGetWithOauthException $e) {
+      throw new DestinyGetDestiny2ProfileException($e);
+    }
   }
 }

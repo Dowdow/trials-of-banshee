@@ -143,25 +143,25 @@ class BountyApiController extends AbstractController
         $bountyCompletion->setSucceeded($succeeded);
         if ($succeeded) {
           $triumphService->addAspiringBountyCompletion($user);
-          $collectionService->rewardAspiringBountyCompletionEngram($user);
+          $loot = $collectionService->rewardAspiringBountyCompletionEngram($user);
         }
       } elseif ($bountyType === Bounty::TYPE_GUNSMITH) {
         $succeeded = $bountyCompletion->getAttempts() < 2;
         $bountyCompletion->setSucceeded($succeeded);
         if ($succeeded) {
           $triumphService->addTrueGunsmithBountyCompletion($user);
-          $collectionService->rewardGunsmithBountyCompletionEngram($user);
+          $loot = $collectionService->rewardGunsmithBountyCompletionEngram($user);
         }
       }
       if ($bountyType === Bounty::TYPE_DAILY || (isset($succeeded) && !$succeeded)) {
-        $collectionService->rewardDailyBountyCompletionEngram($user);
+        $loot = $collectionService->rewardDailyBountyCompletionEngram($user);
       }
     }
 
     $em = $managerRegistry->getManager();
     $em->flush();
 
-    return new JsonResponse($bountyFormatter->formatBounty($bounty, $bountyCompletion));
+    return new JsonResponse($bountyFormatter->formatBounty($bounty, $bountyCompletion, $loot ?? null));
   }
 
   /**
