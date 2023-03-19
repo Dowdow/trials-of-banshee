@@ -33,6 +33,13 @@ class TriumphService
   public const GUNSMITH_TITLE = 'gunsmithTitle';
   public const GUNSMITH_TITLE_DEFAULT = false;
 
+  private CollectionService $collectionService;
+
+  public function __construct(CollectionService $collectionService)
+  {
+    $this->collectionService = $collectionService;
+  }
+
   public function addBountyCompletion(User $user): void
   {
     $triumphs = $user->getTriumphs();
@@ -128,37 +135,67 @@ class TriumphService
   public function setCollectionBadge(User $user, bool $value = self::COLLECTION_BADGE_DEFAULT): void
   {
     $triumphs = $user->getTriumphs();
-    $triumphs[self::COLLECTION_BADGE] = $this->isCollectionBadgeClaimable() ? $value : false;
+    $triumphs[self::COLLECTION_BADGE] = $this->isCollectionBadgeClaimable($user) ? $value : false;
     $user->setTriumphs($triumphs);
   }
 
-  public function isCollectionBadgeClaimable(): bool
+  public function isCollectionBadgeClaimable(User $user): bool
   {
-    return false;
+    $hasAllEngrams = $this->collectionService->hasAllEngrams($user);
+    $hasAllItems = $this->collectionService->hasAllItems($user);
+    return $hasAllEngrams && $hasAllItems;
   }
 
   public function setXurBounty(User $user, bool $value = self::XUR_BOUNTY_DEFAULT): void
   {
     $triumphs = $user->getTriumphs();
-    $triumphs[self::XUR_BOUNTY] = $this->isXurBountyClaimable() ? $value : false;
+    $triumphs[self::XUR_BOUNTY] = $this->isXurBountyClaimable($user) ? $value : false;
     $user->setTriumphs($triumphs);
   }
 
-  public function isXurBountyClaimable(): bool
+  public function isXurBountyClaimable(User $user): bool
   {
-    return false;
+    return $this->collectionService->hasAllItems($user);
   }
 
   public function setGunsmithTitle(User $user, bool $value = self::GUNSMITH_TITLE_DEFAULT): void
   {
     $triumphs = $user->getTriumphs();
-    $triumphs[self::GUNSMITH_TITLE] = $this->isGunsmithTitleClaimable() ? $value : false;
+    $triumphs[self::GUNSMITH_TITLE] = $this->isGunsmithTitleClaimable($user) ? $value : false;
     $user->setTriumphs($triumphs);
   }
 
-  public function isGunsmithTitleClaimable(): bool
+  public function isGunsmithTitleClaimable(User $user): bool
   {
-    return false;
+    $triumphs = $user->getTriumphs();
+    return
+      isset(
+        $triumphs[self::BOUNTIES_CLAIMED],
+        $triumphs[self::ASPIRING_BOUNTIES_CLAIMED],
+        $triumphs[self::TRUE_GUNSMITH_BOUNTIES_CLAIMED],
+        $triumphs[self::PERFECT_MATCHES_CLAIMED],
+        $triumphs[self::COLLECTION_BADGE],
+        $triumphs[self::XUR_BOUNTY]
+      )
+      && $triumphs[self::BOUNTIES_CLAIMED]
+      && $triumphs[self::ASPIRING_BOUNTIES_CLAIMED]
+      && $triumphs[self::TRUE_GUNSMITH_BOUNTIES_CLAIMED]
+      && $triumphs[self::PERFECT_MATCHES_CLAIMED]
+      && $triumphs[self::COLLECTION_BADGE]
+      && $triumphs[self::XUR_BOUNTY];
   }
 
+  public function getDataForRedux(): array
+  {
+    return [
+      'bountiesDefault' => self::BOUNTIES_DEFAULT,
+      'bountiesGoal' => self::BOUNTIES_GOAL,
+      'aspiringBountiesDefault' => self::ASPIRING_BOUNTIES_DEFAULT,
+      'aspiringBountiesGoal' => self::ASPIRING_BOUNTIES_GOAL,
+      'trueGunsmithBountiesDefault' => self::TRUE_GUNSMITH_BOUNTIES_DEFAULT,
+      'trueGunsmithBountiesGoal' => self::TRUE_GUNSMITH_BOUNTIES_GOAL,
+      'perfectMatchesDefault' => self::PERFECT_MATCHES_DEFAULT,
+      'perfectMatchesGoal' => self::PERFECT_MATCHES_GOAL,
+    ];
+  }
 }

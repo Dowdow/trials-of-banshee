@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { generatePath, useNavigate, useParams } from 'react-router-dom';
 import { addSound, editSound } from '../../actions/sounds';
-import { useAdmin } from '../../hooks/user';
+import { useUserAdmin } from '../../hooks/user';
 import { ROUTES, ROUTES_API } from '../../utils/routes';
 import EscapeLink from '../ui/clickable/EscapeLink';
 import SoundForm from '../ui/SoundForm';
 
 export default function SoundEditPage() {
-  const admin = useAdmin();
+  const admin = useUserAdmin();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

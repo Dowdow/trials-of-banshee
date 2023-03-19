@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { generatePath, Link } from 'react-router-dom';
 import { setSounds } from '../../actions/sounds';
-import { useAdmin } from '../../hooks/user';
+import { useUserAdmin } from '../../hooks/user';
 import { ROUTES, ROUTES_API } from '../../utils/routes';
 import EscapeLink from '../ui/clickable/EscapeLink';
 import LeftClickLink from '../ui/clickable/LeftClickLink';
 
 export default function SoundsPage() {
-  const admin = useAdmin();
+  const admin = useUserAdmin();
   const dispatch = useDispatch();
 
   const sounds = useSelector((state) => state.sounds);

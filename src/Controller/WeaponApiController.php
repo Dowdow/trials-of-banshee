@@ -13,11 +13,6 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/api')]
 class WeaponApiController extends AbstractController
 {
-  /**
-   * @param ManagerRegistry $managerRegistry
-   * @param WeaponFormatter $weaponFormatter
-   * @return JsonResponse
-   */
   #[Route('/weapons', name: 'api.weapons', methods: ['GET'])]
   public function weapons(ManagerRegistry $managerRegistry, WeaponFormatter $weaponFormatter): JsonResponse
   {

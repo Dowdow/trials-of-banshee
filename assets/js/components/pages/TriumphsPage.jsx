@@ -1,19 +1,29 @@
-import React, { useMemo, useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTriumphsDefault } from '../../hooks/default';
 import { useInterfaceMoveOnMouseMove } from '../../hooks/mouse';
-import { useSeal, useTriumphs } from '../../hooks/user';
+import { useUserTriumphs } from '../../hooks/user';
 import { ROUTES } from '../../utils/routes';
 import EscapeLink from '../ui/clickable/EscapeLink';
 import InitFade from '../ui/InitFade';
 import NavBarBottom from '../ui/NavBarBottom';
-import gunsmith from '../../../img/misc/gunsmith.png';
-import triumphIcon from '../../../img/misc/triumph_gun.png';
+import GunsmithSeal from '../ui/triumph/GunsmithSeal';
+import Triumph from '../ui/triumph/Triumph';
+import TriumphProgress from '../ui/triumph/TriumphProgress';
 
 export default function TriumphsPage() {
   const navigate = useNavigate();
-  const { nb, total, percent, completed } = useSeal();
-  const triumphs = useTriumphs();
+  const {
+    aspiringBountiesDefault,
+    aspiringBountiesGoal,
+    bountiesDefault,
+    bountiesGoal,
+    perfectMatchesDefault,
+    perfectMatchesGoal,
+    trueGunsmithBountiesDefault,
+    trueGunsmithBountiesGoal,
+  } = useTriumphsDefault();
+  const triumphs = useUserTriumphs();
 
   const [fadeOut, setFadeOut] = useState(false);
   const [nextPage, setNextPage] = useState(null);
@@ -48,16 +58,7 @@ export default function TriumphsPage() {
               <div className="mt-10 text-4xl font-bold text-white tracking-widest uppercase">Gunsmith</div>
               <div className="mt-2 text-white/50 text-xl tracking-wide">Knowledge and precision are required to be a true Gunsmith. Prove yourself worth.</div>
             </div>
-            <div>
-              <div className="flex justify-between text-xl text-white/60 tracking-wider uppercase">
-                <div>Seal progress</div>
-                <div>{`${nb}/${total}`}</div>
-              </div>
-              <div className="w-full h-2 mt-1 bg-white/20">
-                <div className="h-2 bg-pink" style={{ width: `${percent}%` }} />
-              </div>
-              <div className={`p-2 mt-3 border-2 font-bold text-lg tracking-wider ${completed ? 'bg-pink/60 border-pink text-white/80' : 'bg-white/20 border-white/50 text-white/50'}`}>Gunsmith</div>
-            </div>
+            <GunsmithSeal />
           </div>
           <div className="hidden lg:block ml-10 border-r-2 border-white/10" />
           <div className="w-full lg:w-3/5 xl:w3/4 h-full grid grid-rows-triumph grid-cols-1 md:grid-cols-triumph gap-x-1.5">
@@ -67,12 +68,49 @@ export default function TriumphsPage() {
             <div className="hidden md:flex justify-center items-center bg-dark-grey/70 text-white/20">◀</div>
             <div className="grow overflow-y-hidden lg:overflow-y-scroll 2xl:overflow-y-hidden">
               <div className="grid grid-cols-1 2xl:grid-cols-2 gap-1.5">
-                <Triumph title="Collection Badge" description="Collect all engrams by completing bounties" badge completed={triumphs.collectionBadge ?? false} />
-                <TriumphProgress title="Daily Bounties" description="Complete 100 daily bounties" completed={triumphs.bountiesClaimed ?? false} value={triumphs.bounties ?? 0} min={0} max={100} />
-                <TriumphProgress title="Aspiring Gunsmith Bounties" description="Complete successfully 25 aspiring gunsmith bounties" completed={triumphs.aspiringBountiesClaimed ?? false} value={triumphs.aspiringBounties ?? 0} min={0} max={50} />
-                <TriumphProgress title="True Gunsmith Bounties" description="Complete successfully 10 true gunsmith bounties" completed={triumphs.trueGunsmithBountiesCompleted ?? false} value={triumphs.trueGunsmithBounties ?? 0} min={0} max={25} />
-                <TriumphProgress title="Perfect Matches" description="Complete 75 bounties with a perfect weapon match" completed={triumphs.perfectMatchesClaimed ?? false} value={triumphs.perfectMatches ?? 0} min={0} max={75} />
-                <Triumph title="Secret Bounty" description="Find and complete the secret bounty" completed={triumphs.xurBounty ?? false} />
+                <Triumph
+                  title="Collection Badge"
+                  description="Collect all engrams by completing bounties"
+                  badge
+                  completed={triumphs.collectionBadge ?? false}
+                />
+                <TriumphProgress
+                  title="Daily Bounties"
+                  description="Complete 100 daily bounties"
+                  completed={triumphs.bountiesClaimed ?? false}
+                  value={triumphs.bounties ?? 0}
+                  min={bountiesDefault}
+                  max={bountiesGoal}
+                />
+                <TriumphProgress
+                  title="Aspiring Gunsmith Bounties"
+                  description="Complete successfully 25 aspiring gunsmith bounties"
+                  completed={triumphs.aspiringBountiesClaimed ?? false}
+                  value={triumphs.aspiringBounties ?? 0}
+                  min={aspiringBountiesDefault}
+                  max={aspiringBountiesGoal}
+                />
+                <TriumphProgress
+                  title="True Gunsmith Bounties"
+                  description="Complete successfully 10 true gunsmith bounties"
+                  completed={triumphs.trueGunsmithBountiesCompleted ?? false}
+                  value={triumphs.trueGunsmithBounties ?? 0}
+                  min={trueGunsmithBountiesDefault}
+                  max={trueGunsmithBountiesGoal}
+                />
+                <TriumphProgress
+                  title="Perfect Matches"
+                  description="Complete 75 bounties with a perfect weapon match"
+                  completed={triumphs.perfectMatchesClaimed ?? false}
+                  value={triumphs.perfectMatches ?? 0}
+                  min={perfectMatchesDefault}
+                  max={perfectMatchesGoal}
+                />
+                <Triumph
+                  title="Secret Bounty"
+                  description="Find and complete the secret bounty"
+                  completed={triumphs.xurBounty ?? false}
+                />
               </div>
             </div>
             <div className="hidden md:flex justify-center items-center bg-dark-grey/70 text-white/20">▶</div>
@@ -89,63 +127,3 @@ export default function TriumphsPage() {
     </div>
   );
 }
-
-function Triumph({ title, description, badge = false, completed = false }) {
-  return (
-    <div className={`p-6 bg-white/10 border ${completed ? 'border-yellow' : 'border-white/30'}`}>
-      <div className="flex items-center gap-2">
-        <img src={badge ? gunsmith : triumphIcon} alt="Triumph Icon" className="w-8 h-8 object-cover" />
-        <div className={`text-xl font-bold tracking-wider ${completed ? 'text-yellow' : 'text-white/70'}`}>{title}</div>
-      </div>
-      <div className={`w-full h-[1px] mt-2 mb-3 ${completed ? 'bg-yellow' : 'bg-white/50'}`} />
-      <div className={`text-lg tracking-wide ${completed ? 'text-yellow' : 'text-white/50'}`}>{description}</div>
-    </div>
-  );
-}
-
-function TriumphProgress({ title, description, completed = false, value = 0, min = 0, max = 100 }) {
-  const percent = useMemo(() => Math.min(Math.max(100 * ((value - min) / (max - min)), 0), 100), [value, min, max]);
-  return (
-    <div className={`flex flex-col justify-between bg-white/10 border ${completed ? 'border-yellow' : 'border-white/30'}`}>
-      <div className="p-6">
-        <div className="flex items-center gap-2">
-          <img src={triumphIcon} alt="Triumph Icon" className="w-8 h-8 object-cover" />
-          <div className={`text-xl font-bold tracking-wider ${completed ? 'text-yellow' : 'text-white/70'}`}>{title}</div>
-        </div>
-        <div className={`w-full h-[1px] mt-2 mb-3 ${completed ? 'bg-yellow' : 'bg-white/50'}`} />
-        <div className={`text-lg tracking-wide ${completed ? 'text-yellow' : 'text-white/50'}`}>{description}</div>
-      </div>
-      <div className="w-full h-2 bg-white/30">
-        <div className={`h-2 ${completed ? 'bg-yellow' : 'bg-white/70'}`} style={{ width: `${percent}%` }} />
-      </div>
-    </div>
-  );
-}
-
-Triumph.propTypes = {
-  title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  badge: PropTypes.bool,
-  completed: PropTypes.bool,
-};
-
-Triumph.defaultProps = {
-  badge: false,
-  completed: false,
-};
-
-TriumphProgress.propTypes = {
-  title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  completed: PropTypes.bool,
-  value: PropTypes.number,
-  min: PropTypes.number,
-  max: PropTypes.number,
-};
-
-TriumphProgress.defaultProps = {
-  completed: false,
-  value: 0,
-  min: 0,
-  max: 100,
-};

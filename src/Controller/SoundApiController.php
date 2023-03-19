@@ -19,11 +19,6 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/api')]
 class SoundApiController extends AbstractController
 {
-  /**
-   * @param ManagerRegistry $managerRegistry
-   * @param SoundFormatter $soundFormatter
-   * @return JsonResponse
-   */
   #[Route('/sounds', name: 'api.sounds', methods: ['GET'])]
   public function sounds(ManagerRegistry $managerRegistry, SoundFormatter $soundFormatter): JsonResponse
   {
@@ -40,11 +35,6 @@ class SoundApiController extends AbstractController
     return new JsonResponse($soundFormatter->formatSounds($sounds));
   }
 
-  /**
-   * @param Sound|null $sound
-   * @param SoundFormatter $soundFormatter
-   * @return JsonResponse
-   */
   #[Route('/sound/{id}', name: 'api.sound', methods: ['GET'])]
   public function sound(?Sound $sound, SoundFormatter $soundFormatter): JsonResponse
   {
@@ -59,12 +49,6 @@ class SoundApiController extends AbstractController
     return new JsonResponse($soundFormatter->formatSound($sound));
   }
 
-  /**
-   * @param Request $request
-   * @param ManagerRegistry $managerRegistry
-   * @param SoundFormatter $soundFormatter
-   * @return JsonResponse
-   */
   #[Route('/sounds/add', name: 'api.sounds.add', methods: ['POST'])]
   public function addSound(Request $request, ManagerRegistry $managerRegistry, SoundFormatter $soundFormatter): JsonResponse
   {
@@ -110,13 +94,6 @@ class SoundApiController extends AbstractController
     return new JsonResponse(['errors' => $errors], 400);
   }
 
-  /**
-   * @param Sound|null $sound
-   * @param Request $request
-   * @param ManagerRegistry $managerRegistry
-   * @param SoundFormatter $soundFormatter
-   * @return JsonResponse
-   */
   #[Route('/sounds/edit/{id}', name: 'api.sounds.edit', methods: ['POST'])]
   public function editSound(?Sound $sound, Request $request, ManagerRegistry $managerRegistry, SoundFormatter $soundFormatter): JsonResponse
   {

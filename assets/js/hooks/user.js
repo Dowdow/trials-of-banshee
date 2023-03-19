@@ -5,24 +5,28 @@ export function useUser() {
   return useSelector((state) => state.user);
 }
 
-export function useAuthenticated() {
+export function useUserAuthenticated() {
   return useSelector((state) => state.user.authenticated);
 }
 
-export function useAdmin() {
+export function useUserAdmin() {
   return useSelector((state) => state.user.admin);
 }
 
-export function useEngramCollection() {
+export function useUserEngramsCollection() {
   return useSelector((state) => state.user.collections.engrams ?? {});
 }
 
-export function useTriumphs() {
+export function useUserItemsCollection() {
+  return useSelector((state) => state.user.collections.engrams ?? {});
+}
+
+export function useUserTriumphs() {
   return useSelector((state) => state.user.triumphs ?? {});
 }
 
-export function useSeal() {
-  const triumphs = useTriumphs();
+export function useUserSeal() {
+  const triumphs = useUserTriumphs();
   const total = 6;
 
   const nb = useMemo(() => {

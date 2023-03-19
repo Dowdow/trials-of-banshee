@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../../actions/user';
 import { useInterfaceMoveOnMouseMove } from '../../hooks/mouse';
-import { useAuthenticated, useUser } from '../../hooks/user';
+import { useUserAuthenticated, useUser } from '../../hooks/user';
 import { ROUTES, ROUTES_API } from '../../utils/routes';
 import { characterClassName, characterGenderName, characterRaceName } from '../../utils/user';
 import InitFade from '../ui/InitFade';
@@ -11,7 +11,7 @@ import orbit from '../../../img/orbit.png';
 import defaultEmblem from '../../../img/emblem/default_emblem.jpg';
 
 export default function IndexPage() {
-  const authenticated = useAuthenticated();
+  const authenticated = useUserAuthenticated();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useUser();

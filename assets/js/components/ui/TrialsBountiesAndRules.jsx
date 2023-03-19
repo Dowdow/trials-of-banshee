@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTodayBounties } from '../../hooks/bounty';
-import { useAuthenticated } from '../../hooks/user';
+import { useUserAuthenticated } from '../../hooks/user';
 import { bountyImageFromType, bountyNameFromType, BOUNTY_TYPE } from '../../utils/bounties';
 import { isBountyCompleted } from '../../utils/localStorage';
 import gunsmith from '../../../img/misc/gunsmith.png';
@@ -34,7 +34,7 @@ export default function TrialsBountiesAndRules({ onClick }) {
 }
 
 function Bounty({ b, onClick }) {
-  const authenticated = useAuthenticated();
+  const authenticated = useUserAuthenticated();
 
   const completed = useMemo(() => b.completed || isBountyCompleted(b.id), [b.id, b.completed]);
   const disabled = useMemo(() => completed || (!authenticated && (b.type === BOUNTY_TYPE.ASPIRING || b.type === BOUNTY_TYPE.GUNSMITH)), [authenticated, completed, b.type]);

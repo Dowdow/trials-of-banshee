@@ -23,11 +23,6 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/api')]
 class BountyApiController extends AbstractController
 {
-  /**
-   * @param ManagerRegistry $managerRegistry
-   * @param BountyFormatter $bountyFormatter
-   * @return JsonResponse
-   */
   #[Route('/bounties/today', name: 'api.bounties.today', methods: ['GET'])]
   public function bountiesToday(ManagerRegistry $managerRegistry, BountyFormatter $bountyFormatter): JsonResponse
   {
@@ -54,17 +49,6 @@ class BountyApiController extends AbstractController
     return new JsonResponse($bountyFormatter->formatBounties($user, $bounties));
   }
 
-  /**
-   * @param Bounty|null $bounty
-   * @param Request $request
-   * @param ManagerRegistry $managerRegistry
-   * @param BountyService $bountyService
-   * @param CollectionService $collectionService
-   * @param TriumphService $triumphService
-   * @param WeaponService $weaponService
-   * @param BountyFormatter $bountyFormatter
-   * @return JsonResponse
-   */
   #[Route('/bounty/{id}/guess', name: 'api.bounty.guess', methods: ['POST'])]
   public function bountyGuess(
     ?Bounty           $bounty,
@@ -164,14 +148,6 @@ class BountyApiController extends AbstractController
     return new JsonResponse($bountyFormatter->formatBounty($bounty, $bountyCompletion, $loot ?? null));
   }
 
-  /**
-   * @param Bounty|null $bounty
-   * @param Request $request
-   * @param ManagerRegistry $managerRegistry
-   * @param BountyService $bountyService
-   * @param BountyFormatter $bountyFormatter
-   * @return JsonResponse
-   */
   #[Route('/bounty/{id}/clue')]
   public function bountyClue(
     ?Bounty         $bounty,

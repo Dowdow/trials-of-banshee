@@ -7,6 +7,9 @@ use Exception;
 
 class CollectionService
 {
+  public const ENGRAMS_KEY = 'engrams';
+  public const ITEMS_KEY = 'items';
+
   public const BEST_OF_Y1_ENGRAM = 'bestOfY1Engram';
   public const BRIGHT_ENGRAM = 'brightEngram';
   public const COMMON_ENGRAM = 'commonEngram';
@@ -71,6 +74,41 @@ class CollectionService
     self::WINTERDRIFT_ENGRAM,
   ];
 
+  public const XUR_GRASS_ITEM = 'xurGrassItem';
+
+  public const ITEMS = [
+    self::XUR_GRASS_ITEM,
+  ];
+
+  /**
+   * Check if a User has earned all engrams
+   * @param User $user
+   * @return bool
+   */
+  public function hasAllEngrams(User $user): bool
+  {
+    $collections = $user->getCollections();
+    foreach (self::ENGRAMS as $engram) {
+      if (!isset($collections[self::ENGRAMS_KEY][$engram]) || !$collections[self::ENGRAMS_KEY][$engram]) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  public function hasAllItems(User $user): bool
+  {
+    $collections = $user->getCollections();
+    foreach (self::ITEMS as $item) {
+      if (!isset($collections[self::ITEMS_KEY][$item]) || !$collections[self::ITEMS_KEY][$item]) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
   /**
    * Select a random engram
    * @param User $user
@@ -80,7 +118,7 @@ class CollectionService
   {
     $collections = $user->getCollections();
     $engram = self::ENGRAMS[array_rand(self::ENGRAMS)];
-    $collections['engrams'][$engram] = true;
+    $collections[self::ENGRAMS_KEY][$engram] = true;
     $user->setCollections($collections);
     return $engram;
   }
@@ -113,7 +151,7 @@ class CollectionService
   public function rewardGunsmithBountyCompletionEngram(User $user): string
   {
     $collections = $user->getCollections();
-    $ownedEngrams = $collections['engrams'] ?? [];
+    $ownedEngrams = $collections[self::ENGRAMS_KEY] ?? [];
     $engrams = self::ENGRAMS;
     foreach ($engrams as $k => $e) {
       if (array_key_exists($e, $ownedEngrams)) {
@@ -121,8 +159,23 @@ class CollectionService
       }
     }
     $engram = $engrams[array_rand($engrams)];
-    $collections['engrams'][$engram] = true;
+    $collections[self::ENGRAMS_KEY][$engram] = true;
     $user->setCollections($collections);
     return $engram;
+  }
+
+  public function rewardXurItem(User $user): void
+  {
+    $collections = $user->getCollections();
+    $collections[self::ITEMS_KEY][self::XUR_GRASS_ITEM] = true;
+    $user->setCollections($collections);
+  }
+
+  public function getDataForRedux(): array
+  {
+    return [
+      self::ENGRAMS_KEY => self::ENGRAMS,
+      self::ITEMS_KEY => self::ITEMS,
+    ];
   }
 }

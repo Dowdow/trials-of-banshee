@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { setDamageType, setHasSound, setQuery, setRarity, setType } from '../../actions/weaponFilters';
-import { useAdmin } from '../../hooks/user';
+import { useUserAdmin } from '../../hooks/user';
 import { WEAPON_DAMAGE_TYPE, WEAPON_DAMAGE_TYPE_IMAGE, WEAPON_DAMAGE_TYPE_NAME, WEAPON_RARITY, WEAPON_TYPE, WEAPON_TYPE_NAME } from '../../utils/weapons';
 import { ROUTES } from '../../utils/routes';
 import EscapeLink from '../ui/clickable/EscapeLink';
@@ -11,7 +11,7 @@ import promo from '../../../img/misc/promotion.png';
 import releg from '../../../img/misc/relegation.png';
 
 export default function WeaponsPage() {
-  const admin = useAdmin();
+  const admin = useUserAdmin();
   const dispatch = useDispatch();
 
   const weapons = useSelector((state) => state.weapons);

@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useInterfaceMoveOnMouseMove } from '../../hooks/mouse';
-import { useEngramCollection } from '../../hooks/user';
+import { useUserEngramsCollection } from '../../hooks/user';
 import { ROUTES } from '../../utils/routes';
 import Engram from '../ui/engram/Engram';
 import EscapeLink from '../ui/clickable/EscapeLink';
 import InitFade from '../ui/InitFade';
 import NavBarBottom from '../ui/NavBarBottom';
 import emptyEngram from '../../../img/engram/empty_engram.svg';
+import { useCollectionEngramsDefault } from '../../hooks/default';
 
 export default function CollectionPage() {
-  const engrams = useEngramCollection();
+  const engrams = useCollectionEngramsDefault();
+  const userEngrams = useUserEngramsCollection();
   const navigate = useNavigate();
 
   const [fadeOut, setFadeOut] = useState(false);
@@ -48,36 +50,7 @@ export default function CollectionPage() {
           </div>
           <div className="w-full lg:w-2/3 flex justify-center items-center pb-16 lg:pb-0 overflow-y-scroll noscrollbar">
             <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-7 gap-10 p-5 lg:pl-10 lg:pr-14">
-              <Engram type="bestOfY1Engram" active={engrams.bestOfY1Engram ?? false} />
-              <Engram type="brightEngram" active={engrams.brightEngram ?? false} />
-              <Engram type="commonEngram" active={engrams.commonEngram ?? false} />
-              <Engram type="crimsonEngram" active={engrams.crimsonEngram ?? false} />
-              <Engram type="crucibleEngram" active={engrams.crucibleEngram ?? false} />
-              <Engram type="dawningEngram" active={engrams.dawningEngram ?? false} />
-              <Engram type="ephemeralEngram" active={engrams.ephemeralEngram ?? false} />
-              <Engram type="etchedEngram" active={engrams.etchedEngram ?? false} />
-              <Engram type="eververseEngram" active={engrams.eververseEngram ?? false} />
-              <Engram type="exoticEngram" active={engrams.exoticEngram ?? false} />
-              <Engram type="fondMemoriesEngram" active={engrams.fondMemoriesEngram ?? false} />
-              <Engram type="gambitEngram" active={engrams.gambitEngram ?? false} />
-              <Engram type="illuminatedEngram" active={engrams.illuminatedEngram ?? false} />
-              <Engram type="ironBannerEngram" active={engrams.ironBannerEngram ?? false} />
-              <Engram type="jubilantEngram" active={engrams.jubilantEngram ?? false} />
-              <Engram type="legendaryEngram" active={engrams.legendaryEngram ?? false} />
-              <Engram type="luminousEngram" active={engrams.luminousEngram ?? false} />
-              <Engram type="mnemonicEngram" active={engrams.mnemonicEngram ?? false} />
-              <Engram type="nostalgicEngram" active={engrams.nostalgicEngram ?? false} />
-              <Engram type="notoriousEngram" active={engrams.notoriousEngram ?? false} />
-              <Engram type="primeEngram" active={engrams.primeEngram ?? false} />
-              <Engram type="prototypeEngram" active={engrams.prototypeEngram ?? false} />
-              <Engram type="rareEngram" active={engrams.rareEngram ?? false} />
-              <Engram type="solsticeEngram" active={engrams.solsticeEngram ?? false} />
-              <Engram type="spiderSpecialEngram" active={engrams.spiderSpecialEngram ?? false} />
-              <Engram type="steadfastEngram" active={engrams.steadfastEngram ?? false} />
-              <Engram type="trialsEngram" active={engrams.trialsEngram ?? false} />
-              <Engram type="umbralEngram" active={engrams.umbralEngram ?? false} />
-              <Engram type="unknownEngram" active={engrams.unknownEngram ?? false} />
-              <Engram type="winterdriftEngram" active={engrams.winterdriftEngram ?? false} />
+              {engrams.map((e) => <Engram key={e} type={e} active={userEngrams[e] ?? false} />)}
             </div>
           </div>
         </div>

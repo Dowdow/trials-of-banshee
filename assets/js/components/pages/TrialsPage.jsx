@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { setBounties, setCurrentBounty } from '../../actions/bounties';
 import { useCurrentBounty } from '../../hooks/bounty';
 import { useInterfaceMoveOnMouseMove } from '../../hooks/mouse';
-import { useAdmin } from '../../hooks/user';
+import { useUserAdmin } from '../../hooks/user';
 import { bountyNameFromType } from '../../utils/bounties';
 import { ENGRAMS, ENGRAM_IMAGES } from '../../utils/collections';
 import { ROUTES, ROUTES_API } from '../../utils/routes';
@@ -21,7 +21,7 @@ import TrialsInputs from '../ui/TrialsInputs';
 import banshee from '../../../img/banshee.jpg';
 
 export default function TrialsPage() {
-  const admin = useAdmin();
+  const admin = useUserAdmin();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
