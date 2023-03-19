@@ -57,11 +57,12 @@ export function useUserCollectionBadgeClaimable() {
 
 export function useUserXurBountyClaimable() {
   const userItems = useUserItemsCollection();
-  return userItems.xurBounty ?? false;
+  return userItems.xurGrassItem ?? false;
 }
 
 export function useUserSeal() {
   const triumphs = useUserTriumphs();
+  const completed = triumphs.gunsmithTitle ?? false;
   const total = 6;
 
   const nb = useMemo(() => {
@@ -79,7 +80,7 @@ export function useUserSeal() {
     nb,
     total,
     percent: (nb / total) * 100,
-    claimable: nb === total,
-    completed: triumphs.gunsmithTitle ?? false,
+    claimable: !completed && nb === total,
+    completed,
   };
 }

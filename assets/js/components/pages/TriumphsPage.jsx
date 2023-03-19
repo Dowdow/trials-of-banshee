@@ -91,7 +91,7 @@ export default function TriumphsPage() {
                   type="trueGunsmithBounties"
                   title="True Gunsmith Bounties"
                   description={`Complete successfully ${triumphsDefault.trueGunsmithBountiesGoal} true gunsmith bounties`}
-                  completed={triumphs.trueGunsmithBountiesCompleted ?? false}
+                  completed={triumphs.trueGunsmithBountiesClaimed ?? false}
                   value={triumphs.trueGunsmithBounties ?? 0}
                   min={triumphsDefault.trueGunsmithBountiesDefault}
                   max={triumphsDefault.trueGunsmithBountiesGoal}
