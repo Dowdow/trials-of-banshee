@@ -1,11 +1,39 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 import triumphIcon from '../../../../img/misc/triumph_gun.png';
+import { claimTriumph } from '../../../actions/user';
 
-export default function TriumphProgress({ title, description, completed = false, value = 0, min = 0, max = 100 }) {
+export default function TriumphProgress({ type, title, description, completed = false, value = 0, min = 0, max = 100 }) {
+  const dispatch = useDispatch();
+
+  const [claim, setClaim] = useState(false);
+
+  const claimable = useMemo(() => !completed && value >= max, [completed, value, max]);
   const progress = useMemo(() => Math.min(Math.max(100 * ((value - min) / (max - min)), 0), 100), [value, min, max]);
+
+  const handleClick = () => {
+    if (claimable) {
+      setClaim(true);
+      dispatch(claimTriumph(type));
+    }
+  };
+
+  const animationClaimEnd = () => {
+    setClaim(false);
+  };
+
   return (
-    <button type="button" className={`flex flex-col justify-between bg-white/10 border ${completed ? 'border-yellow' : 'border-white/30'}`}>
+    <button type="button" onClick={handleClick} disabled={!claimable} className={`relative flex flex-col justify-between bg-white/10 border box-border ${claimable && 'border-light-green'} ${completed && 'border-yellow'} ${!claimable && !completed && 'border-white/30'}`}>
+      {claim && (
+        <>
+          <div className="absolute w-full h-full top-0 left-0 flex justify-between z-10" onAnimationEnd={animationClaimEnd}>
+            <div className="h-full bg-white animate-claim" />
+            <div className="h-full bg-white animate-claim" />
+          </div>
+          <div className="absolute w-full h-full top-0 left-0 border-4 border-white animate-claim-border z-10" />
+        </>
+      )}
       <div className="p-6">
         <div className="flex items-center gap-2">
           <img src={triumphIcon} alt="Triumph Icon" className="w-8 h-8 object-cover" />
@@ -22,6 +50,7 @@ export default function TriumphProgress({ title, description, completed = false,
 }
 
 TriumphProgress.propTypes = {
+  type: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   completed: PropTypes.bool,

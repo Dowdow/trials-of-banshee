@@ -18,6 +18,8 @@ export const ROUTES_API = {
   SOUND_ADD: '/api/sounds/add',
   SOUND_EDIT: '/api/sounds/edit/:id',
   SOUNDS: '/api/sounds',
+  TRIUMPH_CLAIM: '/api/triumph/:type/claim',
+  TRIUMPHS: '/api/triumphs',
   USER: '/api/user',
   WEAPONS: '/api/weapons',
 };

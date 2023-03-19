@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTriumphsDefault } from '../../hooks/default';
 import { useInterfaceMoveOnMouseMove } from '../../hooks/mouse';
-import { useUserTriumphs } from '../../hooks/user';
+import { useUserCollectionBadgeClaimable, useUserTriumphs, useUserXurBountyClaimable } from '../../hooks/user';
 import { ROUTES } from '../../utils/routes';
 import EscapeLink from '../ui/clickable/EscapeLink';
 import InitFade from '../ui/InitFade';
@@ -13,17 +13,10 @@ import TriumphProgress from '../ui/triumph/TriumphProgress';
 
 export default function TriumphsPage() {
   const navigate = useNavigate();
-  const {
-    aspiringBountiesDefault,
-    aspiringBountiesGoal,
-    bountiesDefault,
-    bountiesGoal,
-    perfectMatchesDefault,
-    perfectMatchesGoal,
-    trueGunsmithBountiesDefault,
-    trueGunsmithBountiesGoal,
-  } = useTriumphsDefault();
+  const triumphsDefault = useTriumphsDefault();
   const triumphs = useUserTriumphs();
+  const collectionBadgeClaimable = useUserCollectionBadgeClaimable();
+  const xurBountyClaimable = useUserXurBountyClaimable();
 
   const [fadeOut, setFadeOut] = useState(false);
   const [nextPage, setNextPage] = useState(null);
@@ -66,49 +59,57 @@ export default function TriumphsPage() {
             <div className="md:border-t-2 border-white/10" />
             <div />
             <div className="hidden md:flex justify-center items-center bg-dark-grey/70 text-white/20">◀</div>
-            <div className="grow overflow-y-hidden lg:overflow-y-scroll 2xl:overflow-y-hidden">
+            <div className="grow">
               <div className="grid grid-cols-1 2xl:grid-cols-2 gap-1.5">
                 <Triumph
+                  type="collectionBadge"
                   title="Collection Badge"
                   description="Collect all engrams by completing bounties"
                   badge
+                  claimable={collectionBadgeClaimable}
                   completed={triumphs.collectionBadge ?? false}
                 />
                 <TriumphProgress
-                  title="Daily Bounties"
-                  description="Complete 100 daily bounties"
+                  type="bounties"
+                  title="Bounties"
+                  description={`Complete ${triumphsDefault.bountiesGoal} bounties`}
                   completed={triumphs.bountiesClaimed ?? false}
                   value={triumphs.bounties ?? 0}
-                  min={bountiesDefault}
-                  max={bountiesGoal}
+                  min={triumphsDefault.bountiesDefault}
+                  max={triumphsDefault.bountiesGoal}
                 />
                 <TriumphProgress
+                  type="aspiringBounties"
                   title="Aspiring Gunsmith Bounties"
-                  description="Complete successfully 25 aspiring gunsmith bounties"
+                  description={`Complete successfully ${triumphsDefault.aspiringBountiesGoal} aspiring gunsmith bounties`}
                   completed={triumphs.aspiringBountiesClaimed ?? false}
                   value={triumphs.aspiringBounties ?? 0}
-                  min={aspiringBountiesDefault}
-                  max={aspiringBountiesGoal}
+                  min={triumphsDefault.aspiringBountiesDefault}
+                  max={triumphsDefault.aspiringBountiesGoal}
                 />
                 <TriumphProgress
+                  type="trueGunsmithBounties"
                   title="True Gunsmith Bounties"
-                  description="Complete successfully 10 true gunsmith bounties"
+                  description={`Complete successfully ${triumphsDefault.trueGunsmithBountiesGoal} true gunsmith bounties`}
                   completed={triumphs.trueGunsmithBountiesCompleted ?? false}
                   value={triumphs.trueGunsmithBounties ?? 0}
-                  min={trueGunsmithBountiesDefault}
-                  max={trueGunsmithBountiesGoal}
+                  min={triumphsDefault.trueGunsmithBountiesDefault}
+                  max={triumphsDefault.trueGunsmithBountiesGoal}
                 />
                 <TriumphProgress
+                  type="perfectMatches"
                   title="Perfect Matches"
-                  description="Complete 75 bounties with a perfect weapon match"
+                  description={`Complete ${triumphsDefault.perfectMatchesGoal} bounties with a perfect weapon match`}
                   completed={triumphs.perfectMatchesClaimed ?? false}
                   value={triumphs.perfectMatches ?? 0}
-                  min={perfectMatchesDefault}
-                  max={perfectMatchesGoal}
+                  min={triumphsDefault.perfectMatchesDefault}
+                  max={triumphsDefault.perfectMatchesGoal}
                 />
                 <Triumph
+                  type="xurBounty"
                   title="Secret Bounty"
                   description="Find and complete the secret bounty"
+                  claimable={xurBountyClaimable}
                   completed={triumphs.xurBounty ?? false}
                 />
               </div>

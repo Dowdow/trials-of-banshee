@@ -9,6 +9,8 @@ module.exports = {
   theme: {
     animation: {
       bounty: 'bounty 300ms ease-in-out normal forwards',
+      claim: 'claim 400ms ease-in-out normal forwards',
+      'claim-border': 'claim-border 400ms ease-in-out normal forwards',
       'completed-in': 'fade-in 100ms ease-out normal forwards',
       'completed-out': 'fade-out 100ms ease-out normal forwards',
       fade: 'fade 1s ease-in-out normal forwards',
@@ -30,6 +32,7 @@ module.exports = {
       'dark-grey': '#1C1D1F',
       green: '#3E6442',
       'light-blue': '#8ECACB',
+      'light-green': '#89E3CA',
       'light-grey': '#28292B',
       pink: '#aa52ba',
       purple: '#5e4373',
@@ -53,6 +56,15 @@ module.exports = {
           '0%': { scale: '1.5' },
           '50%': { scale: '1', translate: '0 0', opacity: '1' },
           '100%': { translate: '0 20px', opacity: '0' },
+        },
+        claim: {
+          '0%': { width: '51%', opacity: 0.7 },
+          '50%': { width: '51%', opacity: 1 },
+          '100%': { width: '0%', opacity: 0 },
+        },
+        'claim-border': {
+          '0%': { scale: '1', opacity: 1 },
+          '100%': { scale: '1.3', opacity: 0 },
         },
         fade: {
           '0%': { opacity: '1' },
