@@ -1,11 +1,12 @@
 import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useInterfaceMoveOnMouseMove } from '../../hooks/mouse';
 import { useSeal, useTriumphs } from '../../hooks/user';
 import { ROUTES } from '../../utils/routes';
+import EscapeLink from '../ui/clickable/EscapeLink';
 import InitFade from '../ui/InitFade';
-import KeyboardButton from '../ui/KeyboardButton';
+import NavBarBottom from '../ui/NavBarBottom';
 import gunsmith from '../../../img/misc/gunsmith.png';
 import triumphIcon from '../../../img/misc/triumph_gun.png';
 
@@ -76,18 +77,15 @@ export default function TriumphsPage() {
             </div>
             <div className="hidden md:flex justify-center items-center bg-dark-grey/70 text-white/20">▶</div>
           </div>
-          <div className="absolute left-0 lg:left-auto bottom-0 lg:-bottom-4 w-full lg:w-[102%] p-2 lg:pt-2 lg:pb-6 lg:px-20 flex justify-end bg-dark-grey/70">
-            <Link to={ROUTES.TRIALS} onClick={(e) => handleClickLink(e, ROUTES.TRIALS)} className="flex items-center gap-2 px-1 py-0.5 border-2 border-transparent hover:border-white/70 transition-colors duration-300">
-              <KeyboardButton button="B" />
-              <span className="text-xl tracking-wide text-white/80">Back</span>
-            </Link>
-          </div>
           <div className="hidden xl:block absolute top-16 left-16 w-3 h-3 border-b-2 border-r-2 border-white/10" />
           <div className="hidden xl:block absolute top-16 right-16 w-3 h-3 border-b-2 border-l-2 border-white/10" />
           <div className="hidden xl:block absolute bottom-24 left-16 w-3 h-3 border-t-2 border-r-2 border-white/10" />
           <div className="hidden xl:block absolute bottom-24 right-16 w-3 h-3 border-t-2 border-l-2 border-white/10" />
         </div>
       </div>
+      <NavBarBottom>
+        <EscapeLink route={ROUTES.TRIALS} onClick={(e) => handleClickLink(e, ROUTES.TRIALS)} text="Back" />
+      </NavBarBottom>
     </div>
   );
 }

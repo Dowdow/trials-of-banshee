@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useInterfaceMoveOnMouseMove } from '../../hooks/mouse';
 import { useEngramCollection } from '../../hooks/user';
-import { ENGRAMS, ENGRAM_IMAGES } from '../../utils/collections';
 import { ROUTES } from '../../utils/routes';
+import Engram from '../ui/engram/Engram';
+import EscapeLink from '../ui/clickable/EscapeLink';
 import InitFade from '../ui/InitFade';
-import KeyboardButton from '../ui/KeyboardButton';
-import EngramEmpty from '../ui/EngramEmpty';
+import NavBarBottom from '../ui/NavBarBottom';
 import emptyEngram from '../../../img/engram/empty_engram.svg';
 
 export default function CollectionPage() {
@@ -81,26 +80,11 @@ export default function CollectionPage() {
               <Engram type="winterdriftEngram" active={engrams.winterdriftEngram ?? false} />
             </div>
           </div>
-          <div className="absolute left-0 lg:left-auto bottom-0 lg:-bottom-4 w-full lg:w-[102%] p-2 pr-5 md:pr-10 lg:pt-2 lg:pb-6 lg:px-20 flex justify-end bg-dark-grey/70">
-            <Link to={ROUTES.TRIALS} onClick={(e) => handleClickLink(e, ROUTES.TRIALS)} className="flex items-center gap-2 px-1 py-0.5 border-2 border-transparent hover:border-white/70 transition-colors duration-300">
-              <KeyboardButton button="B" />
-              <span className="text-xl tracking-wide text-white/80">Back</span>
-            </Link>
-          </div>
         </div>
       </div>
+      <NavBarBottom>
+        <EscapeLink route={ROUTES.TRIALS} onClick={(e) => handleClickLink(e, ROUTES.TRIALS)} text="Back" />
+      </NavBarBottom>
     </div>
   );
 }
-
-function Engram({ type, active = false }) {
-  if (!active) {
-    return <EngramEmpty />;
-  }
-  return <img src={ENGRAM_IMAGES[type]} alt={ENGRAMS[type]} className="w-24 h-24 hover:brightness-125 transition-all duration-300" />;
-}
-
-Engram.propTypes = {
-  type: PropTypes.string.isRequired,
-  active: PropTypes.bool.isRequired,
-};

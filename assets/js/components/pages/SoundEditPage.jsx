@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { generatePath, Link, useNavigate, useParams } from 'react-router-dom';
+import { generatePath, useNavigate, useParams } from 'react-router-dom';
 import { addSound, editSound } from '../../actions/sounds';
 import { useAdmin } from '../../hooks/user';
 import { ROUTES, ROUTES_API } from '../../utils/routes';
-import KeyboardButton from '../ui/KeyboardButton';
+import EscapeLink from '../ui/clickable/EscapeLink';
 import SoundForm from '../ui/SoundForm';
 
 export default function SoundEditPage() {
@@ -52,10 +52,7 @@ export default function SoundEditPage() {
           <div className="w-full h-0.5 bg-white/50" />
         </div>
         <nav className="flex flex-wrap gap-3">
-          <Link to={ROUTES.SOUNDS} className="flex items-center gap-2 px-1 py-0.5 border-2 border-transparent hover:border-white/70 transition-colors duration-300">
-            <KeyboardButton button="B" />
-            <span className="text-xl tracking-wide text-white/80">Back</span>
-          </Link>
+          <EscapeLink route={ROUTES.SOUNDS} text="Back" />
         </nav>
       </div>
       <div className="container mx-auto">

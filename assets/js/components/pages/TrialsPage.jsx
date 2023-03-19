@@ -4,20 +4,24 @@ import { useDispatch } from 'react-redux';
 import { setBounties, setCurrentBounty } from '../../actions/bounties';
 import { useCurrentBounty } from '../../hooks/bounty';
 import { useInterfaceMoveOnMouseMove } from '../../hooks/mouse';
+import { useAdmin } from '../../hooks/user';
 import { bountyNameFromType } from '../../utils/bounties';
 import { ENGRAMS, ENGRAM_IMAGES } from '../../utils/collections';
-import { ROUTES_API } from '../../utils/routes';
+import { ROUTES, ROUTES_API } from '../../utils/routes';
+import EscapeButton from '../ui/clickable/EscapeButton';
+import EscapeLink from '../ui/clickable/EscapeLink';
 import InitFade from '../ui/InitFade';
+import LeftClickButton from '../ui/clickable/LeftClickButton';
+import LeftClickLink from '../ui/clickable/LeftClickLink';
+import NavBarBottom from '../ui/NavBarBottom';
 import TrialsAudio from '../ui/TrialsAudio';
-import TrialsBack from '../ui/TrialsBack';
 import TrialsBountiesAndRules from '../ui/TrialsBountiesAndRules';
 import TrialsCollectionAndTriumphs from '../ui/TrialsCollectionAndTriumphs';
 import TrialsInputs from '../ui/TrialsInputs';
-import TrialsLinks from '../ui/TrialsLinks';
 import banshee from '../../../img/banshee.jpg';
-import KeyboardButton from '../ui/KeyboardButton';
 
 export default function TrialsPage() {
+  const admin = useAdmin();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -92,21 +96,25 @@ export default function TrialsPage() {
                 : <TrialsCollectionAndTriumphs onLink={handleClickLink} />}
             </div>
           </div>
-          <div className="w-full h-[63%] bg-blue/50 px-6 pt-10 md:pl-10 md:pr-20">
+          <div className="w-full h-[70%] bg-blue/50 px-6 pt-10 md:pl-10 md:pr-20">
             <div className={`w-full ${slideIn && 'animate-slide-in'} ${slideOut && 'animate-slide-out'}`}>
               {currentBounty
                 ? <TrialsInputs />
                 : <TrialsBountiesAndRules onClick={handleClickBounty} />}
             </div>
           </div>
-          <div className="w-full h-[7%] bg-blue/30 px-6 md:pl-0 md:pr-14">
-            <div className={`w-full ${slideIn && 'animate-slide-in'} ${slideOut && 'animate-slide-out'}`}>
-              {currentBounty
-                ? <TrialsBack onClick={handleClickBounty} />
-                : <TrialsLinks onLink={handleClickLink} />}
-            </div>
-          </div>
         </div>
+        <NavBarBottom>
+          {currentBounty
+            ? <EscapeButton onClick={() => handleClickBounty(null)} text="Back" />
+            : (
+              <>
+                {admin && <LeftClickLink route={ROUTES.SOUNDS} onClick={(e) => handleClickLink(e, ROUTES.SOUNDS)} text="Sounds management" />}
+                <LeftClickLink route={ROUTES.WEAPONS} onClick={(e) => handleClickLink(e, ROUTES.WEAPONS)} text="Weapons stock" />
+                <EscapeLink route={ROUTES.INDEX} onClick={(e) => handleClickLink(e, ROUTES.INDEX)} text="Back" />
+              </>
+            )}
+        </NavBarBottom>
       </div>
 
       {currentBounty?.completed && (
@@ -133,10 +141,7 @@ export default function TrialsPage() {
               </div>
             </div>
             <div className="w-full py-2 flex justify-center bg-dark-grey/60">
-              <button type="button" onClick={() => setCompletedOut(true)} className="flex items-center gap-2 px-1 border-2 border-transparent hover:border-white/70 transition-colors duration-300">
-                <KeyboardButton button="K" />
-                <span className="text-2xl tracking-wide text-white/80">O.K.</span>
-              </button>
+              <LeftClickButton onClick={() => setCompletedOut(true)} text="O.K." />
             </div>
           </div>
         </div>

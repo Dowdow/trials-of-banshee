@@ -5,7 +5,8 @@ import { generatePath, Link } from 'react-router-dom';
 import { setSounds } from '../../actions/sounds';
 import { useAdmin } from '../../hooks/user';
 import { ROUTES, ROUTES_API } from '../../utils/routes';
-import KeyboardButton from '../ui/KeyboardButton';
+import EscapeLink from '../ui/clickable/EscapeLink';
+import LeftClickLink from '../ui/clickable/LeftClickLink';
 
 export default function SoundsPage() {
   const admin = useAdmin();
@@ -44,22 +45,9 @@ export default function SoundsPage() {
           </div>
         </div>
         <nav className="flex flex-wrap gap-3">
-          <Link to={ROUTES.SOUND_ADD} className="flex items-center gap-2 px-1 py-0.5 border-2 border-transparent hover:border-white/70 transition-colors duration-300">
-            <KeyboardButton button="A" />
-            <span className="text-xl tracking-wide text-white/80">Add a Sound</span>
-          </Link>
-          <Link to={ROUTES.WEAPONS} className="flex items-center gap-2 px-1 py-0.5 border-2 border-transparent hover:border-white/70 transition-colors duration-300">
-            <KeyboardButton button="W" />
-            <span className="text-xl tracking-wide text-white/80">Go to Weapons</span>
-          </Link>
-          <Link to={ROUTES.TRIALS} className="flex items-center gap-2 px-1 py-0.5 border-2 border-transparent hover:border-white/70 transition-colors duration-300">
-            <KeyboardButton button="B" />
-            <span className="text-xl tracking-wide text-white/80">Back to the Trials</span>
-          </Link>
-          <Link to={ROUTES.INDEX} className="flex items-center gap-2 px-1 py-0.5 border-2 border-transparent hover:border-white/70 transition-colors duration-300">
-            <KeyboardButton button="O" />
-            <span className="text-xl tracking-wide text-white/80">Back to Orbit</span>
-          </Link>
+          <LeftClickLink route={ROUTES.SOUND_ADD} text="Add a Sound" />
+          <LeftClickLink route={ROUTES.WEAPONS} text="Weapons stock" />
+          <EscapeLink route={ROUTES.TRIALS} text="Back" />
         </nav>
       </div>
       <div className="container mx-auto">

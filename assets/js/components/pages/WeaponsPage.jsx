@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { setDamageType, setHasSound, setQuery, setRarity, setType } from '../../actions/weaponFilters';
 import { useAdmin } from '../../hooks/user';
 import { WEAPON_DAMAGE_TYPE, WEAPON_DAMAGE_TYPE_IMAGE, WEAPON_DAMAGE_TYPE_NAME, WEAPON_RARITY, WEAPON_TYPE, WEAPON_TYPE_NAME } from '../../utils/weapons';
 import { ROUTES } from '../../utils/routes';
-import KeyboardButton from '../ui/KeyboardButton';
+import EscapeLink from '../ui/clickable/EscapeLink';
+import LeftClickLink from '../ui/clickable/LeftClickLink';
 import promo from '../../../img/misc/promotion.png';
 import releg from '../../../img/misc/relegation.png';
 
@@ -92,20 +92,8 @@ export default function WeaponsPage() {
           </div>
         </div>
         <nav className="flex flex-wrap gap-3">
-          {admin && (
-            <Link to={ROUTES.SOUNDS} className="flex items-center gap-2 px-1 py-0.5 border-2 border-transparent hover:border-white/70 transition-colors duration-300">
-              <KeyboardButton button="S" />
-              <span className="text-xl tracking-wide text-white/80">Go to Sounds</span>
-            </Link>
-          )}
-          <Link to={ROUTES.TRIALS} className="flex items-center gap-2 px-1 py-0.5 border-2 border-transparent hover:border-white/70 transition-colors duration-300">
-            <KeyboardButton button="B" />
-            <span className="text-xl tracking-wide text-white/80">Back to the Trials</span>
-          </Link>
-          <Link to={ROUTES.INDEX} className="flex items-center gap-2 px-1 py-0.5 border-2 border-transparent hover:border-white/70 transition-colors duration-300">
-            <KeyboardButton button="O" />
-            <span className="text-xl tracking-wide text-white/80">Back to Orbit</span>
-          </Link>
+          {admin && <LeftClickLink route={ROUTES.SOUNDS} text="Sounds management" />}
+          <EscapeLink route={ROUTES.TRIALS} text="Back" />
         </nav>
       </div>
       <div className="container mx-auto">
