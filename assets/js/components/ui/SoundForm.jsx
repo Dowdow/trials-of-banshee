@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
+import WeaponIcon from './weapon/WeaponIcon';
 
 export default function SoundForm({ onSubmit, sound = null, error = null }) {
   const allWeapons = useSelector((state) => state.weapons);
@@ -93,7 +94,7 @@ export default function SoundForm({ onSubmit, sound = null, error = null }) {
 function Weapon({ w, action }) {
   return (
     <button type="button" onClick={action} className="flex items-center gap-1 p-1 bg-transparent hover:bg-light-grey border border-white/30 hover:border-white/80 transition-colors cursor-pointer">
-      <img src={`https://bungie.net${w.icon}`} alt={w.names.fr} className="w-8 h-8" loading="lazy" />
+      <WeaponIcon icon={w.icon} alt={w.names.fr} iconWatermark={w.iconWatermark} className="w-8 h-8" />
       <span className="tracking-wide text-white">{w.names.fr}</span>
     </button>
   );
@@ -115,6 +116,7 @@ SoundForm.defaultProps = {
 Weapon.propTypes = {
   w: PropTypes.shape({
     icon: PropTypes.string.isRequired,
+    iconWatermark: PropTypes.string,
     names: PropTypes.object.isRequired,
   }).isRequired,
   action: PropTypes.func.isRequired,

@@ -15,6 +15,13 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class BountyService
 {
+  public const ASPIRING_BOUNTY_MAX_ATTEMPTS_SUCCESS = 3;
+  public const TRUE_GUNSMITH_BOUNTY_MAX_ATTEMPTS_SUCCESS = 1;
+
+  public const CLUE_RARITY_ATTEMPTS_NEEDED = 2;
+  public const CLUE_DAMAGE_TYPE_ATTEMPTS_NEEDED = 4;
+  public const CLUE_WEAPON_TYPE_ATTEMPTS_NEEDED = 6;
+
   private EntityManagerInterface $em;
   private RequestStack $requestStack;
 
@@ -157,13 +164,13 @@ class BountyService
       return false;
     }
     $attempts = $bountyCompletion->getAttempts();
-    if ($clueType === BountyCompletion::CLUE_RARITY && $attempts >= 2) {
+    if ($clueType === BountyCompletion::CLUE_RARITY && $attempts >= self::CLUE_RARITY_ATTEMPTS_NEEDED) {
       return true;
     }
-    if ($clueType === BountyCompletion::CLUE_DAMAGE_TYPE && $attempts >= 4) {
+    if ($clueType === BountyCompletion::CLUE_DAMAGE_TYPE && $attempts >= self::CLUE_DAMAGE_TYPE_ATTEMPTS_NEEDED) {
       return true;
     }
-    if ($clueType === BountyCompletion::CLUE_WEAPON_TYPE && $attempts >= 6) {
+    if ($clueType === BountyCompletion::CLUE_WEAPON_TYPE && $attempts >= self::CLUE_WEAPON_TYPE_ATTEMPTS_NEEDED) {
       return true;
     }
     return false;

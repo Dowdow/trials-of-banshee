@@ -7,6 +7,7 @@ import { useUserAdmin } from '../../hooks/user';
 import { ROUTES, ROUTES_API } from '../../utils/routes';
 import EscapeLink from '../ui/clickable/EscapeLink';
 import LeftClickLink from '../ui/clickable/LeftClickLink';
+import WeaponIcon from '../ui/weapon/WeaponIcon';
 
 export default function SoundsPage() {
   const admin = useUserAdmin();
@@ -103,7 +104,7 @@ function Sound({ s }) {
 function Weapon({ w }) {
   return (
     <button type="button" className="flex items-center gap-1 p-1 border border-white/30">
-      <img src={`https://bungie.net${w.icon}`} alt={w.names.fr} className="w-8 h-8" loading="lazy" />
+      <WeaponIcon icon={w.icon} alt={w.names.fr} iconWatermark={w.iconWatermark} className="w-8 h-8" />
       <span className="tracking-wide text-white">{w.names.fr}</span>
     </button>
   );
@@ -122,6 +123,7 @@ Sound.propTypes = {
 Weapon.propTypes = {
   w: PropTypes.shape({
     icon: PropTypes.string.isRequired,
+    iconWatermark: PropTypes.string,
     names: PropTypes.object.isRequired,
   }).isRequired,
 };

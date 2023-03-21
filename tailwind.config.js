@@ -46,6 +46,8 @@ module.exports = {
         'neue-haas-display-roman': 'Neue Haas Display Roman',
       },
       gridTemplateColumns: {
+        engrams: 'repeat(auto-fill, minmax(6rem, 1fr))',
+        items: 'repeat(auto-fill, minmax(6rem, 1fr))',
         triumph: '2.5rem 1fr 2.5rem',
       },
       gridTemplateRows: {

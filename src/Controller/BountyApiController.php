@@ -51,14 +51,14 @@ class BountyApiController extends AbstractController
 
   #[Route('/bounty/{id}/guess', name: 'api.bounty.guess', methods: ['POST'])]
   public function bountyGuess(
-    ?Bounty           $bounty,
-    Request           $request,
-    ManagerRegistry   $managerRegistry,
-    BountyService     $bountyService,
+    ?Bounty $bounty,
+    Request $request,
+    ManagerRegistry $managerRegistry,
+    BountyService $bountyService,
     CollectionService $collectionService,
-    TriumphService    $triumphService,
-    WeaponService     $weaponService,
-    BountyFormatter   $bountyFormatter
+    TriumphService $triumphService,
+    WeaponService $weaponService,
+    BountyFormatter $bountyFormatter
   ): JsonResponse
   {
     if ($bounty === null) {
@@ -123,14 +123,14 @@ class BountyApiController extends AbstractController
         $triumphService->addPerfectMatchCompletion($user);
       }
       if ($bountyType === Bounty::TYPE_ASPIRING) {
-        $succeeded = $bountyCompletion->getAttempts() < 4;
+        $succeeded = $bountyCompletion->getAttempts() <= BountyService::ASPIRING_BOUNTY_MAX_ATTEMPTS_SUCCESS;
         $bountyCompletion->setSucceeded($succeeded);
         if ($succeeded) {
           $triumphService->addAspiringBountyCompletion($user);
           $loot = $collectionService->rewardAspiringBountyCompletionEngram($user);
         }
       } elseif ($bountyType === Bounty::TYPE_GUNSMITH) {
-        $succeeded = $bountyCompletion->getAttempts() < 2;
+        $succeeded = $bountyCompletion->getAttempts() <= BountyService::TRUE_GUNSMITH_BOUNTY_MAX_ATTEMPTS_SUCCESS;
         $bountyCompletion->setSucceeded($succeeded);
         if ($succeeded) {
           $triumphService->addTrueGunsmithBountyCompletion($user);
@@ -150,10 +150,10 @@ class BountyApiController extends AbstractController
 
   #[Route('/bounty/{id}/clue')]
   public function bountyClue(
-    ?Bounty         $bounty,
-    Request         $request,
+    ?Bounty $bounty,
+    Request $request,
     ManagerRegistry $managerRegistry,
-    BountyService   $bountyService,
+    BountyService $bountyService,
     BountyFormatter $bountyFormatter
   ): JsonResponse
   {

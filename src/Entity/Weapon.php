@@ -72,6 +72,9 @@ class Weapon
   #[ORM\Column(length: 255)]
   private ?string $icon = null;
 
+  #[ORM\Column(length: 255, nullable: true)]
+  private ?string $iconWatermark = null;
+
   #[ORM\Column(length: 255)]
   private ?string $screenshot = null;
 
@@ -158,6 +161,17 @@ class Weapon
   public function setIcon(string $icon): static
   {
     $this->icon = $icon;
+    return $this;
+  }
+
+  public function getIconWatermark(): ?string
+  {
+    return $this->iconWatermark;
+  }
+
+  public function setIconWatermark(?string $iconWatermark): static
+  {
+    $this->iconWatermark = $iconWatermark;
     return $this;
   }
 

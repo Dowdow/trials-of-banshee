@@ -14,10 +14,14 @@ import InitFade from '../ui/InitFade';
 import LeftClickButton from '../ui/clickable/LeftClickButton';
 import LeftClickLink from '../ui/clickable/LeftClickLink';
 import NavBarBottom from '../ui/NavBarBottom';
-import TrialsAudio from '../ui/TrialsAudio';
-import TrialsBountiesAndRules from '../ui/TrialsBountiesAndRules';
-import TrialsCollectionAndTriumphs from '../ui/TrialsCollectionAndTriumphs';
-import TrialsInputs from '../ui/TrialsInputs';
+import TrialsAudio from '../ui/trials/TrialsAudio';
+import TrialsBounties from '../ui/trials/TrialsBounties';
+import TrialsBountyPresentation from '../ui/trials/TrialsBountyPresentation';
+import TrialsCollectionAndTriumphs from '../ui/trials/TrialsCollectionAndTriumphs';
+import TrialsClues from '../ui/trials/TrialsClues';
+import TrialsHistory from '../ui/trials/TrialsHistory';
+import TrialsInput from '../ui/trials/TrialsInput';
+import TrialsRules from '../ui/trials/TrialsRules';
 import banshee from '../../../img/banshee.jpg';
 
 export default function TrialsPage() {
@@ -88,19 +92,41 @@ export default function TrialsPage() {
       </div>
 
       <div className="relative w-full h-screen overflow-hidden">
-        <div className="absolute -top-3 -left-2 md:left-1/4 lg:left-1/3 xl:left-1/2 w-[103%] md:w-[77%] lg:w-[68%] xl:w-[52%] h-[103%] flex flex-col backdrop-blur-lg" style={{ translate: `${x}px ${y}px` }}>
-          <div className="w-full h-[30%] bg-blue/80 flex items-center px-6 md:pt-3 md:pl-10 md:pr-20">
-            <div className={`w-full ${slideIn && 'animate-slide-in'} ${slideOut && 'animate-slide-out'}`} onAnimationEnd={handleSlideAnimationEnd}>
+        <div className="absolute -top-[10px] -right-[10px] h-[calc(100vh+20px)] w-[calc(100%+20px)] md:w-[calc(75%+10px)] lg:w-[calc(66%+10px)] xl:w-[calc(50%+10px)] flex flex-col backdrop-blur-lg" style={{ translate: `${x}px ${y}px` }}>
+          <div className="w-full h-[30%] bg-blue/80 pt-[10px] px-[10px] md:pl-0">
+            <div className={`w-full h-full ${slideIn && 'animate-slide-in'} ${slideOut && 'animate-slide-out'}`} onAnimationEnd={handleSlideAnimationEnd}>
               {currentBounty
-                ? <TrialsAudio />
-                : <TrialsCollectionAndTriumphs onLink={handleClickLink} />}
+                ? (
+                  <div className="h-full flex justify-between gap-x-10 xl:gap-x-12 p-5 lg:p-8 xl:p-10">
+                    <div className="w-1/2">
+                      <TrialsBountyPresentation />
+                    </div>
+                    <div className="w-1/2">
+                      <TrialsAudio />
+                    </div>
+                  </div>
+                ) : (
+                  <div className="p-5 lg:p-8 xl:p-10">
+                    <TrialsCollectionAndTriumphs onLink={handleClickLink} />
+                  </div>
+                )}
             </div>
           </div>
-          <div className="w-full h-[70%] bg-blue/50 px-6 pt-10 md:pl-10 md:pr-20">
+          <div className="w-full h-[70%] bg-blue/50 pb-[10px] px-[10px] md:pl-0">
             <div className={`w-full ${slideIn && 'animate-slide-in'} ${slideOut && 'animate-slide-out'}`}>
               {currentBounty
-                ? <TrialsInputs />
-                : <TrialsBountiesAndRules onClick={handleClickBounty} />}
+                ? (
+                  <div className="flex flex-col gap-y-10 xl:gap-y-12 p-5 lg:p-8 xl:p-10">
+                    <TrialsInput />
+                    <TrialsClues />
+                    <TrialsHistory />
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-y-10 xl:gap-y-12 p-5 lg:p-8 xl:p-10">
+                    <TrialsBounties onClick={handleClickBounty} />
+                    <TrialsRules />
+                  </div>
+                )}
             </div>
           </div>
         </div>
@@ -109,8 +135,8 @@ export default function TrialsPage() {
             ? <EscapeButton onClick={() => handleClickBounty(null)} text="Back" />
             : (
               <>
-                {admin && <LeftClickLink route={ROUTES.SOUNDS} onClick={(e) => handleClickLink(e, ROUTES.SOUNDS)} text="Sounds management" />}
-                <LeftClickLink route={ROUTES.WEAPONS} onClick={(e) => handleClickLink(e, ROUTES.WEAPONS)} text="Weapons stock" />
+                {admin && <LeftClickLink route={ROUTES.SOUNDS} onClick={(e) => handleClickLink(e, ROUTES.SOUNDS)} text="Sounds" />}
+                <LeftClickLink route={ROUTES.WEAPONS} onClick={(e) => handleClickLink(e, ROUTES.WEAPONS)} text="Weapons" />
                 <EscapeLink route={ROUTES.INDEX} onClick={(e) => handleClickLink(e, ROUTES.INDEX)} text="Back" />
               </>
             )}

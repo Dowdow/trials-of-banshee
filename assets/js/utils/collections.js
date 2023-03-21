@@ -4,6 +4,7 @@ import commonEngram from '../../img/engram/common_engram.png';
 import crimsonEngram from '../../img/engram/crimson_engram.png';
 import crucibleEngram from '../../img/engram/crucible_engram.png';
 import dawningEngram from '../../img/engram/dawning_engram.png';
+import defiantEngram from '../../img/engram/defiant_engram.png';
 import ephemeralEngram from '../../img/engram/ephemeral_engram.png';
 import etchedEngram from '../../img/engram/etched_engram.png';
 import eververseEngram from '../../img/engram/eververse_engram.png';
@@ -27,7 +28,10 @@ import steadfastEngram from '../../img/engram/steadfast_engram.png';
 import trialsEngram from '../../img/engram/trials_engram.png';
 import umbralEngram from '../../img/engram/umbral_engram.png';
 import unknownEngram from '../../img/engram/unknown_engram.png';
+import vanguardEngram from '../../img/engram/vanguard_engram.png';
 import winterdriftEngram from '../../img/engram/winterdrift_engram.png';
+
+import xurGrassItem from '../../img/item/xur_grass_item.jpg';
 
 export const ENGRAMS = {
   bestOfY1Engram: 'Best of Y1 Engram',
@@ -36,6 +40,7 @@ export const ENGRAMS = {
   crimsonEngram: 'Crimson Engram',
   crucibleEngram: 'Crucible Engram',
   dawningEngram: 'Dawning Engram',
+  defiantEngram: 'Defiant Engram',
   ephemeralEngram: 'Ephemeral Engram',
   etchedEngram: 'Etched Engram',
   eververseEngram: 'Eververse Engram',
@@ -59,6 +64,7 @@ export const ENGRAMS = {
   trialsEngram: 'Trials Engram',
   umbralEngram: 'Umbral Engram',
   unknownEngram: 'Unknown Engram',
+  vanguardEngram: 'Vanguard Engram',
   winterdriftEngram: 'Winterdrift Engram',
 };
 
@@ -69,6 +75,7 @@ export const ENGRAM_IMAGES = {
   crimsonEngram,
   crucibleEngram,
   dawningEngram,
+  defiantEngram,
   ephemeralEngram,
   etchedEngram,
   eververseEngram,
@@ -92,5 +99,14 @@ export const ENGRAM_IMAGES = {
   trialsEngram,
   umbralEngram,
   unknownEngram,
+  vanguardEngram,
   winterdriftEngram,
+};
+
+export const ITEMS = {
+  xurGrassItem: 'Xur Grass',
+};
+
+export const ITEM_IMAGES = {
+  xurGrassItem,
 };

@@ -16,6 +16,7 @@ class CollectionService
   public const CRIMSON_ENGRAM = 'crimsonEngram';
   public const CRUCIBLE_ENGRAM = 'crucibleEngram';
   public const DAWNING_ENGRAM = 'dawningEngram';
+  public const DEFIANT_ENGRAM = 'defiantEngram';
   public const EPHEMERAL_ENGRAM = 'ephemeralEngram';
   public const ETCHED_ENGRAM = 'etchedEngram';
   public const EVERVERSE_ENGRAM = 'eververseEngram';
@@ -39,6 +40,7 @@ class CollectionService
   public const TRIALS_ENGRAM = 'trialsEngram';
   public const UMBRAL_ENGRAM = 'umbralEngram';
   public const UNKNOWN_ENGRAM = 'unknownEngram';
+  public const VANGUARD_ENGRAM = 'vanguardEngram';
   public const WINTERDRIFT_ENGRAM = 'winterdriftEngram';
 
   public const ENGRAMS = [
@@ -48,6 +50,7 @@ class CollectionService
     self::CRIMSON_ENGRAM,
     self::CRUCIBLE_ENGRAM,
     self::DAWNING_ENGRAM,
+    self::DEFIANT_ENGRAM,
     self::EPHEMERAL_ENGRAM,
     self::ETCHED_ENGRAM,
     self::EVERVERSE_ENGRAM,
@@ -71,6 +74,7 @@ class CollectionService
     self::TRIALS_ENGRAM,
     self::UMBRAL_ENGRAM,
     self::UNKNOWN_ENGRAM,
+    self::VANGUARD_ENGRAM,
     self::WINTERDRIFT_ENGRAM,
   ];
 

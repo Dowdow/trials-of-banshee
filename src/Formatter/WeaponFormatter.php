@@ -34,6 +34,7 @@ class WeaponFormatter
       'hash' => $weapon->getHash(),
       'names' => $weapon->getNames(),
       'icon' => $weapon->getIcon(),
+      'iconWatermark' => $weapon->getIconWatermark(),
       'screenshot' => $weapon->getScreenshot(),
       'type' => $weapon->getType(),
       'damageType' => $weapon->getDamageType(),

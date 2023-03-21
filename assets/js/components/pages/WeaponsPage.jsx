@@ -7,6 +7,7 @@ import { WEAPON_DAMAGE_TYPE, WEAPON_DAMAGE_TYPE_IMAGE, WEAPON_DAMAGE_TYPE_NAME, 
 import { ROUTES } from '../../utils/routes';
 import EscapeLink from '../ui/clickable/EscapeLink';
 import LeftClickLink from '../ui/clickable/LeftClickLink';
+import WeaponIcon from '../ui/weapon/WeaponIcon';
 import promo from '../../../img/misc/promotion.png';
 import releg from '../../../img/misc/relegation.png';
 
@@ -39,7 +40,7 @@ export default function WeaponsPage() {
 
   return (
     <div className="bg-dark min-h-screen">
-      <div className="sticky top-0 flex justify-between items-center flex-wrap gap-3 md:gap-6 w-full p-3 md:p-5 bg-dark-grey">
+      <div className="sticky top-0 flex justify-between items-center flex-wrap gap-3 md:gap-6 w-full p-3 md:p-5 bg-dark-grey z-10">
         <div className="flex items-center flex-wrap gap-3 md:gap-6">
           <div>
             <h1 className="mb-1 md:mb-3 font-neue-haas-display-bold text-5xl md:text-6xl text-white">Weapons</h1>
@@ -120,7 +121,7 @@ function Weapon({ w }) {
   return (
     <a href={`https://www.light.gg/db/items/${w.hash}`} target="_blank" rel="noreferrer" className="p-1 border-2 border-transparent hover:border-white/80 transition-colors duration-300 cursor-pointer">
       <div className="flex gap-5 p-5 bg-transparent hover:bg-light-grey border border-white/30 hover:border-white/80 transition-colors">
-        <img src={`https://bungie.net${w.icon}`} alt={w.names.fr} className="w-20 h-20 border border-white/30" loading="lazy" />
+        <WeaponIcon icon={w.icon} alt={w.names.fr} iconWatermark={w.iconWatermark} className="w-20 h-20" />
         <div className="flex flex-col overflow-hidden">
           <span className="text-lg tracking-wide text-white whitespace-nowrap text-ellipsis">{w.names.fr}</span>
           <span className="text-white/60">{WEAPON_TYPE_NAME[w.type]}</span>
@@ -141,6 +142,7 @@ Weapon.propTypes = {
     hash: PropTypes.string.isRequired,
     hasSound: PropTypes.bool.isRequired,
     icon: PropTypes.string.isRequired,
+    iconWatermark: PropTypes.string,
     names: PropTypes.shape({
       fr: PropTypes.string.isRequired,
     }),

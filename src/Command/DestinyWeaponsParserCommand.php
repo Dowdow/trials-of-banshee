@@ -7,6 +7,7 @@ use App\Exception\DestinyClient\DestinyGetAvailableLocalesException;
 use App\Service\DestinyAPIClientService;
 use Doctrine\ORM\EntityManagerInterface;
 use JsonException;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,37 +20,34 @@ use Symfony\Component\Console\Output\OutputInterface;
 class DestinyWeaponsParserCommand extends Command
 {
   public const WEAPON_ITEM_TYPE = 3;
+  public const DEFAULT_ICON_WATERMARK = '/common/destiny2_content/icons/0dac2f181f0245cfc64494eccb7db9f7.png';
 
   private EntityManagerInterface $em;
   private DestinyAPIClientService $destinyAPIClient;
+  private LoggerInterface $logger;
   private string $d2CacheFolder;
 
-  /**
-   * DestinyDataCachingCommand constructor.
-   * @param EntityManagerInterface $em
-   * @param DestinyAPIClientService $destinyAPIClient
-   * @param string $d2CacheFolder
-   */
-  public function __construct(EntityManagerInterface $em, DestinyAPIClientService $destinyAPIClient, string $d2CacheFolder)
+  public function __construct(
+    EntityManagerInterface $em,
+    DestinyAPIClientService $destinyAPIClient,
+    LoggerInterface $logger,
+    string $d2CacheFolder
+  )
   {
     parent::__construct();
     $this->em = $em;
     $this->destinyAPIClient = $destinyAPIClient;
+    $this->logger = $logger;
     $this->d2CacheFolder = $d2CacheFolder;
   }
 
-  /**
-   * @param InputInterface $input
-   * @param OutputInterface $output
-   * @return int
-   */
   protected function execute(InputInterface $input, OutputInterface $output): int
   {
     $output->write('Retrieving Destiny available locales... ');
     try {
       $locales = $this->destinyAPIClient->getAvailableLocales()['Response'];
     } catch (DestinyGetAvailableLocalesException $e) {
-      // TODO Log Exception
+      $this->logger->error($e);
       $output->writeln('Unable to get Destiny available locales. Exiting...');
       return Command::FAILURE;
     }
@@ -58,11 +56,11 @@ class DestinyWeaponsParserCommand extends Command
     // Extract only usefull data from cached json
     $parsedItems = [];
     foreach ($locales as $locale) {
-      $output->write('Parsing "' . $locale . '" items... ');
+      $output->write("Parsing '$locale' items... ");
       try {
         $items = json_decode(file_get_contents($this->d2CacheFolder . '/' . $locale . '.json'), true, 512, JSON_THROW_ON_ERROR);
       } catch (JsonException $e) {
-        // TODO Log Exception
+        $this->logger->error($e);
         $items = [];
       }
       foreach ($items as $item) {
@@ -81,6 +79,7 @@ class DestinyWeaponsParserCommand extends Command
             $locale => $item['displayProperties']['name'],
           ],
           'icon' => $item['displayProperties']['icon'],
+          'iconWatermark' => $item['iconWatermark'] ?? self::DEFAULT_ICON_WATERMARK,
           'screenshot' => $item['screenshot'],
           'type' => $item['itemSubType'],
           'damageType' => $item['defaultDamageType'],
@@ -92,6 +91,7 @@ class DestinyWeaponsParserCommand extends Command
     }
 
     // Update existing weapons
+    /** @var Weapon[] $weapons */
     $weapons = $this->em->getRepository(Weapon::class)->findAll();
     $output->write('Updating ' . count($weapons) . ' weapons... ');
     foreach ($weapons as $weapon) {
@@ -99,6 +99,7 @@ class DestinyWeaponsParserCommand extends Command
       if (array_key_exists($hash, $parsedItems)) {
         $weapon->setNames($parsedItems[$hash]['names']);
         $weapon->setIcon($parsedItems[$hash]['icon']);
+        $weapon->setIconWatermark($parsedItems[$hash]['iconWatermark']);
         $weapon->setScreenshot($parsedItems[$hash]['screenshot']);
         $weapon->setType($parsedItems[$hash]['type']);
         $weapon->setDamageType($parsedItems[$hash]['damageType']);
@@ -116,6 +117,7 @@ class DestinyWeaponsParserCommand extends Command
         ->setHash($item['hash'])
         ->setNames($item['names'])
         ->setIcon($item['icon'])
+        ->setIconWatermark($item['iconWatermark'])
         ->setScreenshot($item['screenshot'])
         ->setType($item['type'])
         ->setDamageType($item['damageType'])
