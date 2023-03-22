@@ -162,6 +162,11 @@ class CollectionService
         unset($engrams[$k]);
       }
     }
+
+    if ($engrams === []) {
+      return $this->rewardDailyBountyCompletionEngram($user);
+    }
+
     $engram = $engrams[array_rand($engrams)];
     $collections[self::ENGRAMS_KEY][$engram] = true;
     $user->setCollections($collections);

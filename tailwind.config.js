@@ -11,8 +11,11 @@ module.exports = {
       bounty: 'bounty 300ms ease-in-out normal forwards',
       claim: 'claim 400ms ease-in-out normal forwards',
       'claim-border': 'claim-border 400ms ease-in-out normal forwards',
-      'completed-in': 'fade-in 100ms ease-out normal forwards',
-      'completed-out': 'fade-out 100ms ease-out normal forwards',
+      'completed-in': 'fade-in 300ms 400ms ease-out normal forwards',
+      'completed-out': 'fade-out 200ms ease-out normal forwards',
+      'engram-pop': 'engram-pop 300ms 800ms ease-in-out normal forwards',
+      'engram-decoration-pop': 'engram-decoration-pop 400ms 950ms ease-in-out normal forwards',
+      'engram-decoration-pop-next': 'engram-decoration-pop 400ms 1.1s ease-in-out normal forwards',
       fade: 'fade 1s ease-in-out normal forwards',
       'fade-short': 'fade-out 200ms ease-in-out normal forwards',
       'fade-out': 'fade-out 300ms ease-in-out normal forwards',
@@ -22,6 +25,7 @@ module.exports = {
       spin: 'spin 5s linear infinite',
       'spin-back': 'spin-back 5s linear infinite',
       'spin-big': 'spin-big 20s linear infinite',
+      wiggle: 'wiggle 300ms ease-in-out normal forwards',
       zoom: 'zoom 1s ease-in normal forwards',
     },
     colors: {
@@ -68,6 +72,15 @@ module.exports = {
           '0%': { scale: '1', opacity: 1 },
           '100%': { scale: '1.3', opacity: 0 },
         },
+        'engram-pop': {
+          '0%': { scale: '9', opacity: 0 },
+          '100%': { scale: '1', opacity: 1 },
+        },
+        'engram-decoration-pop': {
+          '0%': { scale: '0.7', opacity: 0 },
+          '50%': { opacity: 0.7 },
+          '100%': { scale: '2', opacity: 0 },
+        },
         fade: {
           '0%': { opacity: '1' },
           '30%': { opacity: '1' },
@@ -106,6 +119,14 @@ module.exports = {
         'spin-big': {
           '0%': { transform: 'rotate(0deg)' },
           '100%': { transform: 'rotate(90deg)' },
+        },
+        wiggle: {
+          'O%': { rotate: '0deg' },
+          '20%': { rotate: '5deg' },
+          '40%': { rotate: '-5deg' },
+          '60%': { rotate: '5deg' },
+          '80%': { rotate: '-5deg' },
+          '10O%': { rotate: '0deg' },
         },
         zoom: {
           '0%': { transform: 'scale(1) rotate(0)', opacity: 1 },

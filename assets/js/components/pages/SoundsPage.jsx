@@ -47,7 +47,7 @@ export default function SoundsPage() {
         </div>
         <nav className="flex flex-wrap gap-3">
           <LeftClickLink route={ROUTES.SOUND_ADD} text="Add a Sound" />
-          <LeftClickLink route={ROUTES.WEAPONS} text="Weapons stock" />
+          <LeftClickLink route={ROUTES.WEAPONS} text="Weapons" />
           <EscapeLink route={ROUTES.TRIALS} text="Back" />
         </nav>
       </div>

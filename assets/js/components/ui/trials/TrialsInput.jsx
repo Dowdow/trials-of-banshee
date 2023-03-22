@@ -37,7 +37,6 @@ export default function TrialsInput() {
         {guessInput !== '' && (
           <div className="absolute grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-1 w-full max-h-80 p-2 bg-light-grey/95 border-b border-x border-white/70 overflow-y-scroll overflow-x-hidden z-50">
             {weapons
-              .filter((w) => w.hasSound)
               .filter((w) => !currentBounty.history.includes(w.id))
               .filter((w) => w.names.fr.toLowerCase().includes(guessInput.toLowerCase()))
               .map((w) => <WeaponGuess key={w.id} w={w} onClick={handleClickGuess} />)}

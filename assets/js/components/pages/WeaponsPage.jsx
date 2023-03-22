@@ -93,7 +93,7 @@ export default function WeaponsPage() {
           </div>
         </div>
         <nav className="flex flex-wrap gap-3">
-          {admin && <LeftClickLink route={ROUTES.SOUNDS} text="Sounds management" />}
+          {admin && <LeftClickLink route={ROUTES.SOUNDS} text="Sounds" />}
           <EscapeLink route={ROUTES.TRIALS} text="Back" />
         </nav>
       </div>

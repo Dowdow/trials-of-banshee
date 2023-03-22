@@ -25,7 +25,7 @@ export default function TrialsBounty({ bounty, onClick }) {
   };
 
   return (
-    <button type="button" onClick={handleClick} className={`p-0.5 border-2 border-transparent disabled:hover:border-white/30 ${animationClick ? 'hover:border-transparent' : 'hover:border-white/70'} transition-colors duration-300 disabled:cursor-not-allowed`} disabled={disabled} onAnimationEnd={handleAnimationEnd}>
+    <button type="button" disabled={disabled} onClick={handleClick} className={`p-0.5 border-2 border-transparent disabled:hover:border-white/30 ${animationClick ? 'hover:border-transparent' : 'hover:border-white/70'} transition-colors duration-300 disabled:cursor-not-allowed`} onAnimationEnd={handleAnimationEnd}>
       <div className={`relative overflow-hidden ${animationClick && 'animate-bounty'} ${disabled ? 'bg-dark-grey' : 'bg-white'}`}>
         <img src={bountyImageFromType(bounty.type)} alt={bountyNameFromType(bounty.type)} className={`${animationClick ? 'opacity-0 hover:opacity-0' : 'hover:opacity-70'} ${disabled && 'opacity-70'} transition-opacity duration-300`} loading="lazy" />
         {completed && (
