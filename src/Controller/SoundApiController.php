@@ -13,7 +13,6 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/api')]
@@ -23,7 +22,7 @@ class SoundApiController extends AbstractController
   public function sounds(ManagerRegistry $managerRegistry, SoundFormatter $soundFormatter): JsonResponse
   {
     if (!$this->isGranted(User::ROLE_ADMIN)) {
-      throw new NotFoundHttpException();
+      throw $this->createNotFoundException();
     }
 
     $em = $managerRegistry->getManager();
@@ -39,7 +38,7 @@ class SoundApiController extends AbstractController
   public function sound(?Sound $sound, SoundFormatter $soundFormatter): JsonResponse
   {
     if (!$this->isGranted(User::ROLE_ADMIN)) {
-      throw new NotFoundHttpException();
+      throw $this->createNotFoundException();
     }
 
     if ($sound === null) {
@@ -53,7 +52,7 @@ class SoundApiController extends AbstractController
   public function addSound(Request $request, ManagerRegistry $managerRegistry, SoundFormatter $soundFormatter): JsonResponse
   {
     if (!$this->isGranted(User::ROLE_ADMIN)) {
-      throw new NotFoundHttpException();
+      throw $this->createNotFoundException();
     }
 
     $sound = new Sound();
@@ -98,7 +97,7 @@ class SoundApiController extends AbstractController
   public function editSound(?Sound $sound, Request $request, ManagerRegistry $managerRegistry, SoundFormatter $soundFormatter): JsonResponse
   {
     if (!$this->isGranted(User::ROLE_ADMIN)) {
-      throw new NotFoundHttpException();
+      throw $this->createNotFoundException();
     }
 
     if ($sound === null) {

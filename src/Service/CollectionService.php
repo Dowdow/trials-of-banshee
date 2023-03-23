@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\User;
 use Exception;
+use Psr\Log\LoggerInterface;
 
 class CollectionService
 {
@@ -84,6 +85,13 @@ class CollectionService
     self::XUR_GRASS_ITEM,
   ];
 
+  private LoggerInterface $logger;
+
+  public function __construct(LoggerInterface $logger)
+  {
+    $this->logger = $logger;
+  }
+
   /**
    * Check if a User has earned all engrams
    * @param User $user
@@ -137,6 +145,7 @@ class CollectionService
     try {
       $rand = random_int(0, 1);
     } catch (Exception $e) {
+      $this->logger->error($e);
       $rand = 0;
     }
 

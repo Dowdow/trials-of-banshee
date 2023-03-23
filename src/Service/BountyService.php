@@ -10,6 +10,7 @@ use App\Exception\ClueNotFoundFromRequestException;
 use App\Repository\BountyCompletionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use JsonException;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -23,16 +24,17 @@ class BountyService
   public const CLUE_WEAPON_TYPE_ATTEMPTS_NEEDED = 6;
 
   private EntityManagerInterface $em;
+  private LoggerInterface $logger;
   private RequestStack $requestStack;
 
-  /**
-   * BountyService constructor.
-   * @param EntityManagerInterface $em
-   * @param RequestStack $requestStack
-   */
-  public function __construct(EntityManagerInterface $em, RequestStack $requestStack)
+  public function __construct(
+    EntityManagerInterface $em,
+    LoggerInterface $logger,
+    RequestStack $requestStack
+  )
   {
     $this->em = $em;
+    $this->logger = $logger;
     $this->requestStack = $requestStack;
   }
 
@@ -140,6 +142,7 @@ class BountyService
     try {
       $content = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
     } catch (JsonException $e) {
+      $this->logger->error($e);
       $content = [];
     }
 

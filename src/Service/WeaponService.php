@@ -7,19 +7,18 @@ use App\Exception\WeaponNotFoundFromRequestException;
 use App\Repository\WeaponRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use JsonException;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class WeaponService
 {
   private EntityManagerInterface $em;
+  private LoggerInterface $logger;
 
-  /**
-   * WeaponService constructor.
-   * @param EntityManagerInterface $em
-   */
-  public function __construct(EntityManagerInterface $em)
+  public function __construct(EntityManagerInterface $em, LoggerInterface $logger)
   {
     $this->em = $em;
+    $this->logger = $logger;
   }
 
   /**
@@ -32,6 +31,7 @@ class WeaponService
     try {
       $content = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
     } catch (JsonException $e) {
+      $this->logger->error($e);
       $content = [];
     }
 

@@ -11,6 +11,7 @@ use App\Service\DestinyAPIClientService;
 use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,7 +20,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserApiController extends AbstractController
 {
   #[Route('/user', name: 'api.user.get', methods: ['GET'])]
-  public function get(ManagerRegistry $managerRegistry, DestinyAPIClientService $destinyAPIClient, UserFormatter $userFormatter): JsonResponse
+  public function get(
+    ManagerRegistry $managerRegistry,
+    DestinyAPIClientService $destinyAPIClient,
+    UserFormatter $userFormatter,
+    LoggerInterface $logger
+  ): JsonResponse
   {
     if (!$this->isGranted(User::ROLE_USER)) {
       return new JsonResponse(['errors' => ['Not authenticated']], 403);
@@ -41,7 +47,7 @@ class UserApiController extends AbstractController
       try {
         $destinyAPIClient->refreshTokens($user);
       } catch (DestinyOauthTokensExpiredException $e) {
-        // TODO Log Exception
+        $logger->error($e);
         return new JsonResponse(['errors' => ['Tokens expired']], 419);
       }
     }
@@ -50,7 +56,7 @@ class UserApiController extends AbstractController
     try {
       $membershipData = $destinyAPIClient->getMembershipsForCurrentUser($user)['Response'];
     } catch (DestinyGetMembershipsForCurrentUserException $e) {
-      // TODO Log Exception
+      $logger->error($e);
       return new JsonResponse(['errors' => ["Can't get Destiny memberships for current user"]], 503);
     }
 
@@ -74,7 +80,7 @@ class UserApiController extends AbstractController
     try {
       $profileData = $destinyAPIClient->getDestiny2Profile($user, $destinyMembershipId, $destinyMembershipType)['Response'];
     } catch (DestinyGetDestiny2ProfileException $e) {
-      // TODO Log Exception
+      $logger->error($e);
       return new JsonResponse(['errors' => ["Can't get Destiny 2 profile"]], 503);
     }
 
@@ -85,7 +91,7 @@ class UserApiController extends AbstractController
       try {
         $dateLastPlayed = new DateTime($character['dateLastPlayed']);
       } catch (Exception $e) {
-        // TODO Log Exception
+        $logger->error($e);
         $dateLastPlayed = null;
       }
       if ($lastedPlayedCharacterId === null || $dateLastPlayed > $mostRecentDateLastPlayed) {

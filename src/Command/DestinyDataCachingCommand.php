@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\Exception\DestinyClient\DestinyGetDestinyManifestException;
 use App\Service\DestinyAPIClientService;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -17,17 +18,18 @@ use Symfony\Component\Filesystem\Filesystem;
 class DestinyDataCachingCommand extends Command
 {
   private DestinyAPIClientService $destinyAPIClient;
+  private LoggerInterface $logger;
   private string $d2CacheFolder;
 
-  /**
-   * DestinyDataCachingCommand constructor.
-   * @param DestinyAPIClientService $destinyAPIClient
-   * @param string $d2CacheFolder
-   */
-  public function __construct(DestinyAPIClientService $destinyAPIClient, string $d2CacheFolder)
+  public function __construct(
+    DestinyAPIClientService $destinyAPIClient,
+    LoggerInterface $logger,
+    string $d2CacheFolder
+  )
   {
     parent::__construct();
     $this->destinyAPIClient = $destinyAPIClient;
+    $this->logger = $logger;
     $this->d2CacheFolder = $d2CacheFolder;
   }
 
@@ -45,7 +47,7 @@ class DestinyDataCachingCommand extends Command
     try {
       $destinyManifest = $this->destinyAPIClient->getDestinyManifest()['Response'];
     } catch (DestinyGetDestinyManifestException $e) {
-      // TODO Log Exception
+      $this->logger->error($e);
       $output->writeln('Error while trying to get the Destiny Manifest file. Exiting...');
       return Command::FAILURE;
     }

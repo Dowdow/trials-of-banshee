@@ -13,6 +13,8 @@ class BountyRepository extends EntityRepository
    * @param DateTime $dateStart
    * @param int $type
    * @return bool
+   * @throws NoResultException
+   * @throws NonUniqueResultException
    */
   public function hasBountyWithDateStartAndType(DateTime $dateStart, int $type): bool
   {
@@ -24,11 +26,6 @@ class BountyRepository extends EntityRepository
       ->setParameter('type', $type)
       ->setParameter('dateStart', $dateStart);
 
-    try {
-      return $qb->getQuery()->getSingleScalarResult() > 0;
-    } catch (NoResultException|NonUniqueResultException $e) {
-      // TODO Log Exception or throw a specific one
-      return false;
-    }
+    return $qb->getQuery()->getSingleScalarResult() > 0;
   }
 }

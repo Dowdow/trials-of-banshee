@@ -16,7 +16,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 )]
 class DestinyWeaponsDuplicateHidderCommand extends Command
 {
-  public const HIDDEN_KEYWORDS = ['(Adept)', '(Timelost)', '(Harrowed)', '(Damaged)', '(Baroque)', 'v1.0.1', 'v1.0.2'];
+  public const HIDDEN_KEYWORDS = [
+    '(Adept)',
+    '(Timelost)',
+    '(Harrowed)',
+    '(Damaged)',
+    '(Baroque)',
+    'v1.0.1',
+    'v1.0.2'
+  ];
 
   private EntityManagerInterface $em;
 

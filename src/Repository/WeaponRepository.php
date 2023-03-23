@@ -10,6 +10,8 @@ class WeaponRepository extends EntityRepository
 {
   /**
    * @return array
+   * @throws NoResultException
+   * @throws NonUniqueResultException
    */
   public function findWeaponsWithSoundAndMinBounties(): array
   {
@@ -24,12 +26,7 @@ class WeaponRepository extends EntityRepository
       ->setMaxResults(1)
       ->setParameter('hidden', false);
 
-    try {
-      $minBounties = $qb2->getQuery()->getSingleScalarResult();
-    } catch (NoResultException|NonUniqueResultException $e) {
-      // TODO Log Exception or throw a specific one
-      $minBounties = 0;
-    }
+    $minBounties = $qb2->getQuery()->getSingleScalarResult();
 
     $qb = $this->createQueryBuilder('w');
     $qb

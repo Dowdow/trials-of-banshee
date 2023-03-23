@@ -6,6 +6,7 @@ use App\Service\CollectionService;
 use App\Service\TriumphService;
 use App\Service\UserService;
 use JsonException;
+use Psr\Log\LoggerInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -14,16 +15,19 @@ class ReduxExtension extends AbstractExtension
   private CollectionService $collectionService;
   private TriumphService $triumphService;
   private UserService $userService;
+  private LoggerInterface $logger;
 
   public function __construct(
     CollectionService $collectionService,
-    TriumphService    $triumphService,
-    UserService       $userService
+    TriumphService $triumphService,
+    UserService $userService,
+    LoggerInterface $logger
   )
   {
     $this->collectionService = $collectionService;
     $this->triumphService = $triumphService;
     $this->userService = $userService;
+    $this->logger = $logger;
   }
 
   /**
@@ -40,6 +44,7 @@ class ReduxExtension extends AbstractExtension
     try {
       return json_encode($preLoadedState, JSON_THROW_ON_ERROR);
     } catch (JsonException $e) {
+      $this->logger->error($e);
       return '';
     }
   }
