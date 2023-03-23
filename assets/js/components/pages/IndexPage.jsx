@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { setUser } from '../../actions/user';
+import { getUser } from '../../actions/user';
 import { useInterfaceMoveOnMouseMove } from '../../hooks/mouse';
-import { useUserAuthenticated, useUser } from '../../hooks/user';
-import { ROUTES, ROUTES_API } from '../../utils/routes';
-import { characterClassName, characterGenderName, characterRaceName } from '../../utils/user';
+import { useUserAuthenticated } from '../../hooks/user';
 import InitFade from '../ui/InitFade';
+import OrbitFireteam from '../ui/orbit/OrbitFireteam';
+import OrbitModifierDiscord from '../ui/orbit/OrbitModifierDiscord';
+import OrbitModifierTwitter from '../ui/orbit/OrbitModifierTwitter';
 import orbit from '../../../img/orbit.png';
-import defaultEmblem from '../../../img/emblem/default_emblem.jpg';
 
 export default function IndexPage() {
   const authenticated = useUserAuthenticated();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useUser();
 
   const [launchFade, setLaunchFade] = useState(false);
   const [zoomEarth, setZoomEarth] = useState(false);
@@ -23,9 +22,7 @@ export default function IndexPage() {
 
   useEffect(() => {
     if (authenticated) {
-      fetch(ROUTES_API.USER)
-        .then((response) => response.json())
-        .then((data) => dispatch(setUser(data)));
+      dispatch(getUser());
     }
   }, []);
 
@@ -43,40 +40,16 @@ export default function IndexPage() {
             <div>
               <button type="button">I</button>
             </div>
-            <div className="flex flex-col">
-              <div className="text-sm md:text-base font-bold tracking-[.4em] uppercase text-white/80 select-none">Fireteam</div>
-              <div className="w-full h-[1px] bg-white/60" />
-              <div className="w-full md:w-[474px] mt-1">
-                {authenticated ? (
-                  <div className="relative w-full h-24">
-                    <img src={user.emblemBackgroundPath ? `https://bungie.net${user.emblemBackgroundPath}` : defaultEmblem} alt="Character Emblem" className="w-full h-full object-left object-cover" loading="lazy" />
-                    <div className="absolute top-1 left-24">
-                      <div className="text-2xl font-bold text-white tracking-wider text-shadow-sm shadow-light-grey/50 select-none">{user.displayName ? user.displayName : 'Guardian'}</div>
-                      <div className="text-xl text-white/80 tracking-wider text-shadow-sm shadow-light-grey/50 select-none">{`${characterClassName(user.characterClass)} ${characterGenderName(user.characterGender)} ${characterRaceName(user.characterRace)}`}</div>
-                    </div>
-                    <div className="absolute top-1 right-1.5 flex gap-1">
-                      <div className="w-2.5 h-2.5 mt-1.5 border-4 border-yellow rotate-45 shadow-sm shadow-light-grey/50" />
-                      <div className="font-bold text-4xl text-yellow text-shadow-sm shadow-light-grey/50 tracking-wide select-none">{user.lightLevel}</div>
-                    </div>
-                  </div>
-                ) : (
-                  <a href={ROUTES.OAUTH_AUTHORIZE} className="w-full h-24 flex items-center gap-5 pl-5 bg-light-grey/30 hover:bg-white/20 border border-white/30 hover:border-white/50 transition-colors duration-300 select-none">
-                    <div className="w-11 h-11 flex justify-between items-center border-2 border-white/70 rounded-full">
-                      <div className="pl-[5.5px] pt-[4.5px] font-bold text-5xl text-white/70">+</div>
-                    </div>
-                    <div className="text-white/70">
-                      <div className="text-2xl">Connexion with Bungie</div>
-                      <div className="text-sm">You can still play as guest but with limited functionnalities</div>
-                    </div>
-                  </a>
-                )}
-              </div>
-            </div>
+            <OrbitFireteam />
           </div>
           <div className="flex flex-col xl:flex-row justify-between gap-12 md:gap-0">
             <div className="relative w-full xl:w-3/5">
               <div className="absolute -bottom-4 -left-2 w-14 h-36 md:h-40 lg:h-44 2xl:h-52 border border-white/10" />
               <div className="absolute -bottom-8 -left-2 w-14 h-2 bg-white/10 " />
+              <div className="flex gap-x-5 pb-10">
+                <OrbitModifierDiscord />
+                <OrbitModifierTwitter />
+              </div>
               <span className="text-sm md:text-base font-bold tracking-[.4em] uppercase text-white/80 whitespace-nowrap select-none">High End PVE</span>
               <div className="w-full h-[1px] mt-1 mb-4 bg-white/60" />
               <h1 className="mb-3 font-neue-haas-display-bold text-3xl md:text-5xl lg:text-6xl 2xl:text-8xl tracking-wide uppercase text-white/90 whitespace-nowrap select-none">Trials of Banshee</h1>

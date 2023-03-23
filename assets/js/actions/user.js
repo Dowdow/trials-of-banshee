@@ -17,6 +17,15 @@ export function setUserTriumphs(triumphs) {
   return (dispatch) => dispatch({ type: SET_USER_TRIUMPHS, payload: triumphs });
 }
 
+export function getUser() {
+  return (dispatch) => {
+    fetch(ROUTES_API.USER, { method: 'GET' })
+      .then((response) => response.json())
+      .then((data) => dispatch(setUser(data)))
+      .catch((err) => console.log(err));
+  };
+}
+
 export function getUserCollections() {
   return (dispatch) => {
     fetch(generatePath(ROUTES_API.COLLECTIONS), { method: 'GET' })
