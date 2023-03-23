@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { getUserCollections } from '../../actions/user';
 import { useCollectionEngramsDefault, useCollectionItemsDefault } from '../../hooks/default';
 import { useInterfaceMoveOnMouseMove } from '../../hooks/mouse';
 import { useUserEngramsCollection, useUserItemsCollection } from '../../hooks/user';
@@ -13,6 +15,7 @@ import NavBarBottom from '../ui/NavBarBottom';
 import emptyEngram from '../../../img/engram/empty_engram.svg';
 
 export default function CollectionPage() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const engrams = useCollectionEngramsDefault();
@@ -24,6 +27,10 @@ export default function CollectionPage() {
   const [nextPage, setNextPage] = useState(null);
 
   const { x, y } = useInterfaceMoveOnMouseMove();
+
+  useEffect(() => {
+    dispatch(getUserCollections());
+  }, []);
 
   const handleClickLink = (e, route) => {
     e.preventDefault();

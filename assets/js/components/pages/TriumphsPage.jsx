@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { getUserTriumphs } from '../../actions/user';
 import { useTriumphsDefault } from '../../hooks/default';
 import { useInterfaceMoveOnMouseMove } from '../../hooks/mouse';
 import { useUserCollectionBadgeClaimable, useUserTriumphs, useUserXurBountyClaimable } from '../../hooks/user';
@@ -12,7 +14,9 @@ import Triumph from '../ui/triumph/Triumph';
 import TriumphProgress from '../ui/triumph/TriumphProgress';
 
 export default function TriumphsPage() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const triumphsDefault = useTriumphsDefault();
   const triumphs = useUserTriumphs();
   const collectionBadgeClaimable = useUserCollectionBadgeClaimable();
@@ -22,6 +26,10 @@ export default function TriumphsPage() {
   const [nextPage, setNextPage] = useState(null);
 
   const { x, y } = useInterfaceMoveOnMouseMove();
+
+  useEffect(() => {
+    dispatch(getUserTriumphs());
+  }, []);
 
   const handleClickLink = (e, route) => {
     e.preventDefault();
