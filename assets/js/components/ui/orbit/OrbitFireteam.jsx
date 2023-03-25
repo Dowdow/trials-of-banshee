@@ -49,7 +49,7 @@ export default function OrbitFireteam() {
           </div>
         ) : (
           <a href={ROUTES.OAUTH_AUTHORIZE} className="w-full h-24 flex items-center gap-5 pl-5 bg-light-grey/30 hover:bg-white/20 border border-white/30 hover:border-white/50 transition-colors duration-300 select-none">
-            <div className="w-11 h-11 flex justify-between items-center border-2 border-white/70 rounded-full">
+            <div className="w-11 h-11 min-w-[2.75rem] flex justify-between items-center border-2 border-white/70 rounded-full">
               <div className="pl-[5.5px] pt-[4.5px] font-bold text-5xl text-white/70">+</div>
             </div>
             <div className="text-white/70">
