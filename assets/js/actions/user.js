@@ -28,7 +28,7 @@ export function getUser() {
 
 export function getUserCollections() {
   return (dispatch) => {
-    fetch(generatePath(ROUTES_API.COLLECTIONS), { method: 'GET' })
+    fetch(ROUTES_API.COLLECTIONS, { method: 'GET' })
       .then((response) => response.json())
       .then((data) => dispatch(setUserCollections(data)))
       .catch((err) => console.log(err));
@@ -37,7 +37,7 @@ export function getUserCollections() {
 
 export function getUserTriumphs() {
   return (dispatch) => {
-    fetch(generatePath(ROUTES_API.TRIUMPHS), { method: 'GET' })
+    fetch(ROUTES_API.TRIUMPHS, { method: 'GET' })
       .then((response) => response.json())
       .then((data) => dispatch(setUserTriumphs(data)))
       .catch((err) => console.log(err));

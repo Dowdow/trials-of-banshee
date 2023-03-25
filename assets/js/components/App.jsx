@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
-import { setWeapons } from '../actions/weapons';
-import { ROUTES, ROUTES_API } from '../utils/routes';
+import { getWeapons } from '../actions/weapons';
+import { ROUTES } from '../utils/routes';
 import CollectionPage from './pages/CollectionPage';
 import IndexPage from './pages/IndexPage';
 import SoundAddPage from './pages/SoundAddPage';
@@ -16,9 +16,7 @@ export default function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    fetch(ROUTES_API.WEAPONS)
-      .then((res) => res.json())
-      .then((data) => dispatch(setWeapons(data.items)));
+    dispatch(getWeapons());
   }, []);
 
   return (

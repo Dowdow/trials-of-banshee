@@ -1,10 +1,8 @@
 import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { generatePath } from 'react-router-dom';
 import { useCurrentBounty } from '../../../hooks/bounty';
-import { ROUTES_API } from '../../../utils/routes';
-import { updateBounty } from '../../../actions/bounties';
+import { postGuess } from '../../../actions/bounties';
 import WeaponIcon from '../weapon/WeaponIcon';
 import CategoryTitle from '../CategoryTitle';
 
@@ -20,13 +18,7 @@ export default function TrialsInput() {
   const handleClickGuess = (weaponId) => {
     setGuessInput('');
     inputRef.current.focus();
-    fetch(generatePath(ROUTES_API.BOUNTY_GUESS, { id: currentBounty.id }), {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ weaponId }),
-    })
-      .then((response) => response.json())
-      .then((data) => dispatch(updateBounty(data)));
+    dispatch(postGuess(currentBounty.id, weaponId));
   };
 
   return (

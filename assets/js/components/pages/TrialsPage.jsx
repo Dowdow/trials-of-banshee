@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { setBounties, setCurrentBounty } from '../../actions/bounties';
+import { getBountiesToday, setCurrentBounty } from '../../actions/bounties';
 import { useCurrentBounty } from '../../hooks/bounty';
 import { useInterfaceMoveOnMouseMove } from '../../hooks/mouse';
 import { useUserAdmin } from '../../hooks/user';
-import { ROUTES, ROUTES_API } from '../../utils/routes';
+import { ROUTES } from '../../utils/routes';
 import EscapeButton from '../ui/clickable/EscapeButton';
 import EscapeLink from '../ui/clickable/EscapeLink';
 import InitFade from '../ui/InitFade';
@@ -38,9 +38,7 @@ export default function TrialsPage() {
   const { x, y } = useInterfaceMoveOnMouseMove();
 
   useEffect(() => {
-    fetch(ROUTES_API.BOUNTIES_TODAY)
-      .then((response) => response.json())
-      .then((data) => dispatch(setBounties(data.items)));
+    dispatch(getBountiesToday());
   }, []);
 
   const handleClickLink = (e, route) => {

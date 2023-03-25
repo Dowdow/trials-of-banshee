@@ -1,10 +1,8 @@
 import React, { useMemo } from 'react';
 import { useDispatch } from 'react-redux';
-import { generatePath } from 'react-router-dom';
-import { updateBounty } from '../../../actions/bounties';
+import { postClue } from '../../../actions/bounties';
 import { useCurrentBounty } from '../../../hooks/bounty';
 import { CLUE_TYPE } from '../../../utils/bounties';
-import { ROUTES_API } from '../../../utils/routes';
 import { WEAPON_DAMAGE_TYPE_IMAGE, WEAPON_DAMAGE_TYPE_NAME, WEAPON_RARITY_IMAGE, WEAPON_RARITY_NAME, WEAPON_TYPE_NAME } from '../../../utils/weapons';
 import CategoryTitle from '../CategoryTitle';
 import TrialsClue from './TrialsClue';
@@ -21,13 +19,7 @@ export default function TrialsClues() {
   const clueWeaponTypeDisabled = useMemo(() => currentBounty.completed || clueWeaponTypeUsed || currentBounty.attempts < 6, [currentBounty, clueWeaponTypeUsed]);
 
   const handleClickClue = (clueType) => {
-    fetch(generatePath(ROUTES_API.BOUNTY_CLUE, { id: currentBounty.id }), {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ clueType }),
-    })
-      .then((response) => response.json())
-      .then((data) => dispatch(updateBounty(data)));
+    dispatch(postClue(currentBounty.id, clueType));
   };
 
   return (

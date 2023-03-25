@@ -22,7 +22,7 @@ export default function Triumph({ type, title, description, badge = false, claim
   };
 
   return (
-    <button type="button" disabled={!claimable} onClick={handleClick} className={`relative bg-white/10 border ${claimable && 'border-light-green'} ${completed && 'border-yellow'} ${!claimable && !completed && 'border-white/30'}`}>
+    <button type="button" disabled={!claimable || completed} onClick={handleClick} className={`relative bg-white/10 border ${claimable && 'border-light-green'} ${completed && 'border-yellow'} ${!claimable && !completed && 'border-white/30'}`}>
       {claim && (
         <>
           <div className="absolute w-full h-full top-0 left-0 flex justify-between z-10" onAnimationEnd={animationClaimEnd}>

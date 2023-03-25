@@ -2,9 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { generatePath, Link } from 'react-router-dom';
-import { setSounds } from '../../actions/sounds';
+import { getSounds } from '../../actions/sounds';
 import { useUserAdmin } from '../../hooks/user';
-import { ROUTES, ROUTES_API } from '../../utils/routes';
+import { ROUTES } from '../../utils/routes';
 import EscapeLink from '../ui/clickable/EscapeLink';
 import LeftClickLink from '../ui/clickable/LeftClickLink';
 import WeaponIcon from '../ui/weapon/WeaponIcon';
@@ -19,9 +19,7 @@ export default function SoundsPage() {
 
   useEffect(() => {
     if (admin) {
-      fetch(ROUTES_API.SOUNDS)
-        .then((res) => res.json())
-        .then((data) => dispatch(setSounds(data.items)));
+      dispatch(getSounds());
     }
   }, []);
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { generatePath, useNavigate, useParams } from 'react-router-dom';
-import { addSound, editSound } from '../../actions/sounds';
+import { editSound, getSoundId } from '../../actions/sounds';
 import { useUserAdmin } from '../../hooks/user';
 import { ROUTES, ROUTES_API } from '../../utils/routes';
 import EscapeLink from '../ui/clickable/EscapeLink';
@@ -19,9 +19,7 @@ export default function SoundEditPage() {
 
   useEffect(() => {
     if (admin && sound === undefined) {
-      fetch(generatePath(ROUTES_API.SOUND, { id }))
-        .then((response) => response.json())
-        .then((data) => dispatch(addSound(data)));
+      dispatch(getSoundId(id));
     }
   }, []);
 
