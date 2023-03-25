@@ -10,10 +10,30 @@ import strand from '../../img/damage/strand.png';
 import strandTransparent from '../../img/damage/strand_trans.png';
 import voidD from '../../img/damage/void.png';
 import voidTransparent from '../../img/damage/void_trans.png';
+
+import basic from '../../img/rarity/basic.jpg';
 import common from '../../img/rarity/common.jpg';
 import rare from '../../img/rarity/rare.jpg';
 import legendary from '../../img/rarity/legendary.jpg';
 import exotic from '../../img/rarity/exotic.jpg';
+
+import auto from '../../img/weapon/auto.svg';
+import bow from '../../img/weapon/bow.svg';
+import fusion from '../../img/weapon/fusion.svg';
+import glaive from '../../img/weapon/glaive.svg';
+import grenadeLauncher from '../../img/weapon/grenade_launcher.svg';
+import handCannon from '../../img/weapon/hand_cannon.svg';
+import linearFusion from '../../img/weapon/linear_fusion.svg';
+import machinegun from '../../img/weapon/machinegun.svg';
+import pulse from '../../img/weapon/pulse.svg';
+import rocketLauncher from '../../img/weapon/rocket_launcher.svg';
+import scout from '../../img/weapon/scout.svg';
+import shotgun from '../../img/weapon/shotgun.svg';
+import sidearm from '../../img/weapon/sidearm.svg';
+import sniper from '../../img/weapon/sniper.svg';
+import submachineGun from '../../img/weapon/submachine_gun.svg';
+import sword from '../../img/weapon/sword.svg';
+import trace from '../../img/weapon/trace.svg';
 
 export const WEAPON_DAMAGE_TYPE = {
   KINETIC: 1,
@@ -68,7 +88,7 @@ export const WEAPON_RARITY_NAME = {
 };
 
 export const WEAPON_RARITY_IMAGE = {
-  2: '',
+  2: basic,
   3: common,
   4: rare,
   5: legendary,
@@ -113,4 +133,24 @@ export const WEAPON_TYPE_NAME = {
   25: 'Trace Rifle',
   31: 'Bow',
   33: 'Glaive',
+};
+
+export const WEAPON_TYPE_IMAGE = {
+  6: auto,
+  7: shotgun,
+  8: machinegun,
+  9: handCannon,
+  10: rocketLauncher,
+  11: fusion,
+  12: sniper,
+  13: pulse,
+  14: scout,
+  17: sidearm,
+  18: sword,
+  22: linearFusion,
+  23: grenadeLauncher,
+  24: submachineGun,
+  25: trace,
+  31: bow,
+  33: glaive,
 };

@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 import { postClue } from '../../../actions/bounties';
 import { useCurrentBounty } from '../../../hooks/bounty';
 import { CLUE_TYPE } from '../../../utils/bounties';
-import { WEAPON_DAMAGE_TYPE_IMAGE, WEAPON_DAMAGE_TYPE_NAME, WEAPON_RARITY_IMAGE, WEAPON_RARITY_NAME, WEAPON_TYPE_NAME } from '../../../utils/weapons';
 import CategoryTitle from '../CategoryTitle';
 import TrialsClue from './TrialsClue';
 
@@ -26,32 +25,9 @@ export default function TrialsClues() {
     <section>
       <CategoryTitle title="Clues" />
       <div className="flex gap-1 mt-4 -ml-1">
-        <TrialsClue used={clueRarityUsed} disabled={clueRarityDisabled} onClick={() => handleClickClue(CLUE_TYPE.RARITY)} />
-        <TrialsClue used={clueDamageTypeUsed} disabled={clueDamageTypeDisabled} onClick={() => handleClickClue(CLUE_TYPE.DAMAGE_TYPE)} />
-        <TrialsClue used={clueWeaponTypeUsed} disabled={clueWeaponTypeDisabled} onClick={() => handleClickClue(CLUE_TYPE.WEAPON_TYPE)} />
-      </div>
-      <div className="flex items-start flex-wrap gap-3 mt-2.5 text-lg">
-        {currentBounty.clues.rarity ? (
-          <div className="flex items-center gap-1 pr-1 text-white/70 border border-white/70 select-none">
-            <img src={WEAPON_RARITY_IMAGE[currentBounty.clues.rarity]} alt={WEAPON_RARITY_NAME[currentBounty.clues.rarity]} className="w-8 h-8" />
-            <div className="text-white/70">{WEAPON_RARITY_NAME[currentBounty.clues.rarity]}</div>
-          </div>
-        ) : (
-          <div className="px-1 py-0.5 text-white/70 border border-white/70 select-none">Clue #1</div>
-        )}
-        {currentBounty.clues.damageType ? (
-          <div className="flex items-center gap-1 pr-1 text-white/70 border border-white/70 select-none">
-            <img src={WEAPON_DAMAGE_TYPE_IMAGE[currentBounty.clues.damageType]} alt={WEAPON_DAMAGE_TYPE_NAME[currentBounty.clues.damageType]} className="w-8 h-8" />
-            <div className="text-white/70">{WEAPON_DAMAGE_TYPE_NAME[currentBounty.clues.damageType]}</div>
-          </div>
-        ) : (
-          <div className="px-1 py-0.5 text-white/70 border border-white/70 select-none">Clue #2</div>
-        )}
-        {currentBounty.clues.weaponType ? (
-          <div className="px-1 py-0.5 text-white/70 border border-white/70 select-none">{WEAPON_TYPE_NAME[currentBounty.clues.weaponType]}</div>
-        ) : (
-          <div className="px-1 py-0.5 text-white/70 border border-white/70 select-none">Clue #3</div>
-        )}
+        <TrialsClue type={CLUE_TYPE.RARITY} used={clueRarityUsed} disabled={clueRarityDisabled} onClick={() => handleClickClue(CLUE_TYPE.RARITY)} />
+        <TrialsClue type={CLUE_TYPE.DAMAGE_TYPE} used={clueDamageTypeUsed} disabled={clueDamageTypeDisabled} onClick={() => handleClickClue(CLUE_TYPE.DAMAGE_TYPE)} />
+        <TrialsClue type={CLUE_TYPE.WEAPON_TYPE} used={clueWeaponTypeUsed} disabled={clueWeaponTypeDisabled} onClick={() => handleClickClue(CLUE_TYPE.WEAPON_TYPE)} />
       </div>
     </section>
   );
