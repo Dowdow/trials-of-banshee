@@ -108,7 +108,7 @@ export default function TrialsPage() {
             <div className={`w-full ${slideIn && 'animate-slide-in'} ${slideOut && 'animate-slide-out'}`}>
               {currentBounty
                 ? (
-                  <div className="flex flex-col gap-y-10 xl:gap-y-12 p-5 lg:p-8 xl:p-10">
+                  <div className="flex flex-col gap-y-4 md:gap-y-10 xl:gap-y-12 p-5 lg:p-8 xl:p-10">
                     <TrialsInput />
                     <TrialsClues />
                     <TrialsHistory />

@@ -24,36 +24,30 @@ export default function TrialsClue({ type, used, disabled, onClick }) {
       <div className={`relative overflow-hidden ${animationClick && 'animate-bounty'} ${disabled ? 'bg-dark-grey' : 'bg-white'}`}>
         {used ? (
           <>
-            {type === CLUE_TYPE.RARITY && (
-              <div className="w-24 h-24 flex justify-center items-center bg-blue border-8 border-white/70 shadow">
+            <div className="w-24 h-24 p-2 flex justify-center items-center bg-blue border-8 border-white/70 shadow">
+              {type === CLUE_TYPE.RARITY && (
                 <img
                   src={WEAPON_RARITY_IMAGE[currentBounty.clues.rarity]}
                   alt={WEAPON_RARITY_NAME[currentBounty.clues.rarity]}
                   className="w-10 h-10"
                   loading="lazy"
                 />
-              </div>
-            )}
-            {type === CLUE_TYPE.DAMAGE_TYPE && (
-              <div className="w-24 h-24 p-3 justify-center items-center bg-blue border-8 border-white/70">
+              )}
+              {type === CLUE_TYPE.DAMAGE_TYPE && (
                 <img
                   src={WEAPON_DAMAGE_TYPE_IMAGE[currentBounty.clues.damageType]}
                   alt={WEAPON_DAMAGE_TYPE_NAME[currentBounty.clues.damageType]}
-                  className=""
                   loading="lazy"
                 />
-              </div>
-            )}
-            {type === CLUE_TYPE.WEAPON_TYPE && (
-              <div className="w-24 h-24 p-2 flex justify-center items-center bg-blue border-8 border-white/70 shadow">
+              )}
+              {type === CLUE_TYPE.WEAPON_TYPE && (
                 <img
                   src={WEAPON_TYPE_IMAGE[currentBounty.clues.weaponType]}
                   alt={WEAPON_TYPE_NAME[currentBounty.clues.weaponType]}
-                  className=""
                   loading="lazy"
                 />
-              </div>
-            )}
+              )}
+            </div>
             <div className="absolute -bottom-10 -right-10 bg-light-blue h-20 w-20 shadow-dark-grey rotate-45" />
             <div className="absolute bottom-3.5 right-2.5 h-2.5 w-4 border-l-4 border-b-4 border-white -rotate-45" />
           </>

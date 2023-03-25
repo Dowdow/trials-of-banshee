@@ -59,24 +59,25 @@ class DestinyDataCachingCommand extends Command
       $cacheVersion = file_get_contents($d2CacheVersionFile);
     }
 
-    if ($manifestVersion !== $cacheVersion) {
-      $output->writeln('New version available ' . $manifestVersion);
-
-      $jsonWorldComponentContentPaths = $destinyManifest['jsonWorldComponentContentPaths'];
-      foreach ($jsonWorldComponentContentPaths as $lang => $path) {
-        $output->write('Downloading "' . $lang . '" at [https://bungie.net' . $path['DestinyInventoryItemDefinition'] . ']... ');
-        $data = file_get_contents('https://bungie.net' . $path['DestinyInventoryItemDefinition']);
-        file_put_contents($this->d2CacheFolder . '/' . $lang . '.json', $data);
-        unset($data);
-        $output->writeln("Done $lang");
-      }
-
-      $output->write('Caching version file... ');
-      file_put_contents($d2CacheVersionFile, $manifestVersion);
-      $output->writeln('Done');
-    } else {
+    if ($manifestVersion === $cacheVersion) {
       $output->writeln('Cache already up to date');
+      return Command::SUCCESS;
     }
+
+    $output->writeln('New version available ' . $manifestVersion);
+
+    $jsonWorldComponentContentPaths = $destinyManifest['jsonWorldComponentContentPaths'];
+    foreach ($jsonWorldComponentContentPaths as $lang => $path) {
+      $output->write('Downloading "' . $lang . '" at [https://bungie.net' . $path['DestinyInventoryItemDefinition'] . ']... ');
+      $data = file_get_contents('https://bungie.net' . $path['DestinyInventoryItemDefinition']);
+      file_put_contents($this->d2CacheFolder . '/' . $lang . '.json', $data);
+      unset($data);
+      $output->writeln("Done $lang");
+    }
+
+    $output->write('Caching version file... ');
+    file_put_contents($d2CacheVersionFile, $manifestVersion);
+    $output->writeln('Done');
 
     return Command::SUCCESS;
   }
