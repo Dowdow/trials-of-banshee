@@ -15,16 +15,21 @@ export function useUserAdmin() {
   return useSelector((state) => state.user.admin);
 }
 
+export function useUserError() {
+  const user = useSelector((state) => state.user);
+  return user?.error ?? null;
+}
+
 export function useUserEngramsCollection() {
-  return useSelector((state) => state.user.collections.engrams ?? {});
+  return useSelector((state) => state.user.collections?.engrams ?? {});
 }
 
 export function useUserItemsCollection() {
-  return useSelector((state) => state.user.collections.items ?? {});
+  return useSelector((state) => state.user.collections?.items ?? {});
 }
 
 export function useUserTriumphs() {
-  return useSelector((state) => state.user.triumphs ?? {});
+  return useSelector((state) => state.user?.triumphs ?? {});
 }
 
 export function useUserCollectionBadgeClaimable() {

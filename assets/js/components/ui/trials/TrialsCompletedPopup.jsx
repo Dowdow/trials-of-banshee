@@ -46,21 +46,23 @@ export default function TrialsCompletedPopup({ onExit }) {
                 </div>
               </div>
               {currentBounty.type !== BOUNTY_TYPE.DAILY && (
-              <div className="flex flex-col gap-1.5">
-                <div className="border-b-2 border-white/40">Success condition</div>
-                <div className="w-5 h-5 p-0.5 border border-white/30">
-                  <div className={`w-full h-full ${currentBounty.succeeded ? 'bg-light-green' : 'bg-red'}`} />
+                <div className="flex flex-col gap-1.5">
+                  <div className="border-b-2 border-white/40">Success condition</div>
+                  <div className="w-5 h-5 p-0.5 border border-white/30">
+                    <div className={`w-full h-full ${currentBounty.succeeded ? 'bg-light-green' : 'bg-red'}`} />
+                  </div>
                 </div>
-              </div>
               )}
-              <div className="flex flex-col gap-3">
-                <div className="border-b-2 border-white/40">{`Reward - ${ENGRAMS[currentBounty.loot]}`}</div>
-                <div className="relative w-24 h-24">
-                  <div className="absolute w-24 h-24 border-2 border-white opacity-0 animate-engram-decoration-pop" />
-                  <div className="absolute w-24 h-24 border-2 border-white rotate-45 opacity-0 animate-engram-decoration-pop-next" />
-                  <img src={ENGRAM_IMAGES[currentBounty.loot]} alt={ENGRAMS[currentBounty.loot]} className="w-24 h-24 hover:brightness-125 transition-all duration-300 opacity-0 animate-engram-pop" />
+              {currentBounty.loot && (
+                <div className="flex flex-col gap-3">
+                  <div className="border-b-2 border-white/40">{`Reward - ${ENGRAMS[currentBounty.loot]}`}</div>
+                  <div className="relative w-24 h-24">
+                    <div className="absolute w-24 h-24 border-2 border-white opacity-0 animate-engram-decoration-pop" />
+                    <div className="absolute w-24 h-24 border-2 border-white rotate-45 opacity-0 animate-engram-decoration-pop-next" />
+                    <img src={ENGRAM_IMAGES[currentBounty.loot]} alt={ENGRAMS[currentBounty.loot]} className="w-24 h-24 hover:brightness-125 transition-all duration-300 opacity-0 animate-engram-pop" />
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import { SET_USER, SET_USER_COLLECTIONS, SET_USER_TRIUMPHS } from '../actions/user';
+import { SET_USER, SET_USER_COLLECTIONS, SET_USER_ERROR, SET_USER_TRIUMPHS } from '../actions/user';
 
 const init = { admin: false, authenticated: false };
 
@@ -8,6 +8,8 @@ export default function user(state = init, action = {}) {
       return { ...state, ...action.payload };
     case SET_USER_COLLECTIONS:
       return { ...state, collections: action.payload };
+    case SET_USER_ERROR:
+      return { ...state, error: action.payload };
     case SET_USER_TRIUMPHS:
       return { ...state, triumphs: action.payload };
     default:

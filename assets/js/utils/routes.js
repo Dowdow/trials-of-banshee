@@ -2,6 +2,7 @@ export const ROUTES = {
   INDEX: '/',
   COLLECTION: '/collection',
   OAUTH_AUTHORIZE: '/oauth/authorize',
+  OAUTH_LOGOUT: '/oauth/logout',
   SOUND_ADD: '/sounds/add',
   SOUND_EDIT: '/sounds/edit/:id',
   SOUNDS: '/sounds',

@@ -11,9 +11,11 @@ use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -33,6 +35,12 @@ class BountyCreateCommand extends Command
     $this->logger = $logger;
   }
 
+  protected function configure(): void
+  {
+    parent::configure();
+    $this->addArgument('date', InputArgument::OPTIONAL, 'Date with YYYY-MM-DD format.');
+  }
+
   protected function execute(InputInterface $input, OutputInterface $output): int
   {
     /** @var BountyRepository $bountyRepository */
@@ -40,7 +48,16 @@ class BountyCreateCommand extends Command
     /** @var WeaponRepository $weaponRepository */
     $weaponRepository = $this->em->getRepository(Weapon::class);
 
-    $date = new DateTime();
+    $dateArgument = $input->getArgument('date');
+
+    try {
+      $date = new DateTime($dateArgument ?? 'now');
+    } catch (Exception $e) {
+      $this->logger->error($e);
+      $output->writeln('Impossible to parse date. Use the YYYY-MM-DD format.');
+      return Command::FAILURE;
+    }
+
     $date->setTime(17, 0);
     $output->writeln('Current date is ' . $date->format('d-m-Y H:i'));
 

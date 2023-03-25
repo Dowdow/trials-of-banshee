@@ -1,17 +1,27 @@
 import React from 'react';
-import { useUser, useUserAuthenticated, useUserSeal } from '../../../hooks/user';
+import { useUser, useUserAuthenticated, useUserError, useUserSeal } from '../../../hooks/user';
 import { characterClassName, characterGenderName, characterRaceName } from '../../../utils/user';
-import defaultEmblem from '../../../../img/emblem/default_emblem.jpg';
 import { ROUTES } from '../../../utils/routes';
+import defaultEmblem from '../../../../img/emblem/default_emblem.jpg';
+import logout from '../../../../img/misc/logout.png';
+import warning from '../../../../img/misc/warning.png';
 
 export default function OrbitFireteam() {
   const authenticated = useUserAuthenticated();
   const user = useUser();
+  const error = useUserError();
   const { completed } = useUserSeal();
 
   return (
     <div className="flex flex-col">
-      <div className="text-sm md:text-base font-bold tracking-[.4em] uppercase text-white/80 select-none">Fireteam</div>
+      <div className="flex justify-between">
+        <div className="text-sm md:text-base font-bold tracking-[.4em] uppercase text-white/80 select-none">Fireteam</div>
+        {authenticated && (
+          <a href={ROUTES.OAUTH_LOGOUT} className="cursor-pointer" title="Logout">
+            <img src={logout} alt="Logout" className="w-6" />
+          </a>
+        )}
+      </div>
       <div className="w-full h-[1px] bg-white/60" />
       <div className="w-full md:w-[474px] mt-1">
         {authenticated ? (
@@ -31,6 +41,11 @@ export default function OrbitFireteam() {
               <div className="w-2.5 h-2.5 mt-1.5 border-4 border-yellow rotate-45 shadow-sm shadow-light-grey/50" />
               <div className="font-bold text-4xl text-yellow text-shadow-sm shadow-light-grey/50 tracking-wide select-none">{user.lightLevel}</div>
             </div>
+            {error && (
+              <div className="absolute bottom-1 right-1.5" title="Bungie may be doing a maintenance or your authentication tokens have exprired">
+                <img src={warning} alt="Warning" className="w-8 h-8" />
+              </div>
+            )}
           </div>
         ) : (
           <a href={ROUTES.OAUTH_AUTHORIZE} className="w-full h-24 flex items-center gap-5 pl-5 bg-light-grey/30 hover:bg-white/20 border border-white/30 hover:border-white/50 transition-colors duration-300 select-none">

@@ -28,7 +28,7 @@ class UserApiController extends AbstractController
   ): JsonResponse
   {
     if (!$this->isGranted(User::ROLE_USER)) {
-      return new JsonResponse(['errors' => ['Not authenticated']], 403);
+      return new JsonResponse(['errors' => ['Not authenticated']], 401);
     }
 
     /** @var User $user */
