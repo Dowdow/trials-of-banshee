@@ -1,5 +1,6 @@
 import bounties from './bounties';
 import collections from './collections';
+import locale from './locale';
 import sounds from './sounds';
 import triumphs from './triumphs';
 import user from './user';
@@ -9,6 +10,7 @@ import weapons from './weapons';
 export default {
   bounties,
   collections,
+  locale,
   sounds,
   user,
   triumphs,

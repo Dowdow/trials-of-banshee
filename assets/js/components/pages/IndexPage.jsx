@@ -3,10 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { getUser } from '../../actions/user';
 import { useInterfaceMoveOnMouseMove } from '../../hooks/mouse';
+import { useT } from '../../hooks/translations';
 import { useUserAuthenticated } from '../../hooks/user';
 import InitFade from '../ui/InitFade';
 import OrbitFireteam from '../ui/orbit/OrbitFireteam';
 import OrbitInformations from '../ui/orbit/OrbitInformations';
+import OrbitLanguage from '../ui/orbit/OrbitLanguage';
 import OrbitModifierDiscord from '../ui/orbit/OrbitModifierDiscord';
 import OrbitModifierTwitter from '../ui/orbit/OrbitModifierTwitter';
 import orbit from '../../../img/orbit.png';
@@ -15,6 +17,7 @@ export default function IndexPage() {
   const authenticated = useUserAuthenticated();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const t = useT();
 
   const [launchFade, setLaunchFade] = useState(false);
   const [zoomEarth, setZoomEarth] = useState(false);
@@ -56,10 +59,15 @@ export default function IndexPage() {
               <h1 className="mb-3 font-neue-haas-display-bold text-3xl md:text-5xl lg:text-6xl 2xl:text-8xl tracking-wide uppercase text-white/90 whitespace-nowrap select-none">Trials of Banshee</h1>
               <span className="text-base md:text-lg lg:text-xl text-white/70 whitespace-nowrap select-none">The Last City</span>
             </div>
-            <div className={`self-end xl:self-center w-full md:w-[474px] max-w-full border-2 border-transparent hover:border-white/80 transition-colors duration-300 p-0.5 ${launchFade && 'animate-fade-short'}`}>
-              <button type="button" onClick={() => setLaunchFade(true)} className="flex justify-center items-center w-full h-14 bg-green border border-white/30 hover:border-white/80 transition-colors duration-300 animate-launch cursor-pointer">
-                <span className="text-lg md:text-xl lg:text-2xl uppercase tracking-[.4em] text-white/80 select-none">Launch</span>
-              </button>
+            <div className="w-full md:w-[474px] max-w-full self-end xl:self-center flex-col gap-y-1">
+              <div className={`${launchFade && 'animate-fade-short'}`}>
+                <OrbitLanguage />
+              </div>
+              <div className={`w-full p-0.5 border-2 border-transparent hover:border-white/80 transition-colors duration-300 ${launchFade && 'animate-fade-short'}`}>
+                <button type="button" onClick={() => setLaunchFade(true)} className="flex justify-center items-center w-full h-14 bg-green border border-white/30 hover:border-white/80 transition-colors duration-300 animate-launch cursor-pointer">
+                  <span className="text-lg md:text-xl lg:text-2xl uppercase tracking-[.4em] text-white/80 select-none">{t('orbit.launch')}</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>

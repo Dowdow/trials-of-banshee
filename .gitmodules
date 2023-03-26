@@ -1,0 +1,3 @@
+[submodule "translations"]
+	path = translations
+	url = git@github.com:Dowdow/trials-of-banshee-translations.git
