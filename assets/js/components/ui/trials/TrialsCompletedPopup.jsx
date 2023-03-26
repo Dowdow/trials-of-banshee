@@ -5,6 +5,7 @@ import { useCurrentBounty } from '../../../hooks/bounty';
 import { bountyNameFromType, BOUNTY_TYPE } from '../../../utils/bounties';
 import { ENGRAMS, ENGRAM_IMAGES } from '../../../utils/collections';
 import LeftClickButton from '../clickable/LeftClickButton';
+import TwitterShareBounty from '../clickable/TwitterShareBounty';
 
 export default function TrialsCompletedPopup({ onExit }) {
   const currentBounty = useCurrentBounty();
@@ -66,7 +67,8 @@ export default function TrialsCompletedPopup({ onExit }) {
             </div>
           </div>
         </div>
-        <div className="w-full py-2 flex justify-center bg-dark-grey/60">
+        <div className="w-full py-2 flex justify-center gap-x-5 bg-dark-grey/60">
+          <TwitterShareBounty />
           <LeftClickButton onClick={() => setCompletedOut(true)} text="O.K." />
         </div>
       </div>
