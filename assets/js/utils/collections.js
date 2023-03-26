@@ -57,7 +57,7 @@ export const ENGRAMS = {
   notoriousEngram: 'engram.notorious',
   primeEngram: 'engram.prime',
   prototypeEngram: 'engram.prototype',
-  rareEngram: 'engram.rate',
+  rareEngram: 'engram.rare',
   solsticeEngram: 'engram.solstice',
   spiderSpecialEngram: 'engram.spiderspecial',
   steadfastEngram: 'engram.steadfast',
