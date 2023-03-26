@@ -2,13 +2,15 @@ import React, { useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { postClue } from '../../../actions/bounties';
 import { useCurrentBounty } from '../../../hooks/bounty';
+import { useT } from '../../../hooks/translations';
 import { CLUE_TYPE } from '../../../utils/bounties';
 import CategoryTitle from '../CategoryTitle';
 import TrialsClue from './TrialsClue';
 
 export default function TrialsClues() {
-  const currentBounty = useCurrentBounty();
   const dispatch = useDispatch();
+  const t = useT();
+  const currentBounty = useCurrentBounty();
 
   const clueRarityUsed = useMemo(() => currentBounty.clues[CLUE_TYPE.RARITY] !== undefined, [currentBounty]);
   const clueDamageTypeUsed = useMemo(() => currentBounty.clues[CLUE_TYPE.DAMAGE_TYPE] !== undefined, [currentBounty]);
@@ -23,7 +25,7 @@ export default function TrialsClues() {
 
   return (
     <section>
-      <CategoryTitle title="Clues" />
+      <CategoryTitle title={t('clues')} />
       <div className="flex gap-1 mt-4 -ml-1">
         <TrialsClue type={CLUE_TYPE.RARITY} used={clueRarityUsed} disabled={clueRarityDisabled} onClick={() => handleClickClue(CLUE_TYPE.RARITY)} />
         <TrialsClue type={CLUE_TYPE.DAMAGE_TYPE} used={clueDamageTypeUsed} disabled={clueDamageTypeDisabled} onClick={() => handleClickClue(CLUE_TYPE.DAMAGE_TYPE)} />

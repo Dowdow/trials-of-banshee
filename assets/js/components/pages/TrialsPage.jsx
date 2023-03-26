@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { getBountiesToday, setCurrentBounty } from '../../actions/bounties';
 import { useCurrentBounty } from '../../hooks/bounty';
 import { useInterfaceMoveOnMouseMove } from '../../hooks/mouse';
+import { useT } from '../../hooks/translations';
 import { useUserAdmin } from '../../hooks/user';
 import { ROUTES } from '../../utils/routes';
 import EscapeButton from '../ui/clickable/EscapeButton';
@@ -14,18 +15,19 @@ import NavBarBottom from '../ui/NavBarBottom';
 import TrialsAudio from '../ui/trials/TrialsAudio';
 import TrialsBounties from '../ui/trials/TrialsBounties';
 import TrialsBountyPresentation from '../ui/trials/TrialsBountyPresentation';
-import TrialsCollectionAndTriumphs from '../ui/trials/TrialsCollectionAndTriumphs';
 import TrialsClues from '../ui/trials/TrialsClues';
+import TrialsCollectionAndTriumphs from '../ui/trials/TrialsCollectionAndTriumphs';
+import TrialsCompletedPopup from '../ui/trials/TrialsCompletedPopup';
 import TrialsHistory from '../ui/trials/TrialsHistory';
 import TrialsInput from '../ui/trials/TrialsInput';
 import TrialsRules from '../ui/trials/TrialsRules';
 import banshee from '../../../img/banshee.jpg';
-import TrialsCompletedPopup from '../ui/trials/TrialsCompletedPopup';
 
 export default function TrialsPage() {
   const admin = useUserAdmin();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const t = useT();
 
   const currentBounty = useCurrentBounty();
 
@@ -71,15 +73,19 @@ export default function TrialsPage() {
   return (
     <div className={`overflow-hidden ${fadeOut && 'animate-fade-out'}`} onAnimationEnd={() => navigate(nextPage)}>
       <div className="absolute w-full h-screen overflow-hidden z-0">
-        <img src={banshee} alt="Banshee" className="w-full h-full object-cover" loading="lazy" />
+        <img src={banshee} alt={t('banshee')} className="w-full h-full object-cover" loading="lazy" />
       </div>
 
       <InitFade />
 
       <div className="hidden md:block absolute md:bottom-52 xl:bottom-24 md:-left-32 xl:left-12 xl:pl-12 md:-rotate-90 xl:rotate-0" style={{ translate: `${x}px ${y}px` }}>
-        <div className="ml-3 text-lg font-bold tracking-widest text-white text-shadow-sm shadow-light-grey/30 uppercase select-none">Gunsmith</div>
+        <div className="ml-3 text-lg font-bold tracking-widest text-white text-shadow-sm shadow-light-grey/30 uppercase select-none">
+          {t('gunsmith')}
+        </div>
         <div className="w-full h-2 bg-white/90 text-shadow-sm shadow-light-grey/30 mb-2" />
-        <div className="font-neue-haas-display-bold text-7xl uppercase text-white text-shadow-sm shadow-light-grey/30 select-none">Banshee-44</div>
+        <div className="font-neue-haas-display-bold text-7xl uppercase text-white text-shadow-sm shadow-light-grey/30 select-none">
+          {t('banshee')}
+        </div>
         <div className="h-0.5 w-[95%] ml-3 bg-white/70 mt-3" />
       </div>
 
@@ -124,12 +130,12 @@ export default function TrialsPage() {
         </div>
         <NavBarBottom>
           {currentBounty
-            ? <EscapeButton onClick={() => handleClickBounty(null)} text="Back" />
+            ? <EscapeButton onClick={() => handleClickBounty(null)} text={t('back')} />
             : (
               <>
-                {admin && <LeftClickLink route={ROUTES.SOUNDS} onClick={(e) => handleClickLink(e, ROUTES.SOUNDS)} text="Sounds" />}
-                <LeftClickLink route={ROUTES.WEAPONS} onClick={(e) => handleClickLink(e, ROUTES.WEAPONS)} text="Weapons" />
-                <EscapeLink route={ROUTES.INDEX} onClick={(e) => handleClickLink(e, ROUTES.INDEX)} text="Back" />
+                {admin && <LeftClickLink route={ROUTES.SOUNDS} onClick={(e) => handleClickLink(e, ROUTES.SOUNDS)} text={t('sounds')} />}
+                <LeftClickLink route={ROUTES.WEAPONS} onClick={(e) => handleClickLink(e, ROUTES.WEAPONS)} text={t('weapons')} />
+                <EscapeLink route={ROUTES.INDEX} onClick={(e) => handleClickLink(e, ROUTES.INDEX)} text={t('back')} />
               </>
             )}
         </NavBarBottom>

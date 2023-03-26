@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
+import { useLocale } from '../../hooks/translations';
+import { DEFAULT_LOCALE } from '../../utils/locale';
 import WeaponIcon from './weapon/WeaponIcon';
 
 export default function SoundForm({ onSubmit, sound = null, error = null }) {
+  const locale = useLocale();
+
   const allWeapons = useSelector((state) => state.weapons);
 
   const [name, setName] = useState(sound !== null ? sound.name : '');
@@ -79,7 +83,7 @@ export default function SoundForm({ onSubmit, sound = null, error = null }) {
           <input type="text" value={query} onChange={handleChangeQuery} className="p-2 text-lg bg-light-grey text-white" placeholder="Type a weapon name" />
           <div className="flex flex-wrap gap-1 mt-2">
             {query !== '' && allWeapons
-              .filter((w) => w.names.fr.toLowerCase().includes(query.toLowerCase()))
+              .filter((w) => w.names[locale].toLowerCase().includes(query.toLowerCase()) || w.names[DEFAULT_LOCALE].toLowerCase().includes(query.toLowerCase()))
               .map((w) => <Weapon key={w.id} w={w} action={() => handleAddWeapon(w.id)} />)}
           </div>
         </div>
@@ -92,10 +96,11 @@ export default function SoundForm({ onSubmit, sound = null, error = null }) {
 }
 
 function Weapon({ w, action }) {
+  const locale = useLocale();
   return (
     <button type="button" onClick={action} className="flex items-center gap-1 p-1 bg-transparent hover:bg-light-grey border border-white/30 hover:border-white/80 transition-colors cursor-pointer">
-      <WeaponIcon icon={w.icon} alt={w.names.fr} iconWatermark={w.iconWatermark} className="w-8 h-8" />
-      <span className="tracking-wide text-white">{w.names.fr}</span>
+      <WeaponIcon icon={w.icon} alt={w.names[locale]} iconWatermark={w.iconWatermark} className="w-8 h-8" />
+      <span className="tracking-wide text-white">{w.names[locale]}</span>
     </button>
   );
 }

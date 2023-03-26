@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { getUserTriumphs } from '../../actions/user';
 import { useTriumphsDefault } from '../../hooks/default';
 import { useInterfaceMoveOnMouseMove } from '../../hooks/mouse';
+import { useT } from '../../hooks/translations';
 import { useUserCollectionBadgeClaimable, useUserTriumphs, useUserXurBountyClaimable } from '../../hooks/user';
 import { ROUTES } from '../../utils/routes';
 import EscapeLink from '../ui/clickable/EscapeLink';
@@ -16,6 +17,7 @@ import TriumphProgress from '../ui/triumph/TriumphProgress';
 export default function TriumphsPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const t = useT();
 
   const triumphsDefault = useTriumphsDefault();
   const triumphs = useUserTriumphs();
@@ -56,8 +58,12 @@ export default function TriumphsPage() {
                   <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-white/20" />
                 </div>
               </div>
-              <div className="mt-10 text-4xl font-bold text-white tracking-widest uppercase">Gunsmith</div>
-              <div className="mt-2 text-white/50 text-xl tracking-wide">Knowledge and precision are required to be a true Gunsmith. Prove yourself worth.</div>
+              <div className="mt-10 text-4xl font-bold text-white tracking-widest uppercase">
+                {t('gunsmith')}
+              </div>
+              <div className="mt-2 text-white/50 text-xl tracking-wide">
+                {t('triumph.seal.description')}
+              </div>
             </div>
             <GunsmithSeal />
           </div>
@@ -71,16 +77,16 @@ export default function TriumphsPage() {
               <div className="grid grid-cols-1 2xl:grid-cols-2 gap-1.5">
                 <Triumph
                   type="collectionBadge"
-                  title="Collection Badge"
-                  description="Collect all engrams by completing bounties"
+                  title={t('triumph.collection.title')}
+                  description={t('triumph.collection.description')}
                   badge
                   claimable={collectionBadgeClaimable}
                   completed={triumphs.collectionBadge ?? false}
                 />
                 <TriumphProgress
                   type="bounties"
-                  title="Bounties"
-                  description={`Complete ${triumphsDefault.bountiesGoal} bounties`}
+                  title={t('triumph.bounties.title')}
+                  description={t('triumph.bounties.description', { count: triumphsDefault.bountiesGoal })}
                   completed={triumphs.bountiesClaimed ?? false}
                   value={triumphs.bounties ?? 0}
                   min={triumphsDefault.bountiesDefault}
@@ -88,8 +94,8 @@ export default function TriumphsPage() {
                 />
                 <TriumphProgress
                   type="aspiringBounties"
-                  title="Aspiring Gunsmith Bounties"
-                  description={`Complete successfully ${triumphsDefault.aspiringBountiesGoal} aspiring gunsmith bounties`}
+                  title={t('triumph.aspiring.title')}
+                  description={t('triumph.aspiring.description', { count: triumphsDefault.aspiringBountiesGoal })}
                   completed={triumphs.aspiringBountiesClaimed ?? false}
                   value={triumphs.aspiringBounties ?? 0}
                   min={triumphsDefault.aspiringBountiesDefault}
@@ -97,8 +103,8 @@ export default function TriumphsPage() {
                 />
                 <TriumphProgress
                   type="trueGunsmithBounties"
-                  title="True Gunsmith Bounties"
-                  description={`Complete successfully ${triumphsDefault.trueGunsmithBountiesGoal} true gunsmith bounties`}
+                  title={t('triumph.true.title')}
+                  description={t('triumph.true.description', { count: triumphsDefault.trueGunsmithBountiesGoal })}
                   completed={triumphs.trueGunsmithBountiesClaimed ?? false}
                   value={triumphs.trueGunsmithBounties ?? 0}
                   min={triumphsDefault.trueGunsmithBountiesDefault}
@@ -106,8 +112,8 @@ export default function TriumphsPage() {
                 />
                 <TriumphProgress
                   type="perfectMatches"
-                  title="Perfect Matches"
-                  description={`Complete ${triumphsDefault.perfectMatchesGoal} bounties with a perfect weapon match`}
+                  title={t('triumph.perfect.title')}
+                  description={t('triumph.perfect.description', { count: triumphsDefault.perfectMatchesGoal })}
                   completed={triumphs.perfectMatchesClaimed ?? false}
                   value={triumphs.perfectMatches ?? 0}
                   min={triumphsDefault.perfectMatchesDefault}
@@ -115,8 +121,8 @@ export default function TriumphsPage() {
                 />
                 <Triumph
                   type="xurBounty"
-                  title="Secret Bounty"
-                  description="Find and complete the secret bounty"
+                  title={t('triumph.secret.title')}
+                  description={t('triumph.secret.description')}
                   claimable={xurBountyClaimable}
                   completed={triumphs.xurBounty ?? false}
                 />
@@ -131,7 +137,7 @@ export default function TriumphsPage() {
         </div>
       </div>
       <NavBarBottom>
-        <EscapeLink route={ROUTES.TRIALS} onClick={(e) => handleClickLink(e, ROUTES.TRIALS)} text="Back" />
+        <EscapeLink route={ROUTES.TRIALS} onClick={(e) => handleClickLink(e, ROUTES.TRIALS)} text={t('back')} />
       </NavBarBottom>
     </div>
   );

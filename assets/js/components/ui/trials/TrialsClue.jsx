@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import clue from '../../../../img/bounty/clue.jpg';
-import { CLUE_TYPE } from '../../../utils/bounties';
-import { WEAPON_DAMAGE_TYPE_IMAGE, WEAPON_DAMAGE_TYPE_NAME, WEAPON_RARITY_IMAGE, WEAPON_RARITY_NAME, WEAPON_TYPE_IMAGE, WEAPON_TYPE_NAME } from '../../../utils/weapons';
 import { useCurrentBounty } from '../../../hooks/bounty';
+import { useT } from '../../../hooks/translations';
+import { WEAPON_DAMAGE_TYPE_IMAGE, WEAPON_DAMAGE_TYPE_NAME, WEAPON_RARITY_IMAGE, WEAPON_RARITY_NAME, WEAPON_TYPE_IMAGE, WEAPON_TYPE_NAME } from '../../../utils/weapons';
+import { CLUE_TYPE } from '../../../utils/bounties';
+import clue from '../../../../img/bounty/clue.jpg';
 
 export default function TrialsClue({ type, used, disabled, onClick }) {
   const currentBounty = useCurrentBounty();
+  const t = useT();
 
   const [animationClick, setAnimationClick] = useState(false);
 
@@ -28,7 +30,7 @@ export default function TrialsClue({ type, used, disabled, onClick }) {
               {type === CLUE_TYPE.RARITY && (
                 <img
                   src={WEAPON_RARITY_IMAGE[currentBounty.clues.rarity]}
-                  alt={WEAPON_RARITY_NAME[currentBounty.clues.rarity]}
+                  alt={t(WEAPON_RARITY_NAME[currentBounty.clues.rarity])}
                   className="w-10 h-10"
                   loading="lazy"
                 />
@@ -36,14 +38,14 @@ export default function TrialsClue({ type, used, disabled, onClick }) {
               {type === CLUE_TYPE.DAMAGE_TYPE && (
                 <img
                   src={WEAPON_DAMAGE_TYPE_IMAGE[currentBounty.clues.damageType]}
-                  alt={WEAPON_DAMAGE_TYPE_NAME[currentBounty.clues.damageType]}
+                  alt={t(WEAPON_DAMAGE_TYPE_NAME[currentBounty.clues.damageType])}
                   loading="lazy"
                 />
               )}
               {type === CLUE_TYPE.WEAPON_TYPE && (
                 <img
                   src={WEAPON_TYPE_IMAGE[currentBounty.clues.weaponType]}
-                  alt={WEAPON_TYPE_NAME[currentBounty.clues.weaponType]}
+                  alt={t(WEAPON_TYPE_NAME[currentBounty.clues.weaponType])}
                   loading="lazy"
                 />
               )}
@@ -52,7 +54,7 @@ export default function TrialsClue({ type, used, disabled, onClick }) {
             <div className="absolute bottom-3.5 right-2.5 h-2.5 w-4 border-l-4 border-b-4 border-white -rotate-45" />
           </>
         ) : (
-          <img src={clue} alt="Clue" className={`w-24 h-24 ${animationClick ? 'opacity-0 hover:opacity-0' : 'hover:opacity-70'} ${disabled && 'opacity-70'} transition-opacity duration-300`} loading="lazy" />
+          <img src={clue} alt={t('clue')} className={`w-24 h-24 ${animationClick ? 'opacity-0 hover:opacity-0' : 'hover:opacity-70'} ${disabled && 'opacity-70'} transition-opacity duration-300`} loading="lazy" />
         )}
       </div>
     </button>

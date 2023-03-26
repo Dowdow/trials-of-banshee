@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { useCurrentBounty } from '../../../hooks/bounty';
+import { useT } from '../../../hooks/translations';
 import { bountyNameFromType, BOUNTY_TYPE } from '../../../utils/bounties';
 import { ENGRAMS, ENGRAM_IMAGES } from '../../../utils/collections';
 import LeftClickButton from '../clickable/LeftClickButton';
@@ -9,6 +10,7 @@ import TwitterShareBounty from '../clickable/TwitterShareBounty';
 
 export default function TrialsCompletedPopup({ onExit }) {
   const currentBounty = useCurrentBounty();
+  const t = useT();
   const weapons = useSelector((state) => state.weapons);
 
   const [completedOut, setCompletedOut] = useState(false);
@@ -32,23 +34,27 @@ export default function TrialsCompletedPopup({ onExit }) {
         <div className="w-full h-2 bg-white/50" />
         <div className="w-full flex flex-col md:flex-row">
           <div className="flex justify-center items-center md:w-1/2 bg-light-grey/50">
-            <img className="w-full h-full object-cover" src={`https://bungie.net${weapon.screenshot}`} alt="Weapon screenshot" loading="lazy" />
+            <img className="w-full h-full object-cover" src={`https://bungie.net${weapon.screenshot}`} alt={t('weapon')} loading="lazy" />
           </div>
           <div className="flex flex-col grow">
             <div className="flex items-center p-3 lg:p-5 bg-light-grey/40 text-xl lg:text-3xl text-white/80 font-bold tracking-widest lg:tracking-[0.3em] uppercase">
-              Bounty Completed
+              {t('trials.bounty.completed')}
             </div>
             <div className="flex flex-col gap-y-4 p-3 lg:p-5 text-white/70 text-base lg:text-xl tracking-wide">
-              <div>{`${bountyNameFromType(currentBounty.type)} done.`}</div>
+              <div>{t('bounty.done', { bounty: t(bountyNameFromType(currentBounty.type)) })}</div>
               <div className="flex flex-col gap-1.5">
-                <div className="border-b-2 border-white/40">Perfect match</div>
+                <div className="border-b-2 border-white/40">
+                  {t('trials.bounty.perfect')}
+                </div>
                 <div className="w-5 h-5 p-0.5 border border-white/30">
                   <div className={`w-full h-full ${currentBounty.perfectMatch ? 'bg-light-green' : 'bg-red'}`} />
                 </div>
               </div>
               {currentBounty.type !== BOUNTY_TYPE.DAILY && (
                 <div className="flex flex-col gap-1.5">
-                  <div className="border-b-2 border-white/40">Success condition</div>
+                  <div className="border-b-2 border-white/40">
+                    {t('trials.bounty.success')}
+                  </div>
                   <div className="w-5 h-5 p-0.5 border border-white/30">
                     <div className={`w-full h-full ${currentBounty.succeeded ? 'bg-light-green' : 'bg-red'}`} />
                   </div>
@@ -56,11 +62,11 @@ export default function TrialsCompletedPopup({ onExit }) {
               )}
               {currentBounty.loot && (
                 <div className="flex flex-col gap-3">
-                  <div className="border-b-2 border-white/40">{`Reward - ${ENGRAMS[currentBounty.loot]}`}</div>
+                  <div className="border-b-2 border-white/40">{t('trials.bounty.reward', { engram: t(ENGRAMS[currentBounty.loot]) })}</div>
                   <div className="relative w-24 h-24">
                     <div className="absolute w-24 h-24 border-2 border-white opacity-0 animate-engram-decoration-pop" />
                     <div className="absolute w-24 h-24 border-2 border-white rotate-45 opacity-0 animate-engram-decoration-pop-next" />
-                    <img src={ENGRAM_IMAGES[currentBounty.loot]} alt={ENGRAMS[currentBounty.loot]} className="w-24 h-24 hover:brightness-125 transition-all duration-300 opacity-0 animate-engram-pop" />
+                    <img src={ENGRAM_IMAGES[currentBounty.loot]} alt={t(ENGRAMS[currentBounty.loot])} className="w-24 h-24 hover:brightness-125 transition-all duration-300 opacity-0 animate-engram-pop" />
                   </div>
                 </div>
               )}

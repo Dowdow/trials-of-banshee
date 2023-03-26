@@ -2,11 +2,13 @@ import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { useCurrentBounty } from '../../../hooks/bounty';
+import { useLocale, useT } from '../../../hooks/translations';
 import CategoryTitle from '../CategoryTitle';
 import WeaponIcon from '../weapon/WeaponIcon';
 
 export default function TrialsHistory() {
   const scrollDiv = useRef();
+  const t = useT();
 
   const currentBounty = useCurrentBounty();
   const weapons = useSelector((state) => state.weapons);
@@ -20,8 +22,12 @@ export default function TrialsHistory() {
 
   return (
     <section>
-      <CategoryTitle title="History" />
-      {currentBounty.history.length === 0 && (<div className="mt-4 text-lg text-white/70">No history</div>)}
+      <CategoryTitle title={t('trials.history')} />
+      {currentBounty.history.length === 0 && (
+      <div className="mt-4 text-lg text-white/70">
+        {(t('trials.history.empty'))}
+      </div>
+      )}
       <div ref={scrollDiv} className="mt-4 -ml-1 w-full max-w-full overflow-x-scroll noscrollbar">
         <div className="flex flex-row-reverse justify-end gap-1">
           {currentBounty.history.map((weapon, index) => (
@@ -38,9 +44,10 @@ export default function TrialsHistory() {
 }
 
 function WeaponHistory({ weapon, correct = false }) {
+  const locale = useLocale();
   return (
     <div className="relative animate-wiggle">
-      <WeaponIcon icon={weapon.icon} alt={weapon.names.fr} iconWatermark={weapon.iconWatermark} className="w-20 h-20" />
+      <WeaponIcon icon={weapon.icon} alt={weapon.names[locale]} iconWatermark={weapon.iconWatermark} className="w-20 h-20" />
       <div className="absolute top-0 left-0 w-20 h-20 overflow-hidden">
         {correct ? (
           <>

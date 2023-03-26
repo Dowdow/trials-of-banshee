@@ -2,8 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { setDamageType, setHasSound, setQuery, setRarity, setType } from '../../actions/weaponFilters';
+import { useLocale, useT } from '../../hooks/translations';
 import { useUserAdmin } from '../../hooks/user';
-import { WEAPON_DAMAGE_TYPE, WEAPON_DAMAGE_TYPE_IMAGE, WEAPON_DAMAGE_TYPE_NAME, WEAPON_RARITY, WEAPON_TYPE, WEAPON_TYPE_NAME } from '../../utils/weapons';
+import { DEFAULT_LOCALE } from '../../utils/locale';
+import { WEAPON_DAMAGE_TYPE, WEAPON_DAMAGE_TYPE_IMAGE, WEAPON_DAMAGE_TYPE_NAME, WEAPON_RARITY, WEAPON_RARITY_NAME, WEAPON_TYPE, WEAPON_TYPE_NAME } from '../../utils/weapons';
 import { ROUTES } from '../../utils/routes';
 import EscapeLink from '../ui/clickable/EscapeLink';
 import LeftClickLink from '../ui/clickable/LeftClickLink';
@@ -14,6 +16,8 @@ import releg from '../../../img/misc/relegation.png';
 export default function WeaponsPage() {
   const admin = useUserAdmin();
   const dispatch = useDispatch();
+  const locale = useLocale();
+  const t = useT();
 
   const weapons = useSelector((state) => state.weapons);
   const { damageType, hasSound, query, rarity, type } = useSelector((state) => state.weaponFilters);
@@ -43,64 +47,64 @@ export default function WeaponsPage() {
       <div className="sticky top-0 flex justify-between items-center flex-wrap gap-3 md:gap-6 w-full p-3 md:p-5 bg-dark-grey z-10">
         <div className="flex items-center flex-wrap gap-3 md:gap-6">
           <div>
-            <h1 className="mb-1 md:mb-3 font-neue-haas-display-bold text-5xl md:text-6xl text-white">Weapons</h1>
+            <h1 className="mb-1 md:mb-3 font-neue-haas-display-bold text-5xl md:text-6xl text-white">{t('weapons')}</h1>
             <div className="w-full h-0.5 bg-white/50" />
           </div>
           <div className="flex items-center flex-wrap gap-2 md:gap-6">
-            <input type="text" value={query} onChange={handleQuery} className="p-2 text-lg bg-light-grey text-white" placeholder="Search a weapon" />
+            <input type="text" value={query} onChange={handleQuery} className="p-2 text-lg bg-light-grey text-white" placeholder={t('weapons.filters.search')} />
             <select value={rarity} onChange={handleRarity} className="p-2 text-lg bg-light-grey text-white">
-              <option value={0}>All Rarity</option>
-              <option value={WEAPON_RARITY.EXOTIC}>Exotic</option>
-              <option value={WEAPON_RARITY.LEGENDARY}>Legendary</option>
-              <option value={WEAPON_RARITY.RARE}>Rare</option>
-              <option value={WEAPON_RARITY.COMMON}>Common</option>
-              <option value={WEAPON_RARITY.BASIC}>Basic</option>
+              <option value={0}>{t('weapons.filters.rarity.all')}</option>
+              <option value={WEAPON_RARITY.EXOTIC}>{t(WEAPON_RARITY_NAME[WEAPON_RARITY.EXOTIC])}</option>
+              <option value={WEAPON_RARITY.LEGENDARY}>{t(WEAPON_RARITY_NAME[WEAPON_RARITY.LEGENDARY])}</option>
+              <option value={WEAPON_RARITY.RARE}>{t(WEAPON_RARITY_NAME[WEAPON_RARITY.RARE])}</option>
+              <option value={WEAPON_RARITY.COMMON}>{t(WEAPON_RARITY_NAME[WEAPON_RARITY.COMMON])}</option>
+              <option value={WEAPON_RARITY.BASIC}>{t(WEAPON_RARITY_NAME[WEAPON_RARITY.BASIC])}</option>
             </select>
             <select value={damageType} onChange={handleDamageType} className="p-2 text-lg bg-light-grey text-white">
-              <option value={0}>All Damage Type</option>
-              <option value={WEAPON_DAMAGE_TYPE.KINETIC}>Kinetic</option>
-              <option value={WEAPON_DAMAGE_TYPE.ARC}>Arc</option>
-              <option value={WEAPON_DAMAGE_TYPE.SOLAR}>Solar</option>
-              <option value={WEAPON_DAMAGE_TYPE.STASIS}>Stasis</option>
-              <option value={WEAPON_DAMAGE_TYPE.STRAND}>Strand</option>
-              <option value={WEAPON_DAMAGE_TYPE.VOID}>Void</option>
+              <option value={0}>{t('weapons.filters.damage.all')}</option>
+              <option value={WEAPON_DAMAGE_TYPE.KINETIC}>{t(WEAPON_DAMAGE_TYPE_NAME[WEAPON_DAMAGE_TYPE.KINETIC])}</option>
+              <option value={WEAPON_DAMAGE_TYPE.ARC}>{t(WEAPON_DAMAGE_TYPE_NAME[WEAPON_DAMAGE_TYPE.ARC])}</option>
+              <option value={WEAPON_DAMAGE_TYPE.SOLAR}>{t(WEAPON_DAMAGE_TYPE_NAME[WEAPON_DAMAGE_TYPE.SOLAR])}</option>
+              <option value={WEAPON_DAMAGE_TYPE.STASIS}>{t(WEAPON_DAMAGE_TYPE_NAME[WEAPON_DAMAGE_TYPE.STASIS])}</option>
+              <option value={WEAPON_DAMAGE_TYPE.STRAND}>{t(WEAPON_DAMAGE_TYPE_NAME[WEAPON_DAMAGE_TYPE.STRAND])}</option>
+              <option value={WEAPON_DAMAGE_TYPE.VOID}>{t(WEAPON_DAMAGE_TYPE_NAME[WEAPON_DAMAGE_TYPE.VOID])}</option>
             </select>
             <select value={type} onChange={handleType} className="p-2 text-lg bg-light-grey text-white">
-              <option value={0}>All Weapon Type</option>
-              <option value={WEAPON_TYPE.AUTO}>Auto</option>
-              <option value={WEAPON_TYPE.SHOTGUN}>Shotgun</option>
-              <option value={WEAPON_TYPE.MACHINEGUN}>Machine Gun</option>
-              <option value={WEAPON_TYPE.HAND_CANNON}>Hand Cannon</option>
-              <option value={WEAPON_TYPE.ROCKET_LAUNCHER}>Rocket Launcher</option>
-              <option value={WEAPON_TYPE.FUSION}>Fusion</option>
-              <option value={WEAPON_TYPE.SNIPER}>Sniper</option>
-              <option value={WEAPON_TYPE.PULSE}>Pulse</option>
-              <option value={WEAPON_TYPE.SCOUT}>Scout</option>
-              <option value={WEAPON_TYPE.SIDEARM}>Sidearm</option>
-              <option value={WEAPON_TYPE.SWORD}>Sword</option>
-              <option value={WEAPON_TYPE.LINEAR_FUSION}>Linear Fusion</option>
-              <option value={WEAPON_TYPE.GRENADE_LAUNCHER}>Grenade Launcher</option>
-              <option value={WEAPON_TYPE.SUBMACHINE_GUN}>Submachine Gun</option>
-              <option value={WEAPON_TYPE.TRACE}>Trace</option>
-              <option value={WEAPON_TYPE.BOW}>Bow</option>
-              <option value={WEAPON_TYPE.GLAIVE}>Glaive</option>
+              <option value={0}>{t('weapons.filters.weapon.all')}</option>
+              <option value={WEAPON_TYPE.AUTO}>{t(WEAPON_TYPE_NAME[WEAPON_TYPE.AUTO])}</option>
+              <option value={WEAPON_TYPE.SHOTGUN}>{t(WEAPON_TYPE_NAME[WEAPON_TYPE.SHOTGUN])}</option>
+              <option value={WEAPON_TYPE.MACHINEGUN}>{t(WEAPON_TYPE_NAME[WEAPON_TYPE.MACHINEGUN])}</option>
+              <option value={WEAPON_TYPE.HAND_CANNON}>{t(WEAPON_TYPE_NAME[WEAPON_TYPE.HAND_CANNON])}</option>
+              <option value={WEAPON_TYPE.ROCKET_LAUNCHER}>{t(WEAPON_TYPE_NAME[WEAPON_TYPE.ROCKET_LAUNCHER])}</option>
+              <option value={WEAPON_TYPE.FUSION}>{t(WEAPON_TYPE_NAME[WEAPON_TYPE.FUSION])}</option>
+              <option value={WEAPON_TYPE.SNIPER}>{t(WEAPON_TYPE_NAME[WEAPON_TYPE.SNIPER])}</option>
+              <option value={WEAPON_TYPE.PULSE}>{t(WEAPON_TYPE_NAME[WEAPON_TYPE.PULSE])}</option>
+              <option value={WEAPON_TYPE.SCOUT}>{t(WEAPON_TYPE_NAME[WEAPON_TYPE.SCOUT])}</option>
+              <option value={WEAPON_TYPE.SIDEARM}>{t(WEAPON_TYPE_NAME[WEAPON_TYPE.SIDEARM])}</option>
+              <option value={WEAPON_TYPE.SWORD}>{t(WEAPON_TYPE_NAME[WEAPON_TYPE.SWORD])}</option>
+              <option value={WEAPON_TYPE.LINEAR_FUSION}>{t(WEAPON_TYPE_NAME[WEAPON_TYPE.LINEAR_FUSION])}</option>
+              <option value={WEAPON_TYPE.GRENADE_LAUNCHER}>{t(WEAPON_TYPE_NAME[WEAPON_TYPE.GRENADE_LAUNCHER])}</option>
+              <option value={WEAPON_TYPE.SUBMACHINE_GUN}>{t(WEAPON_TYPE_NAME[WEAPON_TYPE.SUBMACHINE_GUN])}</option>
+              <option value={WEAPON_TYPE.TRACE}>{t(WEAPON_TYPE_NAME[WEAPON_TYPE.TRACE])}</option>
+              <option value={WEAPON_TYPE.BOW}>{t(WEAPON_TYPE_NAME[WEAPON_TYPE.BOW])}</option>
+              <option value={WEAPON_TYPE.GLAIVE}>{t(WEAPON_TYPE_NAME[WEAPON_TYPE.GLAIVE])}</option>
             </select>
             <select value={hasSound} onChange={handleHasSound} className="p-2 text-lg bg-light-grey text-white">
-              <option value={0}>All</option>
-              <option value={1}>With Sound</option>
-              <option value={2}>Without Sound</option>
+              <option value={0}>{t('weapons.filters.sound.all')}</option>
+              <option value={1}>{t('weapons.filters.sound.with')}</option>
+              <option value={2}>{t('weapons.filters.sound.without')}</option>
             </select>
           </div>
         </div>
         <nav className="flex flex-wrap gap-3">
-          {admin && <LeftClickLink route={ROUTES.SOUNDS} text="Sounds" />}
-          <EscapeLink route={ROUTES.TRIALS} text="Back" />
+          {admin && <LeftClickLink route={ROUTES.SOUNDS} text={t('sounds')} />}
+          <EscapeLink route={ROUTES.TRIALS} text={t('back')} />
         </nav>
       </div>
       <div className="container mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-5 p-3 md:py-5">
           {weapons
-            .filter((w) => w.names.fr.toLocaleLowerCase().includes(query.toLocaleLowerCase()))
+            .filter((w) => w.names[locale].toLocaleLowerCase().includes(query.toLocaleLowerCase()) || w.names[DEFAULT_LOCALE].toLocaleLowerCase().includes(query.toLocaleLowerCase()))
             .filter((w) => {
               if (hasSound === 1) return w.hasSound === true;
               if (hasSound === 2) return w.hasSound === false;
@@ -109,7 +113,7 @@ export default function WeaponsPage() {
             .filter((w) => (type === 0 ? true : w.type === type))
             .filter((w) => (damageType === 0 ? true : w.damageType === damageType))
             .filter((w) => (rarity === 0 ? true : w.rarity === rarity))
-            .sort((a, b) => a.names.fr.localeCompare(b.names.fr))
+            .sort((a, b) => a.names[locale].localeCompare(b.names[locale]))
             .map((w) => <Weapon key={w.id} w={w} />)}
         </div>
       </div>
@@ -118,16 +122,18 @@ export default function WeaponsPage() {
 }
 
 function Weapon({ w }) {
+  const locale = useLocale();
+  const t = useT();
   return (
     <a href={`https://www.light.gg/db/items/${w.hash}`} target="_blank" rel="noreferrer" className="p-1 border-2 border-transparent hover:border-white/80 transition-colors duration-300 cursor-pointer">
       <div className="flex gap-5 p-5 bg-transparent hover:bg-light-grey border border-white/30 hover:border-white/80 transition-colors">
-        <WeaponIcon icon={w.icon} alt={w.names.fr} iconWatermark={w.iconWatermark} className="w-20 h-20" />
+        <WeaponIcon icon={w.icon} alt={w.names[locale]} iconWatermark={w.iconWatermark} className="w-20 h-20" />
         <div className="flex flex-col overflow-hidden">
-          <span className="text-lg tracking-wide text-white whitespace-nowrap text-ellipsis">{w.names.fr}</span>
-          <span className="text-white/60">{WEAPON_TYPE_NAME[w.type]}</span>
+          <span className="text-lg tracking-wide text-white whitespace-nowrap text-ellipsis">{w.names[locale]}</span>
+          <span className="text-white/60">{t(WEAPON_TYPE_NAME[w.type])}</span>
           <div className="flex items-center gap-2 mt-1">
-            <img src={WEAPON_DAMAGE_TYPE_IMAGE[w.damageType]} alt={WEAPON_DAMAGE_TYPE_NAME[w.damageType]} className="w-5 h-5" loading="lazy" />
-            <img src={w.hasSound ? promo : releg} alt={w.hasSound ? 'This weapon have a sound' : 'This weapon does not have a sound'} className="w-5 h-5" loading="lazy" />
+            <img src={WEAPON_DAMAGE_TYPE_IMAGE[w.damageType]} alt={t(WEAPON_DAMAGE_TYPE_NAME[w.damageType])} className="w-5 h-5" loading="lazy" />
+            <img src={w.hasSound ? promo : releg} alt={w.hasSound ? 'Promotion' : 'Relegation'} className="w-5 h-5" loading="lazy" />
           </div>
         </div>
       </div>

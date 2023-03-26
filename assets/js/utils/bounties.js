@@ -17,13 +17,13 @@ export const CLUE_TYPE = {
 export function bountyNameFromType(type) {
   switch (type) {
     case BOUNTY_TYPE.DAILY:
-      return 'Daily Bounty';
+      return 'bounty.daily';
     case BOUNTY_TYPE.ASPIRING:
-      return 'Aspiring Gunsmith Bounty';
+      return 'bounty.aspiring';
     case BOUNTY_TYPE.GUNSMITH:
-      return 'True Gunsmith Bounty';
+      return 'bounty.true';
     default:
-      return 'Daily Bounty';
+      return 'bounty.unknown';
   }
 }
 

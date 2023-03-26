@@ -1,4 +1,5 @@
 import React from 'react';
+import { useT } from '../../../hooks/translations';
 import { useUser, useUserAuthenticated, useUserError, useUserSeal } from '../../../hooks/user';
 import { characterClassName, characterGenderName, characterRaceName } from '../../../utils/user';
 import { ROUTES } from '../../../utils/routes';
@@ -11,14 +12,17 @@ export default function OrbitFireteam() {
   const user = useUser();
   const error = useUserError();
   const { completed } = useUserSeal();
+  const t = useT();
 
   return (
     <div className="flex flex-col">
       <div className="flex justify-between">
-        <div className="text-sm md:text-base font-bold tracking-[.4em] uppercase text-white/80 select-none">Fireteam</div>
+        <div className="text-sm md:text-base font-bold tracking-[.4em] uppercase text-white/80 select-none">
+          {t('orbit.fireteam')}
+        </div>
         {authenticated && (
-          <a href={ROUTES.OAUTH_LOGOUT} className="cursor-pointer" title="Logout">
-            <img src={logout} alt="Logout" className="w-6" />
+          <a href={ROUTES.OAUTH_LOGOUT} className="cursor-pointer" title={t('logout')}>
+            <img src={logout} alt={t('logout')} className="w-6" />
           </a>
         )}
       </div>
@@ -26,13 +30,17 @@ export default function OrbitFireteam() {
       <div className="w-full md:w-[474px] mt-1">
         {authenticated ? (
           <div className="relative w-full h-24">
-            <img src={user.emblemBackgroundPath ? `https://bungie.net${user.emblemBackgroundPath}` : defaultEmblem} alt="Character Emblem" className="w-full h-full object-left object-cover" loading="lazy" />
+            <img src={user.emblemBackgroundPath ? `https://bungie.net${user.emblemBackgroundPath}` : defaultEmblem} alt={t('orbit.emblem.default')} className="w-full h-full object-left object-cover" loading="lazy" />
             <div className="absolute top-1 left-24">
               <div className="text-2xl font-bold text-white tracking-wider text-shadow-sm shadow-light-grey/50 select-none">{user.displayName ? user.displayName : 'Guardian'}</div>
-              <div className="text-xl text-white/80 tracking-wider text-shadow-sm shadow-light-grey/50 select-none">{`${characterClassName(user.characterClass)} ${characterGenderName(user.characterGender)} ${characterRaceName(user.characterRace)}`}</div>
+              <div className="text-xl text-white/80 tracking-wider text-shadow-sm shadow-light-grey/50 select-none">
+                {`${t(characterClassName(user.characterClass))} ${t(characterGenderName(user.characterGender))} ${t(characterRaceName(user.characterRace))}`}
+              </div>
               {completed && (
                 <div className="flex gap-x-2 items-center">
-                  <div className="text-xl italic text-yellow tracking-wider text-shadow-sm shadow-light-grey/50 select-none">Gunsmith</div>
+                  <div className="text-xl italic text-yellow tracking-wider text-shadow-sm shadow-light-grey/50 select-none">
+                    {t('gunsmith')}
+                  </div>
                   <div className="h-4 w-3.5 border-2 border-yellow rounded-b-full" />
                 </div>
               )}
@@ -42,8 +50,8 @@ export default function OrbitFireteam() {
               <div className="font-bold text-4xl text-yellow text-shadow-sm shadow-light-grey/50 tracking-wide select-none">{user.lightLevel}</div>
             </div>
             {error && (
-              <div className="absolute bottom-1 right-1.5" title="Bungie may be doing a maintenance or your authentication tokens have exprired">
-                <img src={warning} alt="Warning" className="w-8 h-8" />
+              <div className="absolute bottom-1 right-1.5" title={t('connection.expired')}>
+                <img src={warning} alt={t('warning')} className="w-8 h-8" />
               </div>
             )}
           </div>
@@ -53,8 +61,8 @@ export default function OrbitFireteam() {
               <div className="pl-[5.5px] pt-[4.5px] font-bold text-5xl text-white/70">+</div>
             </div>
             <div className="text-white/70">
-              <div className="text-2xl">Connexion with Bungie</div>
-              <div className="text-sm">You can still play as guest but with limited functionnalities</div>
+              <div className="text-2xl">{t('orbit.connection')}</div>
+              <div className="text-sm">{t('orbit.connection.detail')}</div>
             </div>
           </a>
         )}

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { generatePath, useNavigate, useParams } from 'react-router-dom';
 import { editSound, getSoundId } from '../../actions/sounds';
+import { useT } from '../../hooks/translations';
 import { useUserAdmin } from '../../hooks/user';
 import { ROUTES, ROUTES_API } from '../../utils/routes';
 import EscapeLink from '../ui/clickable/EscapeLink';
@@ -11,6 +12,7 @@ export default function SoundEditPage() {
   const admin = useUserAdmin();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const t = useT();
 
   const { id } = useParams();
   const sound = useSelector((state) => state.sounds.find((s) => s.id === parseInt(id, 10)));
@@ -50,7 +52,7 @@ export default function SoundEditPage() {
           <div className="w-full h-0.5 bg-white/50" />
         </div>
         <nav className="flex flex-wrap gap-3">
-          <EscapeLink route={ROUTES.SOUNDS} text="Back" />
+          <EscapeLink route={ROUTES.SOUNDS} text={t('back')} />
         </nav>
       </div>
       <div className="container mx-auto">

@@ -21,36 +21,36 @@ export const CHARACTER_RACE = {
 export function characterClassName(type) {
   switch (type) {
     case CHARACTER_CLASS.CLASS_TITAN:
-      return 'Titan';
+      return 'class.titan';
     case CHARACTER_CLASS.CLASS_HUNTER:
-      return 'Hunter';
+      return 'class.hunter';
     case CHARACTER_CLASS.CLASS_WARLOCK:
-      return 'Warlock';
+      return 'class.warlock';
     default:
-      return 'Unknown';
+      return 'class.unknown';
   }
 }
 
 export function characterGenderName(type) {
   switch (type) {
     case CHARACTER_GENDER.GENDER_MALE:
-      return 'Male';
+      return 'gender.male';
     case CHARACTER_GENDER.GENDER_FEMALE:
-      return 'Female';
+      return 'gender.female';
     default:
-      return 'Unknown';
+      return 'gender.unknown';
   }
 }
 
 export function characterRaceName(type) {
   switch (type) {
     case CHARACTER_RACE.RACE_HUMAN:
-      return 'Human';
+      return 'race.human';
     case CHARACTER_RACE.RACE_AWOKEN:
-      return 'Awoken';
+      return 'race.awoken';
     case CHARACTER_RACE.RACE_EXO:
-      return 'Exo';
+      return 'race.exo';
     default:
-      return 'Unknown';
+      return 'race.unknown';
   }
 }

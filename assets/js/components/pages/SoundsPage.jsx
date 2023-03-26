@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { generatePath, Link } from 'react-router-dom';
 import { getSounds } from '../../actions/sounds';
+import { useLocale, useT } from '../../hooks/translations';
 import { useUserAdmin } from '../../hooks/user';
 import { ROUTES } from '../../utils/routes';
 import EscapeLink from '../ui/clickable/EscapeLink';
@@ -12,6 +13,7 @@ import WeaponIcon from '../ui/weapon/WeaponIcon';
 export default function SoundsPage() {
   const admin = useUserAdmin();
   const dispatch = useDispatch();
+  const t = useT();
 
   const sounds = useSelector((state) => state.sounds);
 
@@ -46,7 +48,7 @@ export default function SoundsPage() {
         <nav className="flex flex-wrap gap-3">
           <LeftClickLink route={ROUTES.SOUND_ADD} text="Add a Sound" />
           <LeftClickLink route={ROUTES.WEAPONS} text="Weapons" />
-          <EscapeLink route={ROUTES.TRIALS} text="Back" />
+          <EscapeLink route={ROUTES.TRIALS} text={t('back')} />
         </nav>
       </div>
       <div className="container mx-auto">
@@ -100,10 +102,11 @@ function Sound({ s }) {
 }
 
 function Weapon({ w }) {
+  const locale = useLocale();
   return (
     <button type="button" className="flex items-center gap-1 p-1 border border-white/30">
-      <WeaponIcon icon={w.icon} alt={w.names.fr} iconWatermark={w.iconWatermark} className="w-8 h-8" />
-      <span className="tracking-wide text-white">{w.names.fr}</span>
+      <WeaponIcon icon={w.icon} alt={w.names[locale]} iconWatermark={w.iconWatermark} className="w-8 h-8" />
+      <span className="tracking-wide text-white">{w.names[locale]}</span>
     </button>
   );
 }

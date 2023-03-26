@@ -32,12 +32,26 @@ export function useTranslationContext() {
 export function useT() {
   const { defaultTranslations, translations } = useContext(TranslationContext);
 
-  const t = useCallback((key) => {
-    const expectedTranslation = translations?.[key];
-    if (expectedTranslation === undefined || expectedTranslation === '🦆') {
-      return defaultTranslations[key];
+  const replaceParams = useCallback((translation, params) => Object.entries(params)
+    .reduce((previous, value) => previous.replaceAll(`{{${value[0]}}}`, value[1]), translation), []);
+
+  const t = useCallback((key, params = {}) => {
+    if (typeof key !== 'string' || key.trim() === '') {
+      console.err('Empty translations key');
+      return '';
     }
-    return expectedTranslation;
+
+    const expectedTranslation = translations?.[key];
+    if (!expectedTranslation || expectedTranslation === '🔫') {
+      const expectedDefaultTranslation = defaultTranslations[key];
+      if (!expectedDefaultTranslation) {
+        return key;
+      }
+
+      return replaceParams(expectedDefaultTranslation, params);
+    }
+
+    return replaceParams(expectedTranslation, params);
   }, [defaultTranslations, translations]);
 
   return t;

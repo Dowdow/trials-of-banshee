@@ -45,12 +45,12 @@ export const WEAPON_DAMAGE_TYPE = {
 };
 
 export const WEAPON_DAMAGE_TYPE_NAME = {
-  1: 'Kinetic',
-  2: 'Arc',
-  3: 'Solar',
-  4: 'Void',
-  6: 'Stasis',
-  7: 'Strand',
+  1: 'damage.kinetic',
+  2: 'damage.arc',
+  3: 'damage.solar',
+  4: 'damage.void',
+  6: 'damage.stasis',
+  7: 'damage.strand',
 };
 
 export const WEAPON_DAMAGE_TYPE_IMAGE = {
@@ -80,11 +80,11 @@ export const WEAPON_RARITY = {
 };
 
 export const WEAPON_RARITY_NAME = {
-  2: 'Basic',
-  3: 'Common',
-  4: 'Rare',
-  5: 'Legendary',
-  6: 'Exotic',
+  2: 'rarity.basic',
+  3: 'rarity.common',
+  4: 'rarity.rare',
+  5: 'rarity.legendary',
+  6: 'rarity.exotic',
 };
 
 export const WEAPON_RARITY_IMAGE = {
@@ -116,23 +116,23 @@ export const WEAPON_TYPE = {
 };
 
 export const WEAPON_TYPE_NAME = {
-  6: 'Auto Rifle',
-  7: 'Shotgun',
-  8: 'Machine Gun',
-  9: 'Hand Cannon',
-  10: 'Rocket Launcher',
-  11: 'Fusion Rifle',
-  12: 'Sniper Rifle',
-  13: 'Pulse Rifle',
-  14: 'Scout Rifle',
-  17: 'Sidearm',
-  18: 'Sword',
-  22: 'Linear Fusion Rifle',
-  23: 'Grenade Launcher',
-  24: 'Submachine Gun',
-  25: 'Trace Rifle',
-  31: 'Bow',
-  33: 'Glaive',
+  6: 'weapon.auto',
+  7: 'weapon.shotgun',
+  8: 'weapon.mg',
+  9: 'weapon.hc',
+  10: 'weapon.rl',
+  11: 'weapon.fusion',
+  12: 'weapon.sniper',
+  13: 'weapon.pulse',
+  14: 'weapon.scout',
+  17: 'weapon.sidearm',
+  18: 'weapon.sword',
+  22: 'weapon.lfr',
+  23: 'weapon.gl',
+  24: 'weapon.smg',
+  25: 'weapon.trace',
+  31: 'weapon.bow',
+  33: 'weapon.glaive',
 };
 
 export const WEAPON_TYPE_IMAGE = {

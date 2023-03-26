@@ -1,11 +1,13 @@
 import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import triumphIcon from '../../../../img/misc/triumph_gun.png';
 import { claimTriumph } from '../../../actions/user';
+import { useT } from '../../../hooks/translations';
+import triumphIcon from '../../../../img/misc/triumph_gun.png';
 
 export default function TriumphProgress({ type, title, description, completed = false, value = 0, min = 0, max = 100 }) {
   const dispatch = useDispatch();
+  const t = useT();
 
   const [claim, setClaim] = useState(false);
 
@@ -36,7 +38,7 @@ export default function TriumphProgress({ type, title, description, completed = 
       )}
       <div className="p-6">
         <div className="flex items-center gap-2">
-          <img src={triumphIcon} alt="Triumph Icon" className="w-8 h-8 object-cover" />
+          <img src={triumphIcon} alt={t('triumph')} className="w-8 h-8 object-cover" />
           <div className={`text-xl font-bold tracking-wider ${completed ? 'text-yellow' : 'text-white/70'}`}>{title}</div>
         </div>
         <div className={`w-full h-[1px] mt-2 mb-3 ${completed ? 'bg-yellow' : 'bg-white/50'}`} />

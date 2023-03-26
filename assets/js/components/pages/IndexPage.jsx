@@ -33,7 +33,7 @@ export default function IndexPage() {
   return (
     <>
       <div className="absolute w-full h-screen overflow-hidden z-0">
-        <img src={orbit} alt="Orbit" className={`w-full h-full object-cover ${zoomEarth && 'animate-zoom'}`} onAnimationEnd={() => navigate('/trials')} loading="lazy" />
+        <img src={orbit} alt={t('orbit')} className={`w-full h-full object-cover ${zoomEarth && 'animate-zoom'}`} onAnimationEnd={() => navigate('/trials')} loading="lazy" />
       </div>
 
       <InitFade />
@@ -54,10 +54,14 @@ export default function IndexPage() {
                 <OrbitModifierDiscord />
                 <OrbitModifierTwitter />
               </div>
-              <span className="text-sm md:text-base font-bold tracking-[.4em] uppercase text-white/80 whitespace-nowrap select-none">High End PVE</span>
+              <span className="text-sm md:text-base font-bold tracking-[.4em] uppercase text-white/80 whitespace-nowrap select-none">{t('orbit.title.header')}</span>
               <div className="w-full h-[1px] mt-1 mb-4 bg-white/60" />
-              <h1 className="mb-3 font-neue-haas-display-bold text-3xl md:text-5xl lg:text-6xl 2xl:text-8xl tracking-wide uppercase text-white/90 whitespace-nowrap select-none">Trials of Banshee</h1>
-              <span className="text-base md:text-lg lg:text-xl text-white/70 whitespace-nowrap select-none">The Last City</span>
+              <h1 className="mb-3 font-neue-haas-display-bold text-3xl md:text-5xl lg:text-6xl 2xl:text-8xl tracking-wide uppercase text-white/90 whitespace-nowrap select-none">
+                {t('orbit.title')}
+              </h1>
+              <span className="text-base md:text-lg lg:text-xl text-white/70 whitespace-nowrap select-none">
+                {t('orbit.city')}
+              </span>
             </div>
             <div className="w-full md:w-[474px] max-w-full self-end xl:self-center flex-col gap-y-1">
               <div className={`${launchFade && 'animate-fade-short'}`}>
@@ -65,7 +69,9 @@ export default function IndexPage() {
               </div>
               <div className={`w-full p-0.5 border-2 border-transparent hover:border-white/80 transition-colors duration-300 ${launchFade && 'animate-fade-short'}`}>
                 <button type="button" onClick={() => setLaunchFade(true)} className="flex justify-center items-center w-full h-14 bg-green border border-white/30 hover:border-white/80 transition-colors duration-300 animate-launch cursor-pointer">
-                  <span className="text-lg md:text-xl lg:text-2xl uppercase tracking-[.4em] text-white/80 select-none">{t('orbit.launch')}</span>
+                  <span className="text-lg md:text-xl lg:text-2xl uppercase tracking-[.4em] text-white/80 select-none">
+                    {t('orbit.launch')}
+                  </span>
                 </button>
               </div>
             </div>
