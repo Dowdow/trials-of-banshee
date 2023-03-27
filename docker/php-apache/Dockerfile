@@ -4,7 +4,7 @@ FROM php:8.2-apache
 RUN apt-get update && apt-get -y upgrade
 
 # Packages
-RUN apt-get install -y apt-utils git libonig-dev libicu-dev unzip wget zip zsh
+RUN apt-get install -y apt-utils git libonig-dev libicu-dev python3 python3-pip rsync sshpass unzip wget zip zsh
 
 # Intall ohmyzsh
 RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
@@ -35,5 +35,13 @@ COPY tob.conf /etc/apache2/sites-available/tob.conf
 RUN a2ensite tob.conf
 
 # NodeJS
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && apt-get install -y nodejs
+RUN curl -fsSL https://deb.nodesource.com/setup_19.x | bash - && apt-get install -y nodejs
 RUN npm i -g npm
+
+# Git
+RUN git config --global --add safe.directory /var/www/html
+
+# Ansible
+RUN python3 -m pip install --user ansible
+RUN echo "export PATH=$PATH:/root/.local/bin" >> /root/.zshrc
+RUN /root/.local/bin/ansible-galaxy install ansistrano.deploy ansistrano.rollback

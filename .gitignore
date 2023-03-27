@@ -12,5 +12,6 @@
 .idea
 npm-debug.log*
 node_modules
+/ansible/hosts
 /public/build/
 /public/uploads/

@@ -1,0 +1,13 @@
+---
+- name: Deploy website
+  hosts: tob
+  vars:
+    ansistrano_deploy_from: "/root/deploy/"
+    ansistrano_deploy_to: "."
+    ansistrano_keep_releases: 2
+    ansistrano_allow_anonymous_stats: no
+    ansistrano_shared_paths: ["public/uploads", "var/d2cache"]
+    ansistrano_shared_files: [".env", "public/.htaccess"]
+    ansistrano_before_symlink_tasks_file: "{{ playbook_dir }}/tasks/before-symlink-tasks.yml"
+  roles:
+    - { role: ansistrano.deploy }

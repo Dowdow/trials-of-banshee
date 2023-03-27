@@ -1,0 +1,77 @@
+---
+- name: Prepare website
+  hosts: local
+  connection: local
+  vars:
+    deploy_directory: "/root/deploy"
+  tasks:
+    - name: LOCAL - Clean directory
+      file:
+        path: "{{ deploy_directory }}"
+        state: absent
+
+    - name: LOCAL - Clone repository
+      git:
+        clone: yes
+        repo: git@github.com:Dowdow/trials-of-banshee.git
+        dest: "{{ deploy_directory }}"
+        key_file: /root/.ssh/id_ed25519
+        track_submodules: true
+        accept_hostkey: yes
+
+    - name: LOCAL - Composer install
+      command: composer install --no-interaction --no-progress --no-scripts --optimize-autoloader --no-dev
+      args:
+        chdir: "{{ deploy_directory }}"
+
+    - name: LOCAL - Npm install
+      command: npm install
+      args:
+        chdir: "{{ deploy_directory }}"
+
+    - name: LOCAL - Npm build app
+      command: npm run prod
+      args:
+        chdir: "{{ deploy_directory }}"
+
+    - name: LOCAL - Create var directory
+      command: mkdir var
+      args:
+        chdir: "{{ deploy_directory }}"
+
+    - name: LOCAL - Remove .git
+      file:
+        path: "{{ deploy_directory }}/.git"
+        state: absent
+
+    - name: LOCAL - Remove .gitignore
+      file:
+        path: "{{ deploy_directory }}/.gitignore"
+        state: absent
+
+    - name: LOCAL - Remove .env
+      file:
+        path: "{{ deploy_directory }}/.env"
+        state: absent
+
+    - name: LOCAL - Remove ansible
+      file:
+        path: "{{ deploy_directory }}/ansible"
+        state: absent
+
+    - name: LOCAL - Remove assets
+      file:
+        path: "{{ deploy_directory }}/assets"
+        state: absent
+
+    - name: LOCAL - Remove docker
+      file:
+        path: "{{ deploy_directory }}/docker"
+        state: absent
+
+    - name: LOCAL - Remove node_modules
+      file:
+        path: "{{ deploy_directory }}/node_modules"
+        state: absent
+
+
