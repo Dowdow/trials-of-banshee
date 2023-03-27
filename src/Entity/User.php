@@ -36,6 +36,11 @@ class User implements UserInterface
   public const RACE_EXO = 2;
   public const RACE_UNKNOWN = 3;
 
+  public const DEFAULT_DISPLAY_NAME = 'Guardian';
+  public const DEFAULT_EMBLEM_PATH = '/common/destiny2_content/icons/1a5e10e7de35eb6756a8620e94272e52.png';
+  public const DEFAULT_EMBLEM_BACKGROUND_PATH = '/common/destiny2_content/icons/a2e74324c1b28cf23303beaf1146c979.jpg';
+  public const DEFAULT_LIGHT_LEVEL = 0;
+
   #[ORM\Id]
   #[ORM\GeneratedValue(strategy: 'AUTO')]
   #[ORM\Column]
@@ -45,16 +50,16 @@ class User implements UserInterface
   private ?string $membershipId;
 
   #[ORM\Column]
-  private ?string $displayName;
+  private ?string $displayName = self::DEFAULT_DISPLAY_NAME;
 
   #[ORM\Column]
-  private ?string $emblemPath;
+  private ?string $emblemPath = self::DEFAULT_EMBLEM_PATH;
 
   #[ORM\Column]
-  private ?string $emblemBackgroundPath;
+  private ?string $emblemBackgroundPath = self::DEFAULT_EMBLEM_BACKGROUND_PATH;
 
   #[ORM\Column]
-  private ?int $lightLevel;
+  private ?int $lightLevel = self::DEFAULT_LIGHT_LEVEL;
 
   #[ORM\Column]
   private ?int $characterClass = self::CLASS_UNKNOWN;
