@@ -56,7 +56,7 @@ export default function OrbitFireteam() {
             )}
           </div>
         ) : (
-          <a href={ROUTES.OAUTH_AUTHORIZE} className="w-full h-24 flex items-center gap-5 pl-5 bg-light-grey/30 hover:bg-white/20 border border-white/30 hover:border-white/50 transition-colors duration-300 select-none">
+          <a href={ROUTES.OAUTH_AUTHORIZE} className="w-full h-24 flex items-center gap-5 px-5 bg-light-grey/30 hover:bg-white/20 border border-white/30 hover:border-white/50 transition-colors duration-300 select-none">
             <div className="w-[46.5px] h-[45.5px] min-w-[46.5px] font-bold text-5xl text-center text-white/70 border-2 border-white/70 rounded-full">+</div>
             <div className="text-white/70">
               <div className="text-2xl">{t('orbit.connection')}</div>

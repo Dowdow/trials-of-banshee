@@ -33,7 +33,7 @@ export default function IndexPage() {
   return (
     <>
       <div className="absolute w-full h-screen overflow-hidden z-0">
-        <img src={orbit} alt={t('orbit')} className={`w-full h-full object-cover ${zoomEarth && 'animate-zoom'}`} onAnimationEnd={() => navigate('/trials')} loading="lazy" />
+        <img src={orbit} alt={t('orbit')} className={`w-full h-full object-cover object-left ${zoomEarth && 'animate-zoom'}`} onAnimationEnd={() => navigate('/trials')} loading="lazy" />
       </div>
 
       <InitFade />
