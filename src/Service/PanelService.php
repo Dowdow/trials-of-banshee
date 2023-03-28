@@ -113,7 +113,9 @@ class PanelService
     foreach ($locales as $locale) {
       yield "Parsing '$locale' items... ";
       try {
-        $items = json_decode(file_get_contents($this->d2CacheFolder . DIRECTORY_SEPARATOR . $locale . '.json'), true, 512, JSON_THROW_ON_ERROR);
+        $data = file_get_contents($this->d2CacheFolder . DIRECTORY_SEPARATOR . $locale . '.json');
+        $items = json_decode($data, true, 512, JSON_THROW_ON_ERROR);
+        unset($data);
       } catch (JsonException $e) {
         $this->logger->error($e);
         $items = [];
