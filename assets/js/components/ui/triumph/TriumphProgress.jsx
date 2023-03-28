@@ -39,7 +39,7 @@ export default function TriumphProgress({ type, title, description, completed = 
       <div className="p-6">
         <div className="flex items-center gap-2">
           <img src={triumphIcon} alt={t('triumph')} className="w-8 h-8 object-cover" />
-          <div className={`text-xl font-bold tracking-wider ${completed ? 'text-yellow' : 'text-white/70'}`}>{title}</div>
+          <div className={`text-xl text-left font-bold tracking-wider ${completed ? 'text-yellow' : 'text-white/70'}`}>{title}</div>
         </div>
         <div className={`w-full h-[1px] mt-2 mb-3 ${completed ? 'bg-yellow' : 'bg-white/50'}`} />
         <div className={`text-lg text-left tracking-wide ${completed ? 'text-yellow' : 'text-white/50'}`}>{description}</div>
