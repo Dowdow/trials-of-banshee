@@ -9,6 +9,7 @@ use App\Repository\WeaponRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use JsonException;
 use Psr\Log\LoggerInterface;
+use SplFileObject;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 
@@ -31,18 +32,21 @@ class PanelService
   private EntityManagerInterface $em;
   private LoggerInterface $logger;
   private string $d2CacheFolder;
+  private string $jqPath;
 
   public function __construct(
     DestinyAPIClientService $destinyAPIClient,
     EntityManagerInterface $em,
     LoggerInterface $logger,
-    string $d2CacheFolder
+    string $d2CacheFolder,
+    string $jqPath
   )
   {
     $this->destinyAPIClient = $destinyAPIClient;
     $this->em = $em;
     $this->logger = $logger;
     $this->d2CacheFolder = $d2CacheFolder;
+    $this->jqPath = $jqPath;
   }
 
   public function destinyWeaponsCache(): bool|iterable
@@ -76,17 +80,29 @@ class PanelService
 
     $jsonWorldComponentContentPaths = $destinyManifest['jsonWorldComponentContentPaths'];
     foreach ($jsonWorldComponentContentPaths as $lang => $path) {
+      $saveFile = $this->d2CacheFolder . DIRECTORY_SEPARATOR . "$lang.json";
+      $saveFileJq = $this->d2CacheFolder . DIRECTORY_SEPARATOR . $lang . '_jq.json';
       $jsonPath = 'https://bungie.net' . $path['DestinyInventoryItemDefinition'];
+
       yield "Downloading '$lang' at [$jsonPath]... ";
 
-      $wget = new Process(['wget', $jsonPath, '-O', $this->d2CacheFolder . DIRECTORY_SEPARATOR . "$lang.json"]);
+      $wget = new Process(['wget', $jsonPath, '-O', $saveFile]);
       $wget->setTimeout(300);
       $wget->run();
       if (!$wget->isSuccessful()) {
         yield $wget->getErrorOutput();
       }
 
-      yield "Done $lang";
+      yield "Done dl $lang";
+      yield "jq '$lang' to $saveFileJq";
+
+      $jq = Process::fromShellCommandline($this->jqPath . " -c '.[] | select(.itemType==" . self::WEAPON_ITEM_TYPE . ")' " . $saveFile . ' > ' . $saveFileJq);
+      $jq->run();
+      if (!$jq->isSuccessful()) {
+        yield $jq->getErrorOutput();
+      }
+
+      yield "Done jq $lang";
     }
 
     yield 'Caching version file... ';
@@ -112,15 +128,22 @@ class PanelService
     $parsedItems = [];
     foreach ($locales as $locale) {
       yield "Parsing '$locale' items... ";
-      try {
-        $data = file_get_contents($this->d2CacheFolder . DIRECTORY_SEPARATOR . $locale . '.json');
-        $items = json_decode($data, true, 512, JSON_THROW_ON_ERROR);
-        unset($data);
-      } catch (JsonException $e) {
-        $this->logger->error($e);
-        $items = [];
-      }
-      foreach ($items as $item) {
+
+      $file = new SplFileObject($this->d2CacheFolder . DIRECTORY_SEPARATOR . $locale . '_jq.json');
+
+      while (!$file->eof()) {
+        $line = $file->fgets();
+        if (trim($line) === '') {
+          continue;
+        }
+
+        try {
+          $item = json_decode($line, true, 512, JSON_THROW_ON_ERROR);
+        } catch (JsonException $e) {
+          $this->logger->error($e);
+          continue;
+        }
+
         if ($item['itemType'] !== self::WEAPON_ITEM_TYPE) {
           continue;
         }
@@ -143,7 +166,7 @@ class PanelService
           'rarity' => $item['inventory']['tierType'],
         ];
       }
-      unset($items);
+
       yield "Done $locale";
     }
 
