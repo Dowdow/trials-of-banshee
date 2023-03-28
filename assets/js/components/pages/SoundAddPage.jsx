@@ -27,10 +27,7 @@ export default function SoundAddPage() {
       .catch((err) => setError(err));
   };
 
-  if (!admin) {
-    return null;
-  }
-
+  if (!admin) return null;
   return (
     <div className="bg-dark min-h-screen">
       <div className="sticky top-0 flex justify-between items-center flex-wrap gap-3 md:gap-6 w-full bg-dark-grey p-3 md:p-5">

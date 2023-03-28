@@ -9,10 +9,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(
-  name: 'destiny:weapons:parse',
-  description: 'Parse cached json data for weapons and store them in the database.',
+  name: 'destiny:weapons:cache',
+  description: 'Retrieves data from the Destiny Manifest and cache it for future use.',
 )]
-class DestinyWeaponsParserCommand extends Command
+class DestinyWeaponsCachingCommand extends Command
 {
   private PanelService $panelService;
 
@@ -24,7 +24,7 @@ class DestinyWeaponsParserCommand extends Command
 
   protected function execute(InputInterface $input, OutputInterface $output): int
   {
-    $generator = $this->panelService->destinyWeaponsParse();
+    $generator = $this->panelService->destinyWeaponsCache();
     $output->writeln($generator);
 
     return Command::SUCCESS;

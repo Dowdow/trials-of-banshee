@@ -36,14 +36,8 @@ export default function SoundEditPage() {
       .catch((err) => setError(err));
   };
 
-  if (!admin) {
-    return null;
-  }
-
-  if (sound === undefined) {
-    return <div>Sound not found</div>;
-  }
-
+  if (!admin) return null;
+  if (sound === undefined) return <div>Sound not found</div>;
   return (
     <div className="bg-dark min-h-screen">
       <div className="sticky top-0 flex justify-between items-center flex-wrap gap-3 md:gap-6 w-full bg-dark-grey p-3 md:p-5">

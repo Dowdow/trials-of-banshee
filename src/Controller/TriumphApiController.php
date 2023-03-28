@@ -16,7 +16,7 @@ class TriumphApiController extends AbstractController
   public function triumphs(): JsonResponse
   {
     if (!$this->isGranted(User::ROLE_USER)) {
-      return new JsonResponse([]);
+      return new JsonResponse(null, 401);
     }
     /** @var User $user */
     $user = $this->getUser();

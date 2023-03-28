@@ -29,16 +29,15 @@ export default function SoundsPage() {
     setQuery(e.target.value);
   };
 
-  if (!admin) {
-    return null;
-  }
-
+  if (!admin) return null;
   return (
     <div className="bg-dark min-h-screen">
       <div className="sticky top-0 flex justify-between items-center flex-wrap gap-3 md:gap-6 w-full bg-dark-grey p-3 md:p-5">
         <div className="flex items-center flex-wrap gap-3 md:gap-6">
           <div>
-            <h1 className="mb-1 md:mb-3 font-neue-haas-display-bold text-5xl md:text-6xl text-white">Sounds</h1>
+            <h1 className="mb-1 md:mb-3 font-neue-haas-display-bold text-5xl md:text-6xl text-white">
+              {t('sounds')}
+            </h1>
             <div className="w-full h-0.5 bg-white/50" />
           </div>
           <div className="flex items-center flex-wrap gap-2 md:gap-6">
@@ -47,7 +46,7 @@ export default function SoundsPage() {
         </div>
         <nav className="flex flex-wrap gap-3">
           <LeftClickLink route={ROUTES.SOUND_ADD} text="Add a Sound" />
-          <LeftClickLink route={ROUTES.WEAPONS} text="Weapons" />
+          <LeftClickLink route={ROUTES.WEAPONS} text={t('weapons')} />
           <EscapeLink route={ROUTES.TRIALS} text={t('back')} />
         </nav>
       </div>

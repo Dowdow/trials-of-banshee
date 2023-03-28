@@ -9,6 +9,7 @@ import TrialsPage from './pages/TrialsPage';
 import TriumphsPage from './pages/TriumphsPage';
 import WeaponsPage from './pages/WeaponsPage';
 
+const PanelPage = lazy(() => import('./pages/PanelPage'));
 const SoundAddPage = lazy(() => import('./pages/SoundAddPage'));
 const SoundEditPage = lazy(() => import('./pages/SoundEditPage'));
 const SoundsPage = lazy(() => import('./pages/SoundsPage'));
@@ -25,6 +26,7 @@ export default function App() {
       <Routes>
         <Route path={ROUTES.INDEX} element={<IndexPage />} />
         <Route path={ROUTES.COLLECTION} element={<CollectionPage />} />
+        <Route path={ROUTES.PANEL} element={<PanelPage />} />
         <Route path={ROUTES.SOUND_ADD} element={<SoundAddPage />} />
         <Route path={ROUTES.SOUND_EDIT} element={<SoundEditPage />} />
         <Route path={ROUTES.SOUNDS} element={<SoundsPage />} />

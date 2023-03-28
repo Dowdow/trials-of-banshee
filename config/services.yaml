@@ -30,16 +30,12 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    App\Command\DestinyDataCachingCommand:
-        arguments:
-            $d2CacheFolder: "%d2cache_folder%"
-
-    App\Command\DestinyWeaponsParserCommand:
-        arguments:
-            $d2CacheFolder: "%d2cache_folder%"
-
     App\Service\DestinyAPIClientService:
         arguments:
             $apiKey: "%bungie_api_key%"
             $oauthClientId: "%bungie_oauth_client_id%"
             $oauthClientSecret: "%bungie_oauth_client_secret%"
+
+    App\Service\PanelService:
+        arguments:
+            $d2CacheFolder: "%d2cache_folder%"

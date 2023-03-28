@@ -133,6 +133,7 @@ export default function TrialsPage() {
             ? <EscapeButton onClick={() => handleClickBounty(null)} text={t('back')} />
             : (
               <>
+                {admin && <LeftClickLink route={ROUTES.PANEL} onClick={(e) => handleClickLink(e, ROUTES.PANEL)} text="Panel" />}
                 {admin && <LeftClickLink route={ROUTES.SOUNDS} onClick={(e) => handleClickLink(e, ROUTES.SOUNDS)} text={t('sounds')} />}
                 <LeftClickLink route={ROUTES.WEAPONS} onClick={(e) => handleClickLink(e, ROUTES.WEAPONS)} text={t('weapons')} />
                 <EscapeLink route={ROUTES.INDEX} onClick={(e) => handleClickLink(e, ROUTES.INDEX)} text={t('back')} />

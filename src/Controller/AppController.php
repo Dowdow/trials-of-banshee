@@ -69,4 +69,14 @@ class AppController extends AbstractController
 
     return $this->render('base.html.twig');
   }
+
+  #[Route('/panel', name: 'app.panel', methods: ['GET'])]
+  public function panel(): Response
+  {
+    if (!$this->isGranted(User::ROLE_ADMIN)) {
+      throw $this->createNotFoundException();
+    }
+
+    return $this->render('base.html.twig');
+  }
 }
