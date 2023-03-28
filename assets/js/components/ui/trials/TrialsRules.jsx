@@ -10,7 +10,7 @@ export default function TrialsRules() {
       <CategoryTitle title={t('trials.rules')} />
       <div className="flex items-center gap-6 mt-4">
         <img src={gunsmith} alt={t('gunsmith')} className="hidden md:block w-40 h-40" />
-        <p className="text-lg text-white/90">{t('trials.rules.description')}</p>
+        <p className="text-sm md:text-base lg:text-lg text-white/90 tracking-wide">{t('trials.rules.description')}</p>
       </div>
     </section>
   );

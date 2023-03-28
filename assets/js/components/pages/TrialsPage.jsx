@@ -120,7 +120,7 @@ export default function TrialsPage() {
                     <TrialsHistory />
                   </div>
                 ) : (
-                  <div className="flex flex-col gap-y-10 xl:gap-y-12 p-5 lg:p-8 xl:p-10">
+                  <div className="flex flex-col gap-y-4 md:gap-y-10 xl:gap-y-12 p-5 lg:p-8 xl:p-10">
                     <TrialsBounties onClick={handleClickBounty} />
                     <TrialsRules />
                   </div>

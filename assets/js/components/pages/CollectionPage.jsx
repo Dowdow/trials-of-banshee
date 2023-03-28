@@ -44,7 +44,7 @@ export default function CollectionPage() {
     <div className={`relative w-full h-screen overflow-hidden ${fadeOut && 'animate-fade-out'}`} onAnimationEnd={() => navigate(nextPage)}>
       <InitFade />
       <div className="relative w-full h-screen collection-gradient overflow-y-scroll xl:overflow-y-hidden noscrollbar">
-        <div className="relative flex flex-col xl:flex-row w-[calc(100%+20px)] h-auto xl:h-[calc(100vh+20px)] -mt-[10px] -ml-[10px]" style={{ translate: `${x}px ${y}px` }}>
+        <div className="absolute -top-[10px] -left-[10px] w-[calc(100%+20px)] h-auto xl:h-[calc(100vh+20px)] flex flex-col xl:flex-row" style={{ translate: `${x}px ${y}px` }}>
           <div className="relative w-full xl:w-1/3 h-full flex bg-yellow/20 border-b xl:border-b-0 xl:border-r border-white/30 overflow-hidden">
             <img src={emptyEngram} alt={t('engram.empty')} className="absolute w-full xl:w-auto xl:h-[90%] self-center object-cover opacity-30" />
             <div className="w-28 xl:w-56 xl:h-full bg-yellow/60" />
