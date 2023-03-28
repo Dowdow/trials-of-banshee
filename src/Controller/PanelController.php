@@ -23,6 +23,9 @@ class PanelController extends AbstractController
     return new StreamedResponse(function () use ($generator) {
       foreach ($generator as $data) {
         echo "$data\n";
+        if (ob_get_contents() !== false) {
+          ob_flush();
+        }
         flush();
       }
     });
@@ -39,6 +42,9 @@ class PanelController extends AbstractController
     return new StreamedResponse(function () use ($generator) {
       foreach ($generator as $data) {
         echo "$data\n";
+        if (ob_get_contents() !== false) {
+          ob_flush();
+        }
         flush();
       }
     });
@@ -55,6 +61,9 @@ class PanelController extends AbstractController
     return new StreamedResponse(function () use ($generator) {
       foreach ($generator as $data) {
         echo "$data\n";
+        if (ob_get_contents() !== false) {
+          ob_flush();
+        }
         flush();
       }
     });
