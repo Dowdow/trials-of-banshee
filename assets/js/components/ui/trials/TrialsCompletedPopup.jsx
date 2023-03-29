@@ -53,10 +53,10 @@ export default function TrialsCompletedPopup({ onExit }) {
               {currentBounty.type !== BOUNTY_TYPE.DAILY && (
                 <div className="flex flex-col gap-1.5">
                   <div className="border-b-2 border-white/40">
-                    {t('trials.bounty.success')}
+                    {t('trials.bounty.flawless')}
                   </div>
                   <div className="w-5 h-5 p-0.5 border border-white/30">
-                    <div className={`w-full h-full ${currentBounty.succeeded ? 'bg-light-green' : 'bg-red'}`} />
+                    <div className={`w-full h-full ${currentBounty.flawless ? 'bg-light-green' : 'bg-red'}`} />
                   </div>
                 </div>
               )}

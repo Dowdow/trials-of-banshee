@@ -73,7 +73,7 @@ class BountyApiController extends AbstractController
       return new JsonResponse(['errors' => ['You need to be authenticated to do this Bounty']], 403);
     }
 
-    // Check if the User play the Bounty when it's available (can play older bounties)
+    // Check if the User plays the Bounty when it's available (can play older bounties)
     $date = new DateTime();
     if ($date < $bounty->getDateStart()) {
       return new JsonResponse(['errors' => ['Bounty not available yet. Be patient Guardian']], 400);
@@ -110,34 +110,30 @@ class BountyApiController extends AbstractController
       ->setCompleted($isWeaponCorrect)
       ->setPerfectMatch($isPerfectMatch);
 
+    $isFlawless = $bountyService->isBountyCompletionFlawless($bounty, $bountyCompletion);
+    $bountyCompletion->setFlawless($isFlawless);
+
     // Early return for session player
     if (!$isConnected) {
       $bountyService->saveBountyCompletionWithSession($bounty, $bountyCompletion);
       return new JsonResponse($bountyFormatter->formatBounty($bounty, $bountyCompletion));
     }
 
-    // Manager collection and triumphs when the bounty is correct
-    if ($isWeaponCorrect) {
+    // Manage collection and triumphs when the bounty is correct
+    if ($isWeaponCorrect === true) {
       $triumphService->addBountyCompletion($user);
-      if ($isPerfectMatch) {
+      if ($isPerfectMatch === true) {
         $triumphService->addPerfectMatchCompletion($user);
       }
-      if ($bountyType === Bounty::TYPE_ASPIRING) {
-        $succeeded = $bountyCompletion->getAttempts() <= BountyService::ASPIRING_BOUNTY_MAX_ATTEMPTS_SUCCESS;
-        $bountyCompletion->setSucceeded($succeeded);
-        if ($succeeded) {
+      if ($isFlawless === true) {
+        if ($bountyType === Bounty::TYPE_ASPIRING) {
           $triumphService->addAspiringBountyCompletion($user);
           $loot = $collectionService->rewardAspiringBountyCompletionEngram($user);
-        }
-      } elseif ($bountyType === Bounty::TYPE_GUNSMITH) {
-        $succeeded = $bountyCompletion->getAttempts() <= BountyService::TRUE_GUNSMITH_BOUNTY_MAX_ATTEMPTS_SUCCESS;
-        $bountyCompletion->setSucceeded($succeeded);
-        if ($succeeded) {
+        } elseif ($bountyType === Bounty::TYPE_GUNSMITH) {
           $triumphService->addTrueGunsmithBountyCompletion($user);
           $loot = $collectionService->rewardGunsmithBountyCompletionEngram($user);
         }
-      }
-      if ($bountyType === Bounty::TYPE_DAILY || (isset($succeeded) && !$succeeded)) {
+      } else {
         $loot = $collectionService->rewardDailyBountyCompletionEngram($user);
       }
     }

@@ -20,6 +20,8 @@ module.exports = {
       fade: 'fade 1s ease-in-out normal forwards',
       'fade-short': 'fade-out 200ms ease-in-out normal forwards',
       'fade-out': 'fade-out 300ms ease-in-out normal forwards',
+      'flawless-pop': 'flawless-pop 4s 2s ease-in-out infinite',
+      'flawless-roll': 'flawless-roll 300ms ease-in-out normal forwards',
       launch: 'launch 1.6s ease-in-out infinite',
       'slide-in': 'slide-in 150ms ease-in-out normal forwards',
       'slide-out': 'slide-out 150ms ease-in-out normal forwards',
@@ -94,6 +96,16 @@ module.exports = {
         'fade-out': {
           '0%': { opacity: 1 },
           '100%': { opacity: 0 },
+        },
+        'flawless-pop': {
+          '0%': { scale: '0.7', opacity: 0 },
+          '5%': { opacity: 0.7 },
+          '10%': { scale: '2', opacity: 0 },
+          '100%': { opacity: 0 },
+        },
+        'flawless-roll': {
+          '0%': { rotate: 0 },
+          '100%': { rotate: '90deg' },
         },
         launch: {
           '0%, 100%': { background: '#3E6442' },

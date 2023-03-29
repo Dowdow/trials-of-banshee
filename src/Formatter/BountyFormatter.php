@@ -77,7 +77,7 @@ class BountyFormatter
       'attempts' => $bountyCompletion?->getAttempts() ?? 0,
       'completed' => $bountyCompletion?->isCompleted() ?? false,
       'perfectMatch' => $bountyCompletion?->isPerfectMatch() ?? false,
-      'succeeded' => $bountyCompletion?->isSucceeded(),
+      'flawless' => $bountyCompletion?->isFlawless(),
       'clues' => $bountyCompletion?->getClues() ?? [],
       'history' => $bountyCompletion?->getHistory() ?? [],
       'loot' => $loot,

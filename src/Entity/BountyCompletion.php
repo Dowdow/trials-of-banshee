@@ -34,7 +34,7 @@ class BountyCompletion
   private bool $perfectMatch = false;
 
   #[ORM\Column(nullable: true)]
-  private ?bool $succeeded = null;
+  private ?bool $flawless = null;
 
   #[ORM\Column(type: 'json')]
   private array $clues = [];
@@ -92,14 +92,14 @@ class BountyCompletion
     return $this;
   }
 
-  public function isSucceeded(): ?bool
+  public function isFlawless(): ?bool
   {
-    return $this->succeeded;
+    return $this->flawless;
   }
 
-  public function setSucceeded(bool $succeeded): static
+  public function setFlawless(?bool $flawless): static
   {
-    $this->succeeded = $succeeded;
+    $this->flawless = $flawless;
     return $this;
   }
 

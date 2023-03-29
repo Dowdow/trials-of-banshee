@@ -16,8 +16,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class BountyService
 {
-  public const ASPIRING_BOUNTY_MAX_ATTEMPTS_SUCCESS = 3;
-  public const TRUE_GUNSMITH_BOUNTY_MAX_ATTEMPTS_SUCCESS = 1;
+  public const ASPIRING_BOUNTY_MAX_ATTEMPTS_FLAWLESS = 3;
+  public const TRUE_GUNSMITH_BOUNTY_MAX_ATTEMPTS_FLAWLESS = 1;
 
   public const CLUE_RARITY_ATTEMPTS_NEEDED = 2;
   public const CLUE_DAMAGE_TYPE_ATTEMPTS_NEEDED = 4;
@@ -38,12 +38,6 @@ class BountyService
     $this->requestStack = $requestStack;
   }
 
-  /**
-   * @param Bounty $bounty
-   * @param User $user
-   * @param bool $persist
-   * @return BountyCompletion
-   */
   public function findOrCreateBountyCompletion(Bounty $bounty, User $user, bool $persist = false): BountyCompletion
   {
     /** @var BountyCompletionRepository $bountyCompletionRepository */
@@ -63,10 +57,6 @@ class BountyService
     return $bountyCompletion;
   }
 
-  /**
-   * @param Bounty $bounty
-   * @return BountyCompletion
-   */
   public function findOrCreateBountyCompletionWithSesion(Bounty $bounty): BountyCompletion
   {
     $session = $this->requestStack->getSession();
@@ -89,11 +79,6 @@ class BountyService
     return $bountyCompletion;
   }
 
-  /**
-   * @param Bounty $bounty
-   * @param BountyCompletion $bountyCompletion
-   * @return void
-   */
   public function saveBountyCompletionWithSession(Bounty $bounty, BountyCompletion $bountyCompletion): void
   {
     $session = $this->requestStack->getSession();
@@ -105,11 +90,6 @@ class BountyService
     ]);
   }
 
-  /**
-   * @param Bounty $bounty
-   * @param Weapon $weapon
-   * @return bool
-   */
   public function isWeaponCorrect(Bounty $bounty, Weapon $weapon): bool
   {
     $bountySounds = $bounty->getWeapon()?->getSounds() ?? [];
@@ -121,15 +101,30 @@ class BountyService
     return false;
   }
 
-  /**
-   * @param Bounty $bounty
-   * @param Weapon $weapon
-   * @return bool
-   */
   public function isWeaponPerfectMatch(Bounty $bounty, Weapon $weapon): bool
   {
     $bountyWeapon = $bounty->getWeapon();
     return $bountyWeapon && $bountyWeapon->getId() === $weapon->getId();
+  }
+
+  public function isBountyCompletionFlawless(Bounty $bounty, BountyCompletion $bountyCompletion): ?bool
+  {
+    $type = $bounty->getType();
+    if ($type === Bounty::TYPE_DAILY) {
+      return null;
+    }
+
+    $attempts = $bountyCompletion->getAttempts();
+    $completed = $bountyCompletion->isCompleted();
+    $max = $type === Bounty::TYPE_ASPIRING ? self::ASPIRING_BOUNTY_MAX_ATTEMPTS_FLAWLESS : self::TRUE_GUNSMITH_BOUNTY_MAX_ATTEMPTS_FLAWLESS;
+
+    if (($attempts < $max) && !$completed) {
+      return null;
+    }
+    if (($attempts <= $max) && $completed) {
+      return true;
+    }
+    return false;
   }
 
   /**
@@ -156,11 +151,6 @@ class BountyService
     return $clueType;
   }
 
-  /**
-   * @param BountyCompletion $bountyCompletion
-   * @param string $clueType
-   * @return bool
-   */
   public function isClueValid(BountyCompletion $bountyCompletion, string $clueType): bool
   {
     if ($bountyCompletion->hasClue($clueType)) {
