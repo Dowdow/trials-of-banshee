@@ -11,7 +11,7 @@ export function setUser(user) {
 }
 
 export function setUserCollections(collections) {
-  return (dispatch) => dispatch({ type: SET_USER_TRIUMPHS, payload: collections });
+  return (dispatch) => dispatch({ type: SET_USER_COLLECTIONS, payload: collections });
 }
 
 export function setUserError(error) {
