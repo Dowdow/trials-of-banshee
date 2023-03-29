@@ -11,7 +11,7 @@ export default function TrialsBountyPresentation() {
   if (currentBounty === null) return null;
 
   return (
-    <section className="h-full flex flex-col justify-between gap-y-4 md:gap-y-8">
+    <section className="h-full flex flex-col justify-between gap-y-4">
       <div>
         <CategoryTitle title={t(bountyNameFromType(currentBounty.type))} />
         <div className="mt-1.5 md:mt-4 text-sm md:text-lg text-white/90">
