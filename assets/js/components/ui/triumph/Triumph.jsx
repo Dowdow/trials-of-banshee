@@ -34,7 +34,7 @@ export default function Triumph({ type, title, description, badge = false, claim
           <div className="absolute w-full h-full top-0 left-0 border-4 border-white animate-claim-border z-10" />
         </>
       )}
-      <div className="p-6">
+      <div className="w-full p-6">
         <div className="flex items-center gap-2">
           <img src={badge ? gunsmith : triumphIcon} alt={t('triumph')} className="w-8 h-8 object-cover" />
           <div className={`text-xl font-bold tracking-wider ${completed ? 'text-yellow' : 'text-white/70'}`}>{title}</div>

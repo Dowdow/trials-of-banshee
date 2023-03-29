@@ -73,7 +73,7 @@ export default function TriumphsPage() {
             <div className="md:border-t-2 border-white/10" />
             <div />
             <div className="hidden md:flex justify-center items-center bg-dark-grey/70 text-white/20">◀</div>
-            <div className="grow">
+            <div className="grow overflow-y-scroll noscrollbar">
               <div className="grid grid-cols-1 2xl:grid-cols-2 gap-1.5">
                 <Triumph
                   type="collectionBadge"
