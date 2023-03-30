@@ -31,7 +31,6 @@ export default function TrialsClue({ type, used, disabled, onClick }) {
                 <img
                   src={WEAPON_RARITY_IMAGE[currentBounty.clues.rarity]}
                   alt={t(WEAPON_RARITY_NAME[currentBounty.clues.rarity])}
-                  className="w-10 h-10"
                   loading="lazy"
                 />
               )}

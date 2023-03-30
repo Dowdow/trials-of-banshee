@@ -49,6 +49,17 @@ export default function SoundForm({ onSubmit, sound = null, error = null }) {
   const handleAddWeapon = (id) => {
     setWeapons([...weapons, id]);
     setQuery('');
+    if (name === '' || description === '') {
+      const weapon = allWeapons.find((w) => w.id === id);
+      if (weapon !== undefined) {
+        if (name === '') {
+          setName(weapon.names[DEFAULT_LOCALE]);
+        }
+        if (description === '') {
+          setDescription(weapon.names[DEFAULT_LOCALE]);
+        }
+      }
+    }
   };
 
   const handleRemoveWeapon = (id) => {

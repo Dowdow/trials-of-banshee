@@ -11,11 +11,11 @@ import strandTransparent from '../../img/damage/strand_trans.png';
 import voidD from '../../img/damage/void.png';
 import voidTransparent from '../../img/damage/void_trans.png';
 
-import basic from '../../img/rarity/basic.jpg';
-import common from '../../img/rarity/common.jpg';
-import rare from '../../img/rarity/rare.jpg';
-import legendary from '../../img/rarity/legendary.jpg';
-import exotic from '../../img/rarity/exotic.jpg';
+import basic from '../../img/engram/basic_engram.png';
+import common from '../../img/engram/common_engram.png';
+import rare from '../../img/engram/rare_engram.png';
+import legendary from '../../img/engram/legendary_engram.png';
+import exotic from '../../img/engram/exotic_engram.png';
 
 import auto from '../../img/weapon/auto.svg';
 import bow from '../../img/weapon/bow.svg';

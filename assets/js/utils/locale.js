@@ -69,6 +69,11 @@ export function guessLocale() {
     return storageLocale;
   }
 
+  const basicLocale = navigator.language.toLocaleLowerCase() || DEFAULT_LOCALE;
+  if (SUPPORTED_LOCALES.includes(basicLocale)) {
+    return basicLocale;
+  }
+
   const locale = navigator.language.split('-')[0] || DEFAULT_LOCALE;
   if (SUPPORTED_LOCALES.includes(locale)) {
     return locale;
