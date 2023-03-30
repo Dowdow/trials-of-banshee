@@ -14,6 +14,7 @@ import InitFade from '../ui/InitFade';
 import Item from '../ui/item/Item';
 import NavBarBottom from '../ui/NavBarBottom';
 import emptyEngram from '../../../img/engram/empty_engram.svg';
+import packageImg from '../../../img/misc/package.svg';
 
 export default function CollectionPage() {
   const dispatch = useDispatch();
@@ -54,8 +55,8 @@ export default function CollectionPage() {
               </h1>
               <div className="hidden xl:flex justify-center items-center w-60 h-60 bg-dark-grey border-8 border-yellow rotate-45">
                 <div className="flex justify-center items-center w-52 h-52 bg-light-grey border-4 border-yellow">
-                  <div className="text-9xl -rotate-45 select-none">
-                    📦
+                  <div className="-rotate-45 select-none p-4">
+                    <img src={packageImg} alt={t('collection')} className="w-full h-full" />
                   </div>
                 </div>
               </div>

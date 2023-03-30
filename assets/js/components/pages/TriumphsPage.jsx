@@ -13,6 +13,7 @@ import NavBarBottom from '../ui/NavBarBottom';
 import GunsmithSeal from '../ui/triumph/GunsmithSeal';
 import Triumph from '../ui/triumph/Triumph';
 import TriumphProgress from '../ui/triumph/TriumphProgress';
+import seal from '../../../img/misc/seal.svg';
 
 export default function TriumphsPage() {
   const dispatch = useDispatch();
@@ -49,8 +50,8 @@ export default function TriumphsPage() {
             <div>
               <div className="relative w-full flex justify-center mt-12 p-6">
                 <div className="w-60 h-72 p-1 bg-dark-grey border-[12px] border-yellow rounded-b-full">
-                  <div className="flex justify-center items-center w-full h-full border-[4px] border-yellow rounded-b-full text-9xl">
-                    🔫
+                  <div className="flex justify-center items-center w-full h-full p-4 border-[4px] border-yellow rounded-b-full">
+                    <img src={seal} alt={t('gunsmith')} className="w-full h-full" />
                   </div>
                   <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-white/20" />
                   <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-white/20" />
