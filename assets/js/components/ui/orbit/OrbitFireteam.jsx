@@ -1,18 +1,30 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { resetTooltip, setTooltip } from '../../../actions/tooltip';
 import { useT } from '../../../hooks/translations';
 import { useUser, useUserAuthenticated, useUserError, useUserSeal } from '../../../hooks/user';
-import { characterClassName, characterGenderName, characterRaceName } from '../../../utils/user';
 import { ROUTES } from '../../../utils/routes';
+import { characterClassName, characterGenderName, characterRaceName } from '../../../utils/user';
 import defaultEmblem from '../../../../img/emblem/default_emblem.jpg';
 import logout from '../../../../img/misc/logout.png';
 import warning from '../../../../img/misc/warning.png';
 
 export default function OrbitFireteam() {
-  const authenticated = useUserAuthenticated();
-  const user = useUser();
-  const error = useUserError();
-  const { completed } = useUserSeal();
+  const dispatch = useDispatch();
   const t = useT();
+
+  const authenticated = useUserAuthenticated();
+  const error = useUserError();
+  const user = useUser();
+  const { completed } = useUserSeal();
+
+  const handleMouseEnterLogout = () => {
+    dispatch(setTooltip(t('logout'), t('logout.description')));
+  };
+
+  const handleMouseLeaveLogout = () => {
+    dispatch(resetTooltip());
+  };
 
   return (
     <div className="flex flex-col">
@@ -21,7 +33,7 @@ export default function OrbitFireteam() {
           {t('orbit.fireteam')}
         </div>
         {authenticated && (
-          <a href={ROUTES.OAUTH_LOGOUT} className="cursor-pointer" title={t('logout')}>
+          <a href={ROUTES.OAUTH_LOGOUT} className="cursor-pointer" onMouseEnter={handleMouseEnterLogout} onMouseLeave={handleMouseLeaveLogout}>
             <img src={logout} alt={t('logout')} className="w-6" />
           </a>
         )}

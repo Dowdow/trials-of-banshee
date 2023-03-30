@@ -55,4 +55,54 @@ export function useInterfaceMoveOnMouseMove() {
   return { x, y };
 }
 
-export default useInterfaceMoveOnMouseMove;
+export function useTooltipMoveOnMouseMove(tooltipRef) {
+  const mouseSpace = 20;
+
+  const [x, setX] = useState(0);
+  const [y, setY] = useState(0);
+
+  useEffect(() => {
+    function move(event) {
+      if (!window.matchMedia('(pointer: fine)').matches) {
+        setX(0);
+        setY(0);
+        return;
+      }
+
+      const wx = window.innerWidth;
+      const wy = window.innerHeight;
+      const mx = event.pageX;
+      const my = event.pageY;
+      const tx = tooltipRef.current.offsetWidth;
+      const ty = tooltipRef.current.offsetHeight;
+
+      if (mx >= wx / 2) {
+        setX(mx - tx - mouseSpace);
+      } else {
+        setX(mx + mouseSpace);
+      }
+
+      if (my >= wy / 2) {
+        setY(my - ty);
+      } else {
+        setY(my);
+      }
+    }
+
+    function resize() {
+      setX(0);
+      setY(0);
+    }
+
+    window.addEventListener('mouseenter', move);
+    window.addEventListener('mousemove', move);
+    window.addEventListener('resize', resize);
+    return () => {
+      window.removeEventListener('mouseenter', move);
+      window.removeEventListener('mousemove', move);
+      window.removeEventListener('resize', resize);
+    };
+  });
+
+  return { x, y };
+}

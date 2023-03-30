@@ -1,18 +1,23 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { resetTooltip, setTooltip } from '../../../actions/tooltip';
 import { useCurrentBounty } from '../../../hooks/bounty';
 import { useT } from '../../../hooks/translations';
+import { clueDescriptionFromType, clueNameFromType, clueValueFromTypeAndData, CLUE_TYPE } from '../../../utils/bounties';
 import { WEAPON_DAMAGE_TYPE_IMAGE, WEAPON_DAMAGE_TYPE_NAME, WEAPON_RARITY_IMAGE, WEAPON_RARITY_NAME, WEAPON_TYPE_IMAGE, WEAPON_TYPE_NAME } from '../../../utils/weapons';
-import { CLUE_TYPE } from '../../../utils/bounties';
 import clue from '../../../../img/bounty/clue.jpg';
 
 export default function TrialsClue({ type, used, disabled, onClick }) {
-  const currentBounty = useCurrentBounty();
+  const dispatch = useDispatch();
   const t = useT();
+
+  const currentBounty = useCurrentBounty();
 
   const [animationClick, setAnimationClick] = useState(false);
 
   const handleClick = () => {
+    dispatch(resetTooltip());
     setAnimationClick(true);
   };
 
@@ -21,8 +26,27 @@ export default function TrialsClue({ type, used, disabled, onClick }) {
     setAnimationClick(false);
   };
 
+  const handleMouseEnter = () => {
+    const title = used ? t(clueValueFromTypeAndData(type, currentBounty.clues)) : t(clueNameFromType(type));
+    dispatch(setTooltip(title, t(clueDescriptionFromType(type))));
+  };
+
+  const handleMouseLeave = () => {
+    dispatch(resetTooltip());
+  };
+
   return (
-    <button type="button" onClick={handleClick} className={`p-0.5 border-2 border-transparent disabled:hover:border-white/30 ${animationClick ? 'hover:border-transparent' : 'hover:border-white/70'} transition-colors duration-300 disabled:cursor-not-allowed`} disabled={disabled} onAnimationEnd={handleAnimationEnd}>
+    <button
+      type="button"
+      onClick={handleClick}
+      className={`p-0.5 border-2 border-transparent disabled:hover:border-white/30 ${animationClick ? 'hover:border-transparent' : 'hover:border-white/70'} transition-colors duration-300 disabled:cursor-not-allowed`}
+      disabled={disabled}
+      onAnimationEnd={handleAnimationEnd}
+      onMouseOver={handleMouseEnter}
+      onMouseOut={handleMouseLeave}
+      onFocus={handleMouseEnter}
+      onBlur={handleMouseLeave}
+    >
       <div className={`relative overflow-hidden ${animationClick && 'animate-bounty'} ${disabled ? 'bg-dark-grey' : 'bg-white'}`}>
         {used ? (
           <>

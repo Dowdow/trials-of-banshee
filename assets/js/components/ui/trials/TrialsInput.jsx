@@ -40,7 +40,7 @@ export default function TrialsInput() {
           autoComplete="off"
         />
         {guessInput !== '' && (
-          <div className="absolute grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-1 w-full max-h-80 p-2 bg-light-grey/95 border-b border-x border-white/70 overflow-y-scroll overflow-x-hidden z-50">
+          <div className="absolute grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-1 w-full max-h-80 p-2 bg-light-grey/95 border-b border-x border-white/70 overflow-y-scroll overflow-x-hidden z-20">
             {weapons
               .filter((w) => !currentBounty.history.includes(w.id))
               .filter((w) => w.names[locale].toLowerCase().includes(guessInput.toLowerCase()) || w.names[DEFAULT_LOCALE].toLowerCase().includes(guessInput.toLowerCase()))

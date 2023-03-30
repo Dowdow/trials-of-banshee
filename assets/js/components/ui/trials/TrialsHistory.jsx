@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { resetTooltip, setTooltip } from '../../../actions/tooltip';
 import { useCurrentBounty } from '../../../hooks/bounty';
 import { useLocale, useT } from '../../../hooks/translations';
 import CategoryTitle from '../CategoryTitle';
@@ -24,9 +25,9 @@ export default function TrialsHistory() {
     <section>
       <CategoryTitle title={t('trials.history')} />
       {currentBounty.history.length === 0 && (
-      <div className="mt-4 text-lg text-white/70">
-        {(t('trials.history.empty'))}
-      </div>
+        <div className="mt-4 text-lg text-white/70">
+          {(t('trials.history.empty'))}
+        </div>
       )}
       <div ref={scrollDiv} className="mt-4 w-full max-w-full overflow-x-scroll noscrollbar">
         <div className="flex flex-row-reverse justify-end gap-1">
@@ -44,9 +45,20 @@ export default function TrialsHistory() {
 }
 
 function WeaponHistory({ weapon, correct = false }) {
+  const dispatch = useDispatch();
   const locale = useLocale();
+  const t = useT();
+
+  const handleMouseEnter = () => {
+    dispatch(setTooltip(weapon.names[locale], t('trials.history.weapon')));
+  };
+
+  const handleMouseLeave = () => {
+    dispatch(resetTooltip());
+  };
+
   return (
-    <div className="relative animate-wiggle">
+    <div className="relative animate-wiggle" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <WeaponIcon icon={weapon.icon} alt={weapon.names[locale]} iconWatermark={weapon.iconWatermark} className="w-20 h-20" />
       <div className="absolute top-0 left-0 w-20 h-20 overflow-hidden">
         {correct ? (

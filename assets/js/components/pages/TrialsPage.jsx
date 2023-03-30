@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { getBountiesToday, setCurrentBounty } from '../../actions/bounties';
+import { resetTooltip } from '../../actions/tooltip';
 import { useCurrentBounty } from '../../hooks/bounty';
 import { useInterfaceMoveOnMouseMove } from '../../hooks/mouse';
 import { useT } from '../../hooks/translations';
@@ -45,6 +46,7 @@ export default function TrialsPage() {
 
   const handleClickLink = (e, route) => {
     e.preventDefault();
+    dispatch(resetTooltip());
     setNextPage(route);
     setFadeOut(true);
   };

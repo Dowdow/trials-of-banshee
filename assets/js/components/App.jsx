@@ -5,6 +5,7 @@ import { getWeapons } from '../actions/weapons';
 import { ROUTES } from '../utils/routes';
 import CollectionPage from './pages/CollectionPage';
 import IndexPage from './pages/IndexPage';
+import Tooltip from './ui/Tooltip';
 import TrialsPage from './pages/TrialsPage';
 import TriumphsPage from './pages/TriumphsPage';
 import WeaponsPage from './pages/WeaponsPage';
@@ -34,6 +35,7 @@ export default function App() {
         <Route path={ROUTES.TRIUMPHS} element={<TriumphsPage />} />
         <Route path={ROUTES.WEAPONS} element={<WeaponsPage />} />
       </Routes>
+      <Tooltip />
     </Suspense>
   );
 }

@@ -1,8 +1,20 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { resetTooltip, setTooltip } from '../../../actions/tooltip';
 
 export default function EngramEmpty() {
+  const dispatch = useDispatch();
+
+  const handleMouseEnter = () => {
+    dispatch(setTooltip('???', '???'));
+  };
+
+  const handleMouseLeave = () => {
+    dispatch(resetTooltip());
+  };
+
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="96" height="96">
+    <svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <g className="opacity-20 hover:opacity-40 transition-opacity duration-300">
         <path
           d="m30.88 7.06-8.69 5.67L4.8 43.62v10.82l17.39 28.32 8.69 5.15h34.25l9.2-5.15 16.36-27.81V43.11l-18.1-30.89-6.95-4.13z"
