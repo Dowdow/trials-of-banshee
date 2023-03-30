@@ -10,6 +10,10 @@ export default function Tooltip() {
 
   const { visible, header, content, connected } = useSelector((state) => state.tooltip);
 
+  if (!window.matchMedia('(pointer: fine)').matches) {
+    return null;
+  }
+
   return (
     <div
       ref={tooltipRef}
@@ -21,9 +25,9 @@ export default function Tooltip() {
         {header}
       </div>
       {connected && (
-      <div className="p-2 bg-red/30 text-xl tracking-wide">
-        {t('tooltip.connected')}
-      </div>
+        <div className="p-2 bg-red/30 text-xl tracking-wide">
+          {t('tooltip.connected')}
+        </div>
       )}
       <div className="p-3 bg-light-grey/70 text-lg tracking-wide">
         {content}
