@@ -3,7 +3,7 @@ Website application for *trials-of-banshee.com*
 
 ### Clone
 Don't forget the submodules for translations:  
-`git clone --recurse-submodules repo`
+`git clone --recurse-submodules git@github.com:Dowdow/trials-of-banshee.git`
 
 ### .htaccess
 Apache `.htaccess` conf for Symfony, adapted for the Trials of Banshee:  
