@@ -2,19 +2,22 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { resetTooltip, setTooltip } from '../../../actions/tooltip';
 import { useT } from '../../../hooks/translations';
+import { useUserAuthenticated } from '../../../hooks/user';
 import { ROUTES } from '../../../utils/routes';
 import CategoryTitle from '../CategoryTitle';
 import collection from '../../../../img/misc/collection.jpg';
 import triumphs from '../../../../img/misc/triumphs.png';
-import { resetTooltip, setTooltip } from '../../../actions/tooltip';
 
 export default function TrialsCollectionAndTriumphs({ onLink }) {
   const dispatch = useDispatch();
   const t = useT();
 
+  const authenticated = useUserAuthenticated();
+
   const handleMouseEnterCollection = () => {
-    dispatch(setTooltip(t('collection'), t('collection.description')));
+    dispatch(setTooltip(t('collection'), t('collection.description'), !authenticated));
   };
 
   const handleMouseLeaveCollection = () => {
@@ -22,7 +25,7 @@ export default function TrialsCollectionAndTriumphs({ onLink }) {
   };
 
   const handleMouseEnterTriumphs = () => {
-    dispatch(setTooltip(t('triumphs'), t('triumphs.description')));
+    dispatch(setTooltip(t('triumphs'), t('triumphs.description'), !authenticated));
   };
 
   const handleMouseLeaveTriumphs = () => {

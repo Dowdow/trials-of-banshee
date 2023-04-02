@@ -67,6 +67,7 @@ class BountyService
       $completed = $bountySession['completed'] ?? null;
       $clues = $bountySession['clues'] ?? null;
       $history = $bountySession['history'] ?? null;
+      $flawless = $bountySession['flawless'] ?? null;
     }
 
     $bountyCompletion = new BountyCompletion();
@@ -74,7 +75,8 @@ class BountyService
       ->setAttempts($attempts ?? 0)
       ->setCompleted($completed ?? false)
       ->setClues($clues ?? [])
-      ->setHistory($history ?? []);
+      ->setHistory($history ?? [])
+      ->setFlawless($flawless ?? null);
 
     return $bountyCompletion;
   }
@@ -87,6 +89,7 @@ class BountyService
       'completed' => $bountyCompletion->isCompleted(),
       'clues' => $bountyCompletion->getClues(),
       'history' => $bountyCompletion->getHistory(),
+      'flawless' => $bountyCompletion->isFlawless(),
     ]);
   }
 

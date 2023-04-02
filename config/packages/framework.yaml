@@ -18,6 +18,10 @@ framework:
     php_errors:
         log: true
 
+    assets:
+        json_manifest_path: "%kernel.project_dir%/public/build/assets-manifest.json"
+        strict_mode: true
+
 when@test:
     framework:
         test: true

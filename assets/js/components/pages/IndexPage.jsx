@@ -56,7 +56,7 @@ export default function IndexPage() {
               </div>
               <span className="text-sm md:text-base font-bold tracking-[.4em] uppercase text-white/80 whitespace-nowrap select-none">{t('orbit.title.header')}</span>
               <div className="w-full h-[1px] mt-1 mb-4 bg-white/60" />
-              <h1 className="mb-3 font-neue-haas-display-bold text-3xl md:text-5xl lg:text-6xl 2xl:text-8xl tracking-wide uppercase text-white/90 whitespace-nowrap select-none">
+              <h1 className="mb-3 font-neue-haas-display-bold text-3xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl tracking-wide uppercase text-white/90 whitespace-nowrap select-none">
                 {t('orbit.title')}
               </h1>
               <span className="text-base md:text-lg lg:text-xl text-white/70 whitespace-nowrap select-none">

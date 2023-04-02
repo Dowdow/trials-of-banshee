@@ -33,12 +33,14 @@ const config = {
   },
   output: {
     path: path.resolve(__dirname, './public/build'),
-    filename: '[name].js',
+    filename: '[name].[contenthash].js',
     clean: true,
   },
   plugins: [
     new MiniCssExtractPlugin(),
-    new WebpackAssetsManifest(),
+    new WebpackAssetsManifest({
+      publicPath: '/build/',
+    }),
   ],
 };
 

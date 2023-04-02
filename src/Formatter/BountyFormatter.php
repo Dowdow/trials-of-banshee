@@ -11,10 +11,6 @@ class BountyFormatter
 {
   private BountyService $bountyService;
 
-  /**
-   * BountyFormatter
-   * @param BountyService $bountyService
-   */
   public function __construct(BountyService $bountyService)
   {
     $this->bountyService = $bountyService;
@@ -47,13 +43,9 @@ class BountyFormatter
   {
     $formattedBounties = [];
     foreach ($bounties as $bounty) {
-      if ($bounty->getType() === Bounty::TYPE_DAILY) {
-        $bountyCompletion = $this->bountyService->findOrCreateBountyCompletionWithSesion($bounty);
-        $this->bountyService->saveBountyCompletionWithSession($bounty, $bountyCompletion);
-        $formattedBounties[] = $this->formatBounty($bounty, $bountyCompletion);
-      } else {
-        $formattedBounties[] = $this->formatBountyNotAuthenticated($bounty);
-      }
+      $bountyCompletion = $this->bountyService->findOrCreateBountyCompletionWithSesion($bounty);
+      $this->bountyService->saveBountyCompletionWithSession($bounty, $bountyCompletion);
+      $formattedBounties[] = $this->formatBounty($bounty, $bountyCompletion);
     }
 
     return [
@@ -62,12 +54,6 @@ class BountyFormatter
     ];
   }
 
-  /**
-   * @param Bounty $bounty
-   * @param BountyCompletion|null $bountyCompletion
-   * @param string|null $loot
-   * @return array
-   */
   public function formatBounty(Bounty $bounty, ?BountyCompletion $bountyCompletion = null, ?string $loot = null): array
   {
     return [
@@ -81,19 +67,6 @@ class BountyFormatter
       'clues' => $bountyCompletion?->getClues() ?? [],
       'history' => $bountyCompletion?->getHistory() ?? [],
       'loot' => $loot,
-    ];
-  }
-
-  /**
-   * @param Bounty $bounty
-   * @return array
-   */
-  public function formatBountyNotAuthenticated(Bounty $bounty): array
-  {
-    return [
-      'id' => $bounty->getId(),
-      'type' => $bounty->getType(),
-      'audio' => $bounty->getType() === Bounty::TYPE_DAILY ? $bounty->getWeapon()?->getSounds()?->first()?->getPath() : null,
     ];
   }
 }

@@ -65,14 +65,6 @@ class BountyApiController extends AbstractController
       return new JsonResponse(['errors' => ['Bounty not found']], 404);
     }
 
-    $isConnected = $this->isGranted(User::ROLE_USER);
-
-    // Check if User is connected to play aspiring and gunsmith bounties
-    $bountyType = $bounty->getType();
-    if (!$isConnected && in_array($bountyType, [Bounty::TYPE_ASPIRING, Bounty::TYPE_GUNSMITH], true)) {
-      return new JsonResponse(['errors' => ['You need to be authenticated to do this Bounty']], 403);
-    }
-
     // Check if the User plays the Bounty when it's available (can play older bounties)
     $date = new DateTime();
     if ($date < $bounty->getDateStart()) {
@@ -89,6 +81,8 @@ class BountyApiController extends AbstractController
     // Check if the Weapon is a correct answer
     $isWeaponCorrect = $bountyService->isWeaponCorrect($bounty, $weapon);
     $isPerfectMatch = $bountyService->isWeaponPerfectMatch($bounty, $weapon);
+
+    $isConnected = $this->isGranted(User::ROLE_USER);
 
     // BountyCompletion object creation (From database or request)
     if ($isConnected) {
@@ -126,10 +120,10 @@ class BountyApiController extends AbstractController
         $triumphService->addPerfectMatchCompletion($user);
       }
       if ($isFlawless === true) {
-        if ($bountyType === Bounty::TYPE_ASPIRING) {
+        if ($bounty->getType() === Bounty::TYPE_ASPIRING) {
           $triumphService->addAspiringBountyCompletion($user);
           $loot = $collectionService->rewardAspiringBountyCompletionEngram($user);
-        } elseif ($bountyType === Bounty::TYPE_GUNSMITH) {
+        } elseif ($bounty->getType() === Bounty::TYPE_GUNSMITH) {
           $triumphService->addTrueGunsmithBountyCompletion($user);
           $loot = $collectionService->rewardGunsmithBountyCompletionEngram($user);
         }
@@ -157,13 +151,6 @@ class BountyApiController extends AbstractController
       return new JsonResponse(['errors' => ['Bounty not found']], 404);
     }
 
-    $isConnected = $this->isGranted(User::ROLE_USER);
-
-    // Check if User is connected to play aspiring and gunsmith bounties
-    if (!$isConnected && in_array($bounty->getType(), [Bounty::TYPE_ASPIRING, Bounty::TYPE_GUNSMITH], true)) {
-      return new JsonResponse(['errors' => ['You need to be authenticated to do this Bounty']], 403);
-    }
-
     // Check if the User play the Bounty when it's available (can play older bounties)
     $date = new DateTime();
     if ($date < $bounty->getDateStart()) {
@@ -176,6 +163,8 @@ class BountyApiController extends AbstractController
     } catch (ClueNotFoundFromRequestException $e) {
       return new JsonResponse(['errors' => [$e->getMessage()]], 400);
     }
+
+    $isConnected = $this->isGranted(User::ROLE_USER);
 
     // BountyCompletion object creation (From database or request)
     if ($isConnected) {

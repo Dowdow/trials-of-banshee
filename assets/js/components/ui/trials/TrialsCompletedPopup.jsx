@@ -7,6 +7,7 @@ import { bountyNameFromType, BOUNTY_TYPE } from '../../../utils/bounties';
 import { ENGRAMS, ENGRAM_IMAGES } from '../../../utils/collections';
 import LeftClickButton from '../clickable/LeftClickButton';
 import TwitterShareBounty from '../clickable/TwitterShareBounty';
+import emptyEngram from '../../../../img/engram/empty_engram.svg';
 
 export default function TrialsCompletedPopup({ onExit }) {
   const currentBounty = useCurrentBounty();
@@ -40,7 +41,7 @@ export default function TrialsCompletedPopup({ onExit }) {
             <div className="flex items-center p-3 lg:p-5 bg-light-grey/40 text-xl lg:text-3xl text-white/80 font-bold tracking-widest lg:tracking-[0.3em] uppercase">
               {t('trials.bounty.completed')}
             </div>
-            <div className="flex flex-col gap-y-4 p-3 lg:p-5 text-white/70 text-base lg:text-xl tracking-wide">
+            <div className="flex flex-col gap-y-2 md:gap-y-4 p-3 lg:p-5 text-white/70 text-base lg:text-xl tracking-wide">
               <div>{t('bounty.done', { bounty: t(bountyNameFromType(currentBounty.type)) })}</div>
               <div className="flex flex-col gap-1.5">
                 <div className="border-b-2 border-white/40">
@@ -60,13 +61,23 @@ export default function TrialsCompletedPopup({ onExit }) {
                   </div>
                 </div>
               )}
-              {currentBounty.loot && (
+              {currentBounty.loot ? (
                 <div className="flex flex-col gap-3">
                   <div className="border-b-2 border-white/40">{t('trials.bounty.reward', { engram: t(ENGRAMS[currentBounty.loot]) })}</div>
                   <div className="relative w-24 h-24">
                     <div className="absolute w-24 h-24 border-2 border-white opacity-0 animate-engram-decoration-pop" />
                     <div className="absolute w-24 h-24 border-2 border-white rotate-45 opacity-0 animate-engram-decoration-pop-next" />
                     <img src={ENGRAM_IMAGES[currentBounty.loot]} alt={t(ENGRAMS[currentBounty.loot])} className="w-24 h-24 hover:brightness-125 transition-all duration-300 opacity-0 animate-engram-pop" />
+                  </div>
+                </div>
+              ) : (
+                <div className="flex flex-col gap-3">
+                  <div className="border-b-2 border-white/40">{t('trials.bounty.reward.no')}</div>
+                  <div className="flex gap-x-5 items-center">
+                    <img src={emptyEngram} alt={t('emgram.empty')} className="w-16 md:w-24 h-16 md:h-24" />
+                    <div className="text-sm md:text-base">
+                      {t('trials.bounty.reward.no.description')}
+                    </div>
                   </div>
                 </div>
               )}
