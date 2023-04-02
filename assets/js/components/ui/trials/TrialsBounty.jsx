@@ -51,8 +51,14 @@ export default function TrialsBounty({ bounty, onClick }) {
         <img src={bountyImageFromType(bounty.type)} alt={bountyName} className={`${animationClick ? 'opacity-0 hover:opacity-0' : 'hover:opacity-70'} ${completed && 'opacity-70'} transition-opacity duration-300`} loading="lazy" />
         {completed && (
           <>
-            <div className="absolute -bottom-10 -right-10 bg-light-blue h-20 w-20 shadow-dark-grey rotate-45" />
+            <div className={`absolute -bottom-10 -right-10 ${bounty.flawless ? 'bg-yellow' : 'bg-light-blue'} h-20 w-20 rotate-45`} />
             <div className="absolute bottom-3.5 right-2.5 h-2.5 w-4 border-l-4 border-b-4 border-white -rotate-45" />
+          </>
+        )}
+        {!completed && bounty.history.length > 0 && (
+          <>
+            <div className="absolute -bottom-10 -right-10 bg-light-red h-20 w-20 shadow-dark-grey rotate-45" />
+            <div className="absolute bottom-9 right-3.5 h-2.5 w-4 text-white text-6xl">~</div>
           </>
         )}
       </div>
@@ -65,6 +71,8 @@ TrialsBounty.propTypes = {
     id: PropTypes.number.isRequired,
     type: PropTypes.number.isRequired,
     completed: PropTypes.bool,
+    history: PropTypes.array,
+    flawless: PropTypes.bool,
   }).isRequired,
   onClick: PropTypes.func.isRequired,
 };

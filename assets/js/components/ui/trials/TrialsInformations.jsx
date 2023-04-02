@@ -10,7 +10,7 @@ export default function TrialsInformations() {
   const { hoursLeft, minutesLeft, secondsLeft } = useNextBountiesCounter();
 
   return (
-    <section className="relative w-full h-full overflow-hidden">
+    <section className="relative w-full h-full overflow-hidden select-none">
       <CategoryTitle title={t('trials.informations')} />
       <img src={gunsmith} alt={t('gunsmith')} className="absolute left-0 right-0 mx-auto w-full max-w-md h-full object-cover opacity-25" />
       <div className="mt-4">
