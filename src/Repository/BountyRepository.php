@@ -28,4 +28,23 @@ class BountyRepository extends EntityRepository
 
     return $qb->getQuery()->getSingleScalarResult() > 0;
   }
+
+  /**
+   * @param DateTime $date
+   * @return int
+   * @throws NoResultException
+   * @throws NonUniqueResultException
+   */
+  public function countBountyCompletionByDate(DateTime $date): int
+  {
+    $qb = $this->createQueryBuilder('b');
+    $qb
+      ->select('COUNT(bc.id)')
+      ->innerJoin('b.bountyCompletions', 'bc')
+      ->where($qb->expr()->eq('b.dateStart', ':date'))
+      ->groupBy('b.dateStart')
+      ->setParameter('date', $date);
+
+    return $qb->getQuery()->getSingleScalarResult();
+  }
 }

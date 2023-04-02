@@ -31,6 +31,9 @@ class Bounty
   #[ORM\Column]
   private ?DateTime $dateStart = null;
 
+  #[ORM\Column]
+  private int $offlineCompletions = 0;
+
   #[ORM\ManyToOne(targetEntity: Weapon::class, inversedBy: 'bounties')]
   private ?Weapon $weapon = null;
 
@@ -66,6 +69,17 @@ class Bounty
   public function setDateStart(DateTime $dateStart): static
   {
     $this->dateStart = $dateStart;
+    return $this;
+  }
+
+  public function getOfflineCompletions(): int
+  {
+    return $this->offlineCompletions;
+  }
+
+  public function setOfflineCompletions(int $offlineCompletions): static
+  {
+    $this->offlineCompletions = $offlineCompletions;
     return $this;
   }
 

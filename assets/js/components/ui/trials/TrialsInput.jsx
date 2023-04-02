@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { postGuess } from '../../../actions/bounties';
@@ -24,6 +24,12 @@ export default function TrialsInput() {
     inputRef.current.focus();
     dispatch(postGuess(currentBounty.id, weaponId));
   };
+
+  useEffect(() => {
+    if (currentBounty.completed) {
+      inputRef.current.blur();
+    }
+  }, [currentBounty]);
 
   return (
     <section>

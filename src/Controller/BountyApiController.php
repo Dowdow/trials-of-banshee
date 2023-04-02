@@ -14,7 +14,10 @@ use App\Service\CollectionService;
 use App\Service\TriumphService;
 use App\Service\WeaponService;
 use DateTime;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,7 +27,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class BountyApiController extends AbstractController
 {
   #[Route('/bounties/today', name: 'api.bounties.today', methods: ['GET'])]
-  public function bountiesToday(ManagerRegistry $managerRegistry, BountyFormatter $bountyFormatter): JsonResponse
+  public function bountiesToday(
+    ManagerRegistry $managerRegistry,
+    BountyFormatter $bountyFormatter,
+    LoggerInterface $logger
+  ): JsonResponse
   {
     $em = $managerRegistry->getManager();
     /** @var BountyRepository $bountyRepository */
@@ -40,13 +47,24 @@ class BountyApiController extends AbstractController
 
     $bounties = $bountyRepository->findBy(['dateStart' => $todayBountyDate]);
 
+    $totalCompletions = 0;
+    foreach ($bounties as $bounty) {
+      $totalCompletions += $bounty->getOfflineCompletions();
+    }
+
+    try {
+      $totalCompletions += $bountyRepository->countBountyCompletionByDate($todayBountyDate);
+    } catch (NoResultException|NonUniqueResultException $e) {
+      $logger->error($e);
+    }
+
     if (!$this->isGranted(User::ROLE_USER)) {
-      return new JsonResponse($bountyFormatter->formatBountiesNotAuthenticated($bounties));
+      return new JsonResponse($bountyFormatter->formatBountiesNotAuthenticated($bounties, $totalCompletions));
     }
 
     /** @var User $user */
     $user = $this->getUser();
-    return new JsonResponse($bountyFormatter->formatBounties($user, $bounties));
+    return new JsonResponse($bountyFormatter->formatBounties($user, $bounties, $totalCompletions));
   }
 
   #[Route('/bounty/{id}/guess', name: 'api.bounty.guess', methods: ['POST'])]
@@ -110,6 +128,11 @@ class BountyApiController extends AbstractController
     // Early return for session player
     if (!$isConnected) {
       $bountyService->saveBountyCompletionWithSession($bounty, $bountyCompletion);
+      if ($bountyCompletion->isCompleted()) {
+        $bounty->setOfflineCompletions($bounty->getOfflineCompletions() + 1);
+        $em = $managerRegistry->getManager();
+        $em->flush();
+      }
       return new JsonResponse($bountyFormatter->formatBounty($bounty, $bountyCompletion));
     }
 

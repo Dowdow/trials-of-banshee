@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useTodayBounties } from '../../../hooks/bounty';
+import { useTodayBounties, useTodayBoutiesCompletion } from '../../../hooks/bounty';
 import { useT } from '../../../hooks/translations';
 import { BOUNTY_TYPE } from '../../../utils/bounties';
 import CategoryTitle from '../CategoryTitle';
@@ -8,11 +8,12 @@ import TrialsBounty from './TrialsBounty';
 
 export default function TrialsBounties({ onClick }) {
   const bounties = useTodayBounties();
+  const completions = useTodayBoutiesCompletion();
   const t = useT();
 
   return (
     <section>
-      <CategoryTitle title={t('bounties')} />
+      <CategoryTitle title={t('bounties')} counter={completions} />
       <div className="flex gap-1 mt-4 -ml-1">
         {bounties.filter((b) => b.type === BOUNTY_TYPE.DAILY).map((b) => <TrialsBounty key={b.id} bounty={b} onClick={onClick} />)}
         {bounties.filter((b) => b.type === BOUNTY_TYPE.ASPIRING).map((b) => <TrialsBounty key={b.id} bounty={b} onClick={onClick} />)}

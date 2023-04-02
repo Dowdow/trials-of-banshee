@@ -19,9 +19,10 @@ class BountyFormatter
   /**
    * @param User $user
    * @param Bounty[] $bounties
+   * @param int $completions
    * @return array
    */
-  public function formatBounties(User $user, array $bounties): array
+  public function formatBounties(User $user, array $bounties, int $completions): array
   {
     $formattedBounties = [];
     foreach ($bounties as $bounty) {
@@ -32,14 +33,16 @@ class BountyFormatter
     return [
       'items' => $formattedBounties,
       'total' => count($formattedBounties),
+      'completions' => $completions,
     ];
   }
 
   /**
    * @param Bounty[] $bounties
+   * @param int $completions
    * @return array
    */
-  public function formatBountiesNotAuthenticated(array $bounties): array
+  public function formatBountiesNotAuthenticated(array $bounties, int $completions): array
   {
     $formattedBounties = [];
     foreach ($bounties as $bounty) {
@@ -51,6 +54,7 @@ class BountyFormatter
     return [
       'items' => $formattedBounties,
       'total' => count($formattedBounties),
+      'completions' => $completions,
     ];
   }
 
