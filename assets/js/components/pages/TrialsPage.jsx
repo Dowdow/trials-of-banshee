@@ -20,8 +20,8 @@ import TrialsClues from '../ui/trials/TrialsClues';
 import TrialsCollectionAndTriumphs from '../ui/trials/TrialsCollectionAndTriumphs';
 import TrialsCompletedPopup from '../ui/trials/TrialsCompletedPopup';
 import TrialsHistory from '../ui/trials/TrialsHistory';
+import TrialsInformations from '../ui/trials/TrialsInformations';
 import TrialsInput from '../ui/trials/TrialsInput';
-import TrialsRules from '../ui/trials/TrialsRules';
 import banshee from '../../../img/banshee.jpg';
 
 export default function TrialsPage() {
@@ -113,7 +113,7 @@ export default function TrialsPage() {
             </div>
           </div>
           <div className="w-full h-[70%] bg-blue/50 pb-[10px] px-[10px] md:pl-0">
-            <div className={`w-full ${slideIn && 'animate-slide-in'} ${slideOut && 'animate-slide-out'}`}>
+            <div className={`w-full h-full ${slideIn && 'animate-slide-in'} ${slideOut && 'animate-slide-out'}`}>
               {currentBounty
                 ? (
                   <div className="flex flex-col gap-y-4 md:gap-y-10 xl:gap-y-12 p-5 lg:p-8 xl:p-10">
@@ -122,9 +122,9 @@ export default function TrialsPage() {
                     <TrialsHistory />
                   </div>
                 ) : (
-                  <div className="flex flex-col gap-y-4 md:gap-y-10 xl:gap-y-12 p-5 lg:p-8 xl:p-10">
+                  <div className="h-full flex flex-col gap-y-4 md:gap-y-10 xl:gap-y-12 p-5 lg:p-8 xl:p-10">
                     <TrialsBounties onClick={handleClickBounty} />
-                    <TrialsRules />
+                    <TrialsInformations />
                   </div>
                 )}
             </div>
