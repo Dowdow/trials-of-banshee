@@ -1,3 +1,4 @@
+/* eslint-disable no-lonely-if */
 import { useEffect, useState } from 'react';
 
 export function useInterfaceMoveOnMouseMove() {
@@ -73,19 +74,35 @@ export function useTooltipMoveOnMouseMove(tooltipRef) {
       const wy = window.innerHeight;
       const mx = event.pageX;
       const my = event.pageY;
-      const tx = tooltipRef.current.offsetWidth;
-      const ty = tooltipRef.current.offsetHeight;
+      const tx = tooltipRef.current?.offsetWidth ?? 0;
+      const ty = tooltipRef.current?.offsetHeight ?? 0;
 
       if (mx >= wx / 2) {
-        setX(mx - tx - mouseSpace);
+        if (mx - mouseSpace - tx < 0) {
+          setX(0);
+        } else {
+          setX(mx - tx - mouseSpace);
+        }
       } else {
-        setX(mx + mouseSpace);
+        if (mx + mouseSpace + tx > wx) {
+          setX(wx - tx);
+        } else {
+          setX(mx + mouseSpace);
+        }
       }
 
       if (my >= wy / 2) {
-        setY(my - ty);
+        if (my - ty < 0) {
+          setY(0);
+        } else {
+          setY(my - ty);
+        }
       } else {
-        setY(my);
+        if (my + ty > wy) {
+          setY(wy - ty);
+        } else {
+          setY(my);
+        }
       }
     }
 

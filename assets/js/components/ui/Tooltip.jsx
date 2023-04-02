@@ -17,8 +17,8 @@ export default function Tooltip() {
   return (
     <div
       ref={tooltipRef}
-      className={`${!visible && 'hidden'} absolute top-0 left-0 w-[474px] max-w-[474px] text-white/90 select-none pointer-events-none backdrop-blur-lg shadow-2xl shadow-dark z-50`}
-      style={{ translate: `${x}px ${y}px` }}
+      className={`${visible ? 'opacity-100' : 'opacity-0'} absolute top-0 left-0 w-full max-w-[474px] text-white/90 select-none pointer-events-none backdrop-blur-lg shadow-2xl shadow-dark z-50`}
+      style={{ translate: `${visible ? x : 0}px ${visible ? y : 0}px` }}
     >
       <div className="h-1 w-full bg-white/60" />
       <div className="p-2 bg-dark/90 text-2xl font-bold tracking-wide uppercase">
