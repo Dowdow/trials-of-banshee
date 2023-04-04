@@ -30,7 +30,7 @@ export default function TrialsHistory() {
         </div>
       )}
       <div ref={scrollDiv} className="mt-4 w-full max-w-full overflow-x-scroll noscrollbar">
-        <div className="flex flex-row-reverse justify-end gap-1">
+        <div className="flex flex-row-reverse justify-end gap-x-2">
           {currentBounty.history.map((weapon, index) => (
             <WeaponHistory
               key={weapon}

@@ -1,12 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
-import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
-import { postGuess } from '../../../actions/bounties';
-import { useCurrentBounty } from '../../../hooks/bounty';
+import { useDispatch } from 'react-redux';
+import { postGuess, setPopupWeapons } from '../../../actions/bounties';
+import { useCurrentBounty, usePossibleWeapons } from '../../../hooks/bounty';
 import { useLocale, useT } from '../../../hooks/translations';
 import { DEFAULT_LOCALE } from '../../../utils/locale';
 import CategoryTitle from '../CategoryTitle';
-import WeaponIcon from '../weapon/WeaponIcon';
+import TrialsWeaponGuess from './TrialsWeaponGuess';
 
 export default function TrialsInput() {
   const dispatch = useDispatch();
@@ -15,9 +14,15 @@ export default function TrialsInput() {
 
   const currentBounty = useCurrentBounty();
   const locale = useLocale();
-  const weapons = useSelector((state) => state.weapons);
+  const possibleWeapons = usePossibleWeapons();
 
   const [guessInput, setGuessInput] = useState('');
+
+  const handleClickWeaponsPopup = () => {
+    setGuessInput('');
+    inputRef.current.blur();
+    dispatch(setPopupWeapons(true));
+  };
 
   const handleClickGuess = (weaponId) => {
     setGuessInput('');
@@ -35,45 +40,34 @@ export default function TrialsInput() {
     <section>
       <CategoryTitle title={t('trials.guess')} />
       <div className="relative mt-4">
-        <input
-          ref={inputRef}
-          type="text"
-          value={guessInput}
-          disabled={currentBounty.completed}
-          onChange={(e) => setGuessInput(e.target.value)}
-          className="w-full p-2 text-lg bg-light-grey/30 border border-white/30 hover:border-white/50 focus:border-white/70 text-white transition-colors duration-300 disabled:cursor-not-allowed"
-          placeholder={t('trials.input.placeholder')}
-          autoComplete="off"
-        />
-        {guessInput !== '' && (
+        <div className="flex gap-x-1 md:gap-x-2 lg:gap-x-4">
+          <input
+            ref={inputRef}
+            type="text"
+            value={guessInput}
+            disabled={currentBounty.completed}
+            onChange={(e) => setGuessInput(e.target.value)}
+            className="w-full p-2 text-lg bg-light-grey/30 border border-white/30 hover:border-white/50 focus:border-white/70 text-white transition-colors duration-300 disabled:cursor-not-allowed"
+            placeholder={t('trials.input.placeholder')}
+            autoComplete="off"
+          />
+          <button
+            type="button"
+            className="flex gap-x-2 items-center p-2 bg-light-grey/30 border border-white/30 hover:border-white/50 text-lg text-white/70 hover:text-white transition-colors duration-300 whitespace-nowrap"
+            onClick={handleClickWeaponsPopup}
+          >
+            <span>{t('weapons')}</span>
+            <span className="font-bold">{possibleWeapons.length}</span>
+          </button>
+        </div>
+        {guessInput !== '' && guessInput.length > 1 && (
           <div className="absolute grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-1 w-full max-h-80 p-2 bg-light-grey/95 border-b border-x border-white/70 overflow-y-scroll overflow-x-hidden z-20">
-            {weapons
-              .filter((w) => !currentBounty.history.includes(w.id))
+            {possibleWeapons
               .filter((w) => w.names[locale].toLowerCase().includes(guessInput.toLowerCase()) || w.names[DEFAULT_LOCALE].toLowerCase().includes(guessInput.toLowerCase()))
-              .map((w) => <WeaponGuess key={w.id} w={w} onClick={handleClickGuess} />)}
+              .map((w) => <TrialsWeaponGuess key={w.id} w={w} onClick={handleClickGuess} />)}
           </div>
         )}
       </div>
     </section>
   );
 }
-
-function WeaponGuess({ w, onClick }) {
-  const locale = useLocale();
-  return (
-    <button type="button" onClick={() => onClick(w.id)} className="flex items-center gap-2 p-1 border border-transparent hover:border-white transition-colors duration-300">
-      <WeaponIcon icon={w.icon} alt={w.names[locale]} iconWatermark={w.iconWatermark} className="w-10 h-10" />
-      <span className="text-white/90 text-start">{w.names[locale]}</span>
-    </button>
-  );
-}
-
-WeaponGuess.propTypes = {
-  w: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    icon: PropTypes.string.isRequired,
-    iconWatermark: PropTypes.string,
-    names: PropTypes.object.isRequired,
-  }).isRequired,
-  onClick: PropTypes.func.isRequired,
-};

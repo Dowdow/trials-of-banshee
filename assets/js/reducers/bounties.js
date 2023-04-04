@@ -1,6 +1,6 @@
-import { SET_CURRENT_BOUNTY, SET_BOUNTIES, UPDATE_BOUNTY, SET_COMPLETIONS } from '../actions/bounties';
+import { SET_CURRENT_BOUNTY, SET_BOUNTIES, UPDATE_BOUNTY, SET_COMPLETIONS, SET_POPUP_WEAPONS } from '../actions/bounties';
 
-const init = { current: null, items: [], completions: 0 };
+const init = { current: null, items: [], completions: 0, popup: false };
 
 export default function bounties(state = init, action = {}) {
   switch (action.type) {
@@ -10,6 +10,8 @@ export default function bounties(state = init, action = {}) {
       return { ...state, completions: action.payload };
     case SET_CURRENT_BOUNTY:
       return { ...state, current: action.payload };
+    case SET_POPUP_WEAPONS:
+      return { ...state, popup: action.payload };
     case UPDATE_BOUNTY: {
       const indexBounty = state.items.findIndex((b) => b.id === action.payload.id);
       if (indexBounty !== -1) {

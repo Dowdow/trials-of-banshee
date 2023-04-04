@@ -13,7 +13,7 @@ export default function TrialsInformations() {
     <section className="relative w-full h-full overflow-hidden select-none">
       <CategoryTitle title={t('trials.informations')} />
       <img src={gunsmith} alt={t('gunsmith')} className="absolute left-0 right-0 mx-auto w-full max-w-md h-full object-cover opacity-25" />
-      <div className="mt-4">
+      <div className="absolute mt-4">
         <div className="flex flex-col gap-y-2 text-white/90 tracking-wide">
           <div className="text-base lg:text-xl">{t('trials.informations.common')}</div>
           <div className="flex flex-col items-center md:items-start gap-y-1">

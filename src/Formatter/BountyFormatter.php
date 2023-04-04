@@ -5,15 +5,15 @@ namespace App\Formatter;
 use App\Entity\Bounty;
 use App\Entity\BountyCompletion;
 use App\Entity\User;
-use App\Service\BountyService;
+use App\Service\BountyCompletionService;
 
 class BountyFormatter
 {
-  private BountyService $bountyService;
+  private BountyCompletionService $bountyCompletionService;
 
-  public function __construct(BountyService $bountyService)
+  public function __construct(BountyCompletionService $bountyCompletionService)
   {
-    $this->bountyService = $bountyService;
+    $this->bountyCompletionService = $bountyCompletionService;
   }
 
   /**
@@ -26,7 +26,7 @@ class BountyFormatter
   {
     $formattedBounties = [];
     foreach ($bounties as $bounty) {
-      $bountyCompletion = $this->bountyService->findOrCreateBountyCompletion($bounty, $user);
+      $bountyCompletion = $this->bountyCompletionService->findOrCreateBountyCompletion($bounty, $user);
       $formattedBounties[] = $this->formatBounty($bounty, $bountyCompletion);
     }
 
@@ -46,8 +46,8 @@ class BountyFormatter
   {
     $formattedBounties = [];
     foreach ($bounties as $bounty) {
-      $bountyCompletion = $this->bountyService->findOrCreateBountyCompletionWithSesion($bounty);
-      $this->bountyService->saveBountyCompletionWithSession($bounty, $bountyCompletion);
+      $bountyCompletion = $this->bountyCompletionService->findOrCreateBountyCompletionWithSesion($bounty);
+      $this->bountyCompletionService->saveBountyCompletionWithSession($bounty, $bountyCompletion);
       $formattedBounties[] = $this->formatBounty($bounty, $bountyCompletion);
     }
 
@@ -60,6 +60,10 @@ class BountyFormatter
 
   public function formatBounty(Bounty $bounty, ?BountyCompletion $bountyCompletion = null, ?string $loot = null): array
   {
+    if ($bountyCompletion !== null) {
+      $knowledge = $this->bountyCompletionService->getBountyCompletionKnowledge($bounty, $bountyCompletion);
+    }
+
     return [
       'id' => $bounty->getId(),
       'type' => $bounty->getType(),
@@ -70,6 +74,7 @@ class BountyFormatter
       'flawless' => $bountyCompletion?->isFlawless(),
       'clues' => $bountyCompletion?->getClues() ?? [],
       'history' => $bountyCompletion?->getHistory() ?? [],
+      'knowledge' => $knowledge ?? BountyCompletionService::DEFAULT_KNOWLEDGE,
       'loot' => $loot,
     ];
   }

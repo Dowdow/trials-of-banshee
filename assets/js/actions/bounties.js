@@ -5,6 +5,7 @@ import { ROUTES_API } from '../utils/routes';
 export const SET_BOUNTIES = 'SET_BOUNTIES';
 export const SET_COMPLETIONS = 'SET_COMPLETIONS';
 export const SET_CURRENT_BOUNTY = 'SET_CURRENT_BOUNTY';
+export const SET_POPUP_WEAPONS = 'SET_POPUP_WEAPONS';
 export const UPDATE_BOUNTY = 'UPDATE_BOUNTY';
 
 export function setBounties(bounties) {
@@ -17,6 +18,10 @@ export function setCompletions(completions) {
 
 export function setCurrentBounty(id) {
   return (dispatch) => dispatch({ type: SET_CURRENT_BOUNTY, payload: id });
+}
+
+export function setPopupWeapons(show) {
+  return (dispatch) => dispatch({ type: SET_POPUP_WEAPONS, payload: show });
 }
 
 export function updateBounty(bounty) {

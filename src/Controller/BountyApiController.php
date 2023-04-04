@@ -8,16 +8,13 @@ use App\Entity\User;
 use App\Exception\ClueNotFoundFromRequestException;
 use App\Exception\WeaponNotFoundFromRequestException;
 use App\Formatter\BountyFormatter;
-use App\Repository\BountyRepository;
+use App\Service\BountyCompletionService;
 use App\Service\BountyService;
 use App\Service\CollectionService;
 use App\Service\TriumphService;
 use App\Service\WeaponService;
 use DateTime;
-use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
-use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,36 +24,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class BountyApiController extends AbstractController
 {
   #[Route('/bounties/today', name: 'api.bounties.today', methods: ['GET'])]
-  public function bountiesToday(
-    ManagerRegistry $managerRegistry,
-    BountyFormatter $bountyFormatter,
-    LoggerInterface $logger
-  ): JsonResponse
+  public function bountiesToday(BountyService $bountyService, BountyFormatter $bountyFormatter): JsonResponse
   {
-    $em = $managerRegistry->getManager();
-    /** @var BountyRepository $bountyRepository */
-    $bountyRepository = $em->getRepository(Bounty::class);
-
-    $currentDateTime = new DateTime();
-    $todayBountyDate = clone $currentDateTime;
-    $todayBountyDate->setTime(17, 0);
-
-    if ($currentDateTime < $todayBountyDate) {
-      $todayBountyDate->modify('-1 day');
-    }
-
-    $bounties = $bountyRepository->findBy(['dateStart' => $todayBountyDate]);
-
-    $totalCompletions = 0;
-    foreach ($bounties as $bounty) {
-      $totalCompletions += $bounty->getOfflineCompletions();
-    }
-
-    try {
-      $totalCompletions += $bountyRepository->countBountyCompletionByDate($todayBountyDate);
-    } catch (NoResultException|NonUniqueResultException $e) {
-      $logger->error($e);
-    }
+    $bountyDate = $bountyService->getTodayBountyDate();
+    $bounties = $bountyService->getBountiesByDate($bountyDate);
+    $totalCompletions = $bountyService->getTotalBountyCompletionsByDate($bounties, $bountyDate);
 
     if (!$this->isGranted(User::ROLE_USER)) {
       return new JsonResponse($bountyFormatter->formatBountiesNotAuthenticated($bounties, $totalCompletions));
@@ -73,6 +45,7 @@ class BountyApiController extends AbstractController
     Request $request,
     ManagerRegistry $managerRegistry,
     BountyService $bountyService,
+    BountyCompletionService $bountyCompletionService,
     CollectionService $collectionService,
     TriumphService $triumphService,
     WeaponService $weaponService,
@@ -89,6 +62,22 @@ class BountyApiController extends AbstractController
       return new JsonResponse(['errors' => ['Bounty not available yet. Be patient Guardian']], 400);
     }
 
+    $isConnected = $this->isGranted(User::ROLE_USER);
+
+    // BountyCompletion object creation (From database or request)
+    if ($isConnected) {
+      /** @var User $user */
+      $user = $this->getUser();
+      $bountyCompletion = $bountyCompletionService->findOrCreateBountyCompletion($bounty, $user, true);
+    } else {
+      $bountyCompletion = $bountyCompletionService->findOrCreateBountyCompletionWithSesion($bounty);
+    }
+
+    // Check if the Bounty is not already completed
+    if ($bountyCompletion->isCompleted()) {
+      return new JsonResponse(['errors' => ['Bounty already completed']], 400);
+    }
+
     // Retrieve the guessed Weapon
     try {
       $weapon = $weaponService->retrieveWeaponFromRequest($request);
@@ -100,34 +89,18 @@ class BountyApiController extends AbstractController
     $isWeaponCorrect = $bountyService->isWeaponCorrect($bounty, $weapon);
     $isPerfectMatch = $bountyService->isWeaponPerfectMatch($bounty, $weapon);
 
-    $isConnected = $this->isGranted(User::ROLE_USER);
-
-    // BountyCompletion object creation (From database or request)
-    if ($isConnected) {
-      /** @var User $user */
-      $user = $this->getUser();
-      $bountyCompletion = $bountyService->findOrCreateBountyCompletion($bounty, $user, true);
-    } else {
-      $bountyCompletion = $bountyService->findOrCreateBountyCompletionWithSesion($bounty);
-    }
-
-    // Check if the Bounty is not already completed
-    if ($bountyCompletion->isCompleted()) {
-      return new JsonResponse(['errors' => ['Bounty already completed']], 400);
-    }
-
     $bountyCompletion
       ->addAttempt()
       ->addHistory($weapon->getId())
       ->setCompleted($isWeaponCorrect)
       ->setPerfectMatch($isPerfectMatch);
 
-    $isFlawless = $bountyService->isBountyCompletionFlawless($bounty, $bountyCompletion);
+    $isFlawless = $bountyCompletionService->isBountyCompletionFlawless($bounty, $bountyCompletion);
     $bountyCompletion->setFlawless($isFlawless);
 
     // Early return for session player
     if (!$isConnected) {
-      $bountyService->saveBountyCompletionWithSession($bounty, $bountyCompletion);
+      $bountyCompletionService->saveBountyCompletionWithSession($bounty, $bountyCompletion);
       if ($bountyCompletion->isCompleted()) {
         $bounty->setOfflineCompletions($bounty->getOfflineCompletions() + 1);
         $em = $managerRegistry->getManager();
@@ -166,7 +139,7 @@ class BountyApiController extends AbstractController
     ?Bounty $bounty,
     Request $request,
     ManagerRegistry $managerRegistry,
-    BountyService $bountyService,
+    BountyCompletionService $bountyCompletionService,
     BountyFormatter $bountyFormatter
   ): JsonResponse
   {
@@ -182,7 +155,7 @@ class BountyApiController extends AbstractController
 
     // Retrieve the asked clue type
     try {
-      $clueType = $bountyService->retrieveClueTypeFromRequest($request);
+      $clueType = $bountyCompletionService->retrieveClueTypeFromRequest($request);
     } catch (ClueNotFoundFromRequestException $e) {
       return new JsonResponse(['errors' => [$e->getMessage()]], 400);
     }
@@ -193,9 +166,9 @@ class BountyApiController extends AbstractController
     if ($isConnected) {
       /** @var User $user */
       $user = $this->getUser();
-      $bountyCompletion = $bountyService->findOrCreateBountyCompletion($bounty, $user, true);
+      $bountyCompletion = $bountyCompletionService->findOrCreateBountyCompletion($bounty, $user, true);
     } else {
-      $bountyCompletion = $bountyService->findOrCreateBountyCompletionWithSesion($bounty);
+      $bountyCompletion = $bountyCompletionService->findOrCreateBountyCompletionWithSesion($bounty);
     }
 
     // Check if the Bounty is not already completed
@@ -204,7 +177,7 @@ class BountyApiController extends AbstractController
     }
 
     // Check if the clue is authorized at this time
-    if (!$bountyService->isClueValid($bountyCompletion, $clueType)) {
+    if (!$bountyCompletionService->isClueValid($bountyCompletion, $clueType)) {
       return new JsonResponse(['errors' => ['You can\'t ask for this clue now']], 400);
     }
 
@@ -220,7 +193,7 @@ class BountyApiController extends AbstractController
 
     // Early return for session player
     if (!$isConnected) {
-      $bountyService->saveBountyCompletionWithSession($bounty, $bountyCompletion);
+      $bountyCompletionService->saveBountyCompletionWithSession($bounty, $bountyCompletion);
       return new JsonResponse($bountyFormatter->formatBounty($bounty, $bountyCompletion));
     }
 

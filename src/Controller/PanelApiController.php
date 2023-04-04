@@ -10,7 +10,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/api')]
-class PanelController extends AbstractController
+class PanelApiController extends AbstractController
 {
   #[Route('/panel/cache', name: 'api.panel.cache', methods: ['POST'])]
   public function panelCache(PanelService $panelService): NotFoundHttpException|StreamedResponse
