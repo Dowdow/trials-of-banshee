@@ -26,7 +26,7 @@ export default function TrialsPossibleWeaponsPopup() {
   }
 
   return (
-    <div onClick={handleClose} className={`${show ? '' : 'hidden'} absolute top-0 left-0 w-full h-full flex justify-center items-center bg-light-grey/90 backdrop-blur-sm`}>
+    <div onClick={handleClose} className={`${show ? '' : 'hidden'} absolute top-0 left-0 w-full h-screen flex justify-center items-center bg-light-grey/90 backdrop-blur-sm`}>
       <div className="container mx-auto max-h-[75%] bg-dark-grey/90 text-white/90 overflow-y-scroll noscrollbar">
         <div className="flex flex-col gap-y-2 p-1">
           {Object.entries(WEAPON_TYPE)
