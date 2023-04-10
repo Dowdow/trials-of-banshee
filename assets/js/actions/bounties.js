@@ -43,19 +43,6 @@ export function getBountiesToday() {
   };
 }
 
-export function postClue(bountyId, clueType) {
-  return (dispatch) => {
-    fetch(generatePath(ROUTES_API.BOUNTY_CLUE, { id: bountyId }), {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ clueType }),
-    })
-      .then((response) => response.json())
-      .then((data) => dispatch(updateBounty(data)))
-      .catch((err) => console.log(err));
-  };
-}
-
 export function postGuess(bountyId, weaponId) {
   return (dispatch) => {
     fetch(generatePath(ROUTES_API.BOUNTY_GUESS, { id: bountyId }), {

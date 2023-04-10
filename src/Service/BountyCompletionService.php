@@ -6,13 +6,9 @@ use App\Entity\Bounty;
 use App\Entity\BountyCompletion;
 use App\Entity\User;
 use App\Entity\Weapon;
-use App\Exception\ClueNotFoundFromRequestException;
 use App\Repository\BountyCompletionRepository;
 use App\Repository\WeaponRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use JsonException;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class BountyCompletionService
@@ -23,35 +19,32 @@ class BountyCompletionService
   public const KNOWLEDGE_IN_KEY = 'include';
   public const KNOWLEDGE_OUT_KEY = 'exclude';
 
+  public const CLUE_RARITY = 'rarity';
+  public const CLUE_DAMAGE_TYPE = 'damageType';
+  public const CLUE_WEAPON_TYPE = 'weaponType';
+
   public const DEFAULT_KNOWLEDGE = [
     self::KNOWLEDGE_IN_KEY => [
-      BountyCompletion::CLUE_RARITY => [],
-      BountyCompletion::CLUE_DAMAGE_TYPE => [],
-      BountyCompletion::CLUE_WEAPON_TYPE => [],
+      self::CLUE_RARITY => [],
+      self::CLUE_DAMAGE_TYPE => [],
+      self::CLUE_WEAPON_TYPE => [],
     ],
     self::KNOWLEDGE_OUT_KEY => [
-      BountyCompletion::CLUE_RARITY => [],
-      BountyCompletion::CLUE_DAMAGE_TYPE => [],
-      BountyCompletion::CLUE_WEAPON_TYPE => [],
+      self::CLUE_RARITY => [],
+      self::CLUE_DAMAGE_TYPE => [],
+      self::CLUE_WEAPON_TYPE => [],
     ]
   ];
 
-  public const CLUE_RARITY_ATTEMPTS_NEEDED = 2;
-  public const CLUE_DAMAGE_TYPE_ATTEMPTS_NEEDED = 4;
-  public const CLUE_WEAPON_TYPE_ATTEMPTS_NEEDED = 6;
-
   private EntityManagerInterface $em;
-  private LoggerInterface $logger;
   private RequestStack $requestStack;
 
   public function __construct(
     EntityManagerInterface $em,
-    LoggerInterface $logger,
     RequestStack $requestStack
   )
   {
     $this->em = $em;
-    $this->logger = $logger;
     $this->requestStack = $requestStack;
   }
 
@@ -82,7 +75,6 @@ class BountyCompletionService
       $bountySession = $session->get($bountySessionName);
       $attempts = $bountySession['attempts'] ?? null;
       $completed = $bountySession['completed'] ?? null;
-      $clues = $bountySession['clues'] ?? null;
       $history = $bountySession['history'] ?? null;
       $flawless = $bountySession['flawless'] ?? null;
     }
@@ -91,7 +83,6 @@ class BountyCompletionService
     $bountyCompletion
       ->setAttempts($attempts ?? 0)
       ->setCompleted($completed ?? false)
-      ->setClues($clues ?? [])
       ->setHistory($history ?? [])
       ->setFlawless($flawless ?? null);
 
@@ -104,7 +95,6 @@ class BountyCompletionService
     $session->set('bounty_' . $bounty->getId(), [
       'attempts' => $bountyCompletion->getAttempts(),
       'completed' => $bountyCompletion->isCompleted(),
-      'clues' => $bountyCompletion->getClues(),
       'history' => $bountyCompletion->getHistory(),
       'flawless' => $bountyCompletion->isFlawless(),
     ]);
@@ -144,72 +134,30 @@ class BountyCompletionService
     $historyWeapons = $weaponRepository->findBy(['id' => $bountyCompletion->getHistory()]);
     foreach ($historyWeapons as $weapon) {
       if ($weapon->getRarity() === $bountyWeapon->getRarity()) {
-        if (!in_array($weapon->getRarity(), $knowledge[self::KNOWLEDGE_IN_KEY][BountyCompletion::CLUE_RARITY], true)) {
-          $knowledge[self::KNOWLEDGE_IN_KEY][BountyCompletion::CLUE_RARITY][] = $weapon->getRarity();
+        if (!in_array($weapon->getRarity(), $knowledge[self::KNOWLEDGE_IN_KEY][self::CLUE_RARITY], true)) {
+          $knowledge[self::KNOWLEDGE_IN_KEY][self::CLUE_RARITY][] = $weapon->getRarity();
         }
-      } else if (!in_array($weapon->getRarity(), $knowledge[self::KNOWLEDGE_OUT_KEY][BountyCompletion::CLUE_RARITY], true)) {
-        $knowledge[self::KNOWLEDGE_OUT_KEY][BountyCompletion::CLUE_RARITY][] = $weapon->getRarity();
+      } else if (!in_array($weapon->getRarity(), $knowledge[self::KNOWLEDGE_OUT_KEY][self::CLUE_RARITY], true)) {
+        $knowledge[self::KNOWLEDGE_OUT_KEY][self::CLUE_RARITY][] = $weapon->getRarity();
       }
 
       if ($weapon->getDamageType() === $bountyWeapon->getDamageType()) {
-        if (!in_array($weapon->getDamageType(), $knowledge[self::KNOWLEDGE_IN_KEY][BountyCompletion::CLUE_DAMAGE_TYPE], true)) {
-          $knowledge[self::KNOWLEDGE_IN_KEY][BountyCompletion::CLUE_DAMAGE_TYPE][] = $weapon->getDamageType();
+        if (!in_array($weapon->getDamageType(), $knowledge[self::KNOWLEDGE_IN_KEY][self::CLUE_DAMAGE_TYPE], true)) {
+          $knowledge[self::KNOWLEDGE_IN_KEY][self::CLUE_DAMAGE_TYPE][] = $weapon->getDamageType();
         }
-      } else if (!in_array($weapon->getDamageType(), $knowledge[self::KNOWLEDGE_OUT_KEY][BountyCompletion::CLUE_DAMAGE_TYPE], true)) {
-        $knowledge[self::KNOWLEDGE_OUT_KEY][BountyCompletion::CLUE_DAMAGE_TYPE][] = $weapon->getDamageType();
+      } else if (!in_array($weapon->getDamageType(), $knowledge[self::KNOWLEDGE_OUT_KEY][self::CLUE_DAMAGE_TYPE], true)) {
+        $knowledge[self::KNOWLEDGE_OUT_KEY][self::CLUE_DAMAGE_TYPE][] = $weapon->getDamageType();
       }
 
       if ($weapon->getType() === $bountyWeapon->getType()) {
-        if (!in_array($weapon->getType(), $knowledge[self::KNOWLEDGE_IN_KEY][BountyCompletion::CLUE_WEAPON_TYPE], true)) {
-          $knowledge[self::KNOWLEDGE_IN_KEY][BountyCompletion::CLUE_WEAPON_TYPE][] = $weapon->getType();
+        if (!in_array($weapon->getType(), $knowledge[self::KNOWLEDGE_IN_KEY][self::CLUE_WEAPON_TYPE], true)) {
+          $knowledge[self::KNOWLEDGE_IN_KEY][self::CLUE_WEAPON_TYPE][] = $weapon->getType();
         }
-      } else if (!in_array($weapon->getType(), $knowledge[self::KNOWLEDGE_OUT_KEY][BountyCompletion::CLUE_WEAPON_TYPE], true)) {
-        $knowledge[self::KNOWLEDGE_OUT_KEY][BountyCompletion::CLUE_WEAPON_TYPE][] = $weapon->getType();
+      } else if (!in_array($weapon->getType(), $knowledge[self::KNOWLEDGE_OUT_KEY][self::CLUE_WEAPON_TYPE], true)) {
+        $knowledge[self::KNOWLEDGE_OUT_KEY][self::CLUE_WEAPON_TYPE][] = $weapon->getType();
       }
     }
 
     return $knowledge;
-  }
-
-  /**
-   * @param Request $request
-   * @return string
-   * @throws ClueNotFoundFromRequestException
-   */
-  public function retrieveClueTypeFromRequest(Request $request): string
-  {
-    try {
-      $content = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
-    } catch (JsonException $e) {
-      $this->logger->error($e);
-      $content = [];
-    }
-
-    $clueType = $content['clueType'] ?? null;
-    if ($clueType === null) {
-      throw new ClueNotFoundFromRequestException('`clueType` needed for the clue');
-    }
-    if (!in_array($clueType, BountyCompletion::CLUE_TYPES, true)) {
-      throw new ClueNotFoundFromRequestException('Invalid clueType');
-    }
-    return $clueType;
-  }
-
-  public function isClueValid(BountyCompletion $bountyCompletion, string $clueType): bool
-  {
-    if ($bountyCompletion->hasClue($clueType)) {
-      return false;
-    }
-    $attempts = $bountyCompletion->getAttempts();
-    if ($clueType === BountyCompletion::CLUE_RARITY && $attempts >= self::CLUE_RARITY_ATTEMPTS_NEEDED) {
-      return true;
-    }
-    if ($clueType === BountyCompletion::CLUE_DAMAGE_TYPE && $attempts >= self::CLUE_DAMAGE_TYPE_ATTEMPTS_NEEDED) {
-      return true;
-    }
-    if ($clueType === BountyCompletion::CLUE_WEAPON_TYPE && $attempts >= self::CLUE_WEAPON_TYPE_ATTEMPTS_NEEDED) {
-      return true;
-    }
-    return false;
   }
 }

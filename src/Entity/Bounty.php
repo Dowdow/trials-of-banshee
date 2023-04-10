@@ -8,10 +8,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Class Bounty
- * @package App\Entity
- */
 #[ORM\Entity(repositoryClass: BountyRepository::class)]
 #[ORM\Table(name: 'bounty')]
 class Bounty
@@ -31,7 +27,7 @@ class Bounty
   #[ORM\Column]
   private ?DateTime $dateStart = null;
 
-  #[ORM\Column]
+  #[ORM\Column(options: ['default' => 0])]
   private int $offlineCompletions = 0;
 
   #[ORM\ManyToOne(targetEntity: Weapon::class, inversedBy: 'bounties')]

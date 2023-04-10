@@ -72,7 +72,6 @@ class BountyFormatter
       'completed' => $bountyCompletion?->isCompleted() ?? false,
       'perfectMatch' => $bountyCompletion?->isPerfectMatch() ?? false,
       'flawless' => $bountyCompletion?->isFlawless(),
-      'clues' => $bountyCompletion?->getClues() ?? [],
       'history' => $bountyCompletion?->getHistory() ?? [],
       'knowledge' => $knowledge ?? BountyCompletionService::DEFAULT_KNOWLEDGE,
       'loot' => $loot,

@@ -3,9 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Bounty;
-use App\Entity\BountyCompletion;
 use App\Entity\User;
-use App\Exception\ClueNotFoundFromRequestException;
 use App\Exception\WeaponNotFoundFromRequestException;
 use App\Formatter\BountyFormatter;
 use App\Service\BountyCompletionService;
@@ -132,74 +130,5 @@ class BountyApiController extends AbstractController
     $em->flush();
 
     return new JsonResponse($bountyFormatter->formatBounty($bounty, $bountyCompletion, $loot ?? null));
-  }
-
-  #[Route('/bounty/{id}/clue')]
-  public function bountyClue(
-    ?Bounty $bounty,
-    Request $request,
-    ManagerRegistry $managerRegistry,
-    BountyCompletionService $bountyCompletionService,
-    BountyFormatter $bountyFormatter
-  ): JsonResponse
-  {
-    if ($bounty === null) {
-      return new JsonResponse(['errors' => ['Bounty not found']], 404);
-    }
-
-    // Check if the User play the Bounty when it's available (can play older bounties)
-    $date = new DateTime();
-    if ($date < $bounty->getDateStart()) {
-      return new JsonResponse(['errors' => ['Bounty not available yet. Be patient Guardian']], 400);
-    }
-
-    // Retrieve the asked clue type
-    try {
-      $clueType = $bountyCompletionService->retrieveClueTypeFromRequest($request);
-    } catch (ClueNotFoundFromRequestException $e) {
-      return new JsonResponse(['errors' => [$e->getMessage()]], 400);
-    }
-
-    $isConnected = $this->isGranted(User::ROLE_USER);
-
-    // BountyCompletion object creation (From database or request)
-    if ($isConnected) {
-      /** @var User $user */
-      $user = $this->getUser();
-      $bountyCompletion = $bountyCompletionService->findOrCreateBountyCompletion($bounty, $user, true);
-    } else {
-      $bountyCompletion = $bountyCompletionService->findOrCreateBountyCompletionWithSesion($bounty);
-    }
-
-    // Check if the Bounty is not already completed
-    if ($bountyCompletion->isCompleted()) {
-      return new JsonResponse(['errors' => ['Bounty already completed']], 400);
-    }
-
-    // Check if the clue is authorized at this time
-    if (!$bountyCompletionService->isClueValid($bountyCompletion, $clueType)) {
-      return new JsonResponse(['errors' => ['You can\'t ask for this clue now']], 400);
-    }
-
-    // Add the clue to the BountyCompletion
-    $weapon = $bounty->getWeapon();
-    if ($clueType === BountyCompletion::CLUE_RARITY) {
-      $bountyCompletion->addClue($clueType, $weapon?->getRarity());
-    } elseif ($clueType === BountyCompletion::CLUE_DAMAGE_TYPE) {
-      $bountyCompletion->addClue($clueType, $weapon?->getDamageType());
-    } elseif ($clueType === BountyCompletion::CLUE_WEAPON_TYPE) {
-      $bountyCompletion->addClue($clueType, $weapon?->getType());
-    }
-
-    // Early return for session player
-    if (!$isConnected) {
-      $bountyCompletionService->saveBountyCompletionWithSession($bounty, $bountyCompletion);
-      return new JsonResponse($bountyFormatter->formatBounty($bounty, $bountyCompletion));
-    }
-
-    $em = $managerRegistry->getManager();
-    $em->flush();
-
-    return new JsonResponse($bountyFormatter->formatBounty($bounty, $bountyCompletion));
   }
 }

@@ -14,7 +14,6 @@ export const ROUTES = {
 
 export const ROUTES_API = {
   BOUNTIES_TODAY: '/api/bounties/today',
-  BOUNTY_CLUE: '/api/bounty/:id/clue',
   BOUNTY_GUESS: '/api/bounty/:id/guess',
   COLLECTIONS: '/api/collections',
   PANEL_CACHE: '/api/panel/cache',
