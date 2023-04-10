@@ -36,6 +36,7 @@ export default function TrialsPossibleWeaponsPopup() {
                 key={key}
                 weaponType={value}
                 knowledge={currentBounty.knowledge}
+                history={currentBounty.history}
                 onClick={handleClickGuess}
               />
             ))}
@@ -45,12 +46,13 @@ export default function TrialsPossibleWeaponsPopup() {
   );
 }
 
-function WeaponCategory({ weaponType, knowledge, onClick }) {
+function WeaponCategory({ weaponType, knowledge, history, onClick }) {
   const locale = useLocale();
   const t = useT();
 
   const weapons = useSelector((state) => state.weapons
     .filter((w) => w.type === weaponType)
+    .filter((w) => !history.includes(w.id))
     .filter((w) => (knowledge.include.rarity.length > 0 ? knowledge.include.rarity.includes(w.rarity) : true))
     .filter((w) => (knowledge.include.damageType.length > 0 ? knowledge.include.damageType.includes(w.damageType) : true))
     .filter((w) => !knowledge.exclude.rarity.includes(w.rarity))
@@ -91,5 +93,6 @@ function WeaponCategory({ weaponType, knowledge, onClick }) {
 WeaponCategory.propTypes = {
   weaponType: PropTypes.number.isRequired,
   knowledge: PropTypes.object.isRequired,
+  history: PropTypes.array.isRequired,
   onClick: PropTypes.func.isRequired,
 };

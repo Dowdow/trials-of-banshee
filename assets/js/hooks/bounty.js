@@ -15,6 +15,7 @@ export function useTodayBoutiesCompletion() {
 export function usePossibleWeapons() {
   const currentBounty = useCurrentBounty();
   const weapons = useSelector((state) => state.weapons
+    .filter((w) => !currentBounty.history.includes(w.id))
     .filter((w) => (currentBounty.knowledge.include.rarity.length > 0 ? currentBounty.knowledge.include.rarity.includes(w.rarity) : true))
     .filter((w) => (currentBounty.knowledge.include.damageType.length > 0 ? currentBounty.knowledge.include.damageType.includes(w.damageType) : true))
     .filter((w) => (currentBounty.knowledge.include.weaponType.length > 0 ? currentBounty.knowledge.include.weaponType.includes(w.type) : true))

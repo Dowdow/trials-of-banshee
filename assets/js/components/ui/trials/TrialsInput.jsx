@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { postGuess, setPopupWeapons } from '../../../actions/bounties';
 import { useCurrentBounty, usePossibleWeapons } from '../../../hooks/bounty';
@@ -17,6 +17,11 @@ export default function TrialsInput() {
   const possibleWeapons = usePossibleWeapons();
 
   const [guessInput, setGuessInput] = useState('');
+  const searchWeapons = useMemo(
+    () => possibleWeapons
+      .filter((w) => w.names[locale].toLowerCase().includes(guessInput.toLowerCase()) || w.names[DEFAULT_LOCALE].toLowerCase().includes(guessInput.toLowerCase())),
+    [possibleWeapons, guessInput, locale, DEFAULT_LOCALE],
+  );
 
   const handleClickWeaponsPopup = () => {
     setGuessInput('');
@@ -60,11 +65,16 @@ export default function TrialsInput() {
             <span className="font-bold">{possibleWeapons.length}</span>
           </button>
         </div>
-        {guessInput !== '' && guessInput.length > 1 && (
-          <div className="absolute grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-1 w-full max-h-80 p-2 bg-light-grey/95 border-b border-x border-white/70 overflow-y-scroll overflow-x-hidden z-20">
-            {possibleWeapons
-              .filter((w) => w.names[locale].toLowerCase().includes(guessInput.toLowerCase()) || w.names[DEFAULT_LOCALE].toLowerCase().includes(guessInput.toLowerCase()))
-              .map((w) => <TrialsWeaponGuess key={w.id} w={w} onClick={handleClickGuess} />)}
+        {guessInput !== '' && (
+          <div className="absolute w-full max-h-80 p-2 bg-light-grey/95 border-b border-x border-white/70 overflow-y-scroll overflow-x-hidden z-20">
+            <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-1">
+              {searchWeapons.map((w) => <TrialsWeaponGuess key={w.id} w={w} onClick={handleClickGuess} />)}
+            </div>
+            {searchWeapons.length === 0 && (
+              <div className="text-white tracking-wide">
+                {t('trials.input.empty')}
+              </div>
+            )}
           </div>
         )}
       </div>
