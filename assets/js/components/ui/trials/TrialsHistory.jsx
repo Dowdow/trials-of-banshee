@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
-import { resetTooltip, setTooltip } from '../../../actions/tooltip';
+import { useSelector } from 'react-redux';
 import { useCurrentBounty } from '../../../hooks/bounty';
 import { useLocale, useT } from '../../../hooks/translations';
 import CategoryTitle from '../CategoryTitle';
+import Tooltipable from '../Tooltipable';
 import WeaponIcon from '../weapon/WeaponIcon';
 
 export default function TrialsHistory() {
@@ -45,37 +45,35 @@ export default function TrialsHistory() {
 }
 
 function WeaponHistory({ weapon, correct = false }) {
-  const dispatch = useDispatch();
   const locale = useLocale();
   const t = useT();
 
-  const handleMouseEnter = () => {
-    dispatch(setTooltip(weapon.names[locale], t('trials.history.weapon')));
-  };
-
-  const handleMouseLeave = () => {
-    dispatch(resetTooltip());
-  };
-
   return (
-    <div className="relative animate-wiggle" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-      <WeaponIcon icon={weapon.icon} alt={weapon.names[locale]} iconWatermark={weapon.iconWatermark} className="w-20 h-20" />
-      <div className="absolute top-0 left-0 w-20 h-20 overflow-hidden">
-        {correct ? (
-          <>
-            <div className="absolute -bottom-10 -right-10 bg-light-blue h-20 w-20 shadow-dark-grey rotate-45" />
-            <div className="absolute bottom-3.5 right-2.5 h-2.5 w-4 border-l-4 border-b-4 border-white -rotate-45" />
-          </>
-        ) : (
-          <>
-            <div className="absolute -bottom-10 -right-10 bg-red/90 h-20 w-20 shadow-dark-grey rotate-45" />
-            <div className="absolute bottom-3.5 right-2.5 h-1 w-5 bg-white rotate-45" />
-            <div className="absolute bottom-3.5 right-2.5 h-1 w-5 bg-white -rotate-45" />
-          </>
-        )}
-      </div>
-
-    </div>
+    <Tooltipable>
+      {(onMouseEnter, onMouseLeave) => (
+        <div
+          className="relative animate-wiggle"
+          onMouseEnter={() => onMouseEnter(weapon.names[locale], t('trials.history.weapon'))}
+          onMouseLeave={() => onMouseLeave()}
+        >
+          <WeaponIcon icon={weapon.icon} alt={weapon.names[locale]} iconWatermark={weapon.iconWatermark} className="w-20 h-20" />
+          <div className="absolute top-0 left-0 w-20 h-20 overflow-hidden">
+            {correct ? (
+              <>
+                <div className="absolute -bottom-10 -right-10 bg-light-blue h-20 w-20 shadow-dark-grey rotate-45" />
+                <div className="absolute bottom-3.5 right-2.5 h-2.5 w-4 border-l-4 border-b-4 border-white -rotate-45" />
+              </>
+            ) : (
+              <>
+                <div className="absolute -bottom-10 -right-10 bg-red/90 h-20 w-20 shadow-dark-grey rotate-45" />
+                <div className="absolute bottom-3.5 right-2.5 h-1 w-5 bg-white rotate-45" />
+                <div className="absolute bottom-3.5 right-2.5 h-1 w-5 bg-white -rotate-45" />
+              </>
+            )}
+          </div>
+        </div>
+      )}
+    </Tooltipable>
   );
 }
 

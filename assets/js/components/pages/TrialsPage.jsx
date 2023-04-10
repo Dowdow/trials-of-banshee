@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { getBountiesToday, setCurrentBounty } from '../../actions/bounties';
-import { resetTooltip } from '../../actions/tooltip';
 import { useCurrentBounty } from '../../hooks/bounty';
 import { useInterfaceMoveOnMouseMove } from '../../hooks/mouse';
 import { useT } from '../../hooks/translations';
@@ -45,7 +44,6 @@ export default function TrialsPage() {
 
   const handleClickLink = (e, route) => {
     e.preventDefault();
-    dispatch(resetTooltip());
     setNextPage(route);
     setFadeOut(true);
   };
@@ -58,12 +56,10 @@ export default function TrialsPage() {
   const handleSlideAnimationEnd = (e) => {
     if (e.animationName === 'slide-in') {
       setSlideIn(false);
-      dispatch(resetTooltip());
     }
     if (e.animationName === 'slide-out') {
       setSlideOut(false);
       dispatch(setCurrentBounty(nextId));
-      dispatch(resetTooltip());
       setSlideIn(true);
     }
   };
