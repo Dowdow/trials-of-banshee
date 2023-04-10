@@ -46,3 +46,16 @@ export function bountyImageFromType(type) {
       return daily;
   }
 }
+
+export function bountyPresentationFromType(type) {
+  switch (type) {
+    case BOUNTY_TYPE.DAILY:
+      return 'trials.presentation.daily';
+    case BOUNTY_TYPE.ASPIRING:
+      return 'trials.presentation.aspiring';
+    case BOUNTY_TYPE.GUNSMITH:
+      return 'trials.presentation.gunsmith';
+    default:
+      return 'bounty.unknown.description';
+  }
+}

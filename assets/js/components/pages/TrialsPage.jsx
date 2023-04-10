@@ -18,6 +18,7 @@ import TrialsBounties from '../ui/trials/TrialsBounties';
 import TrialsBountyPresentation from '../ui/trials/TrialsBountyPresentation';
 import TrialsCollectionAndTriumphs from '../ui/trials/TrialsCollectionAndTriumphs';
 import TrialsCompletedPopup from '../ui/trials/TrialsCompletedPopup';
+import TrialsFlawless from '../ui/trials/TrialsFlawless';
 import TrialsHistory from '../ui/trials/TrialsHistory';
 import TrialsInformations from '../ui/trials/TrialsInformations';
 import TrialsInput from '../ui/trials/TrialsInput';
@@ -117,19 +118,20 @@ function RightPanel({ slideIn, slideOut, handleClickLink, handleSlideAnimationEn
     <div className="relative w-full h-screen overflow-hidden">
       <div className="absolute -top-[10px] -right-[10px] h-[calc(100vh+20px)] w-[calc(100%+20px)] md:w-[calc(75%+10px)] lg:w-[calc(66%+10px)] xl:w-[calc(50%+10px)] flex flex-col backdrop-blur-lg" style={{ translate: `${x}px ${y}px` }}>
         <div className="w-full h-[30%] bg-blue/80 pt-[10px] px-[10px] md:pl-0">
-          <div className={`w-full h-full ${slideIn && 'animate-slide-in'} ${slideOut && 'animate-slide-out'}`} onAnimationEnd={handleSlideAnimationEnd}>
+          <div className={`w-full h-full ${slideIn ? 'animate-slide-in' : ''} ${slideOut ? 'animate-slide-out' : ''}`} onAnimationEnd={handleSlideAnimationEnd}>
             {currentBounty
               ? (
                 <div className="h-full flex justify-between gap-x-10 xl:gap-x-12 p-5 lg:p-8 xl:p-10">
-                  <div className="w-1/2">
+                  <div className="w-1/2 h-full flex flex-col justify-between">
                     <TrialsBountyPresentation />
+                    <TrialsFlawless />
                   </div>
                   <div className="w-1/2">
                     <TrialsAudio />
                   </div>
                 </div>
               ) : (
-                <div className="p-5 lg:p-8 xl:p-10">
+                <div className="h-full flex items-center p-5 lg:p-8 xl:p-10">
                   <TrialsCollectionAndTriumphs onLink={handleClickLink} />
                 </div>
               )}
