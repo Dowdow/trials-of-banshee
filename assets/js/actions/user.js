@@ -27,6 +27,18 @@ export function getUser() {
     try {
       const response = await fetch(ROUTES_API.USER, { method: 'GET' });
       const data = await response.json();
+      dispatch(setUser(data));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+}
+
+export function getUserPlayer() {
+  return async (dispatch) => {
+    try {
+      const response = await fetch(ROUTES_API.USER_PLAYER, { method: 'GET' });
+      const data = await response.json();
       if (response.status === 419 || response.status === 503) {
         dispatch(setUserError(data.errors));
       } else {
@@ -72,5 +84,14 @@ export function claimTriumph(triumph) {
     } catch (err) {
       console.log(err);
     }
+  };
+}
+
+export function claimGrass() {
+  return (dispatch) => {
+    fetch(generatePath(ROUTES_API.BOUNTY_XUR), { method: 'POST' })
+      .then((response) => response.json())
+      .then((data) => dispatch(setUserCollections(data)))
+      .catch((err) => console.log(err));
   };
 }

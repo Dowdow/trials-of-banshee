@@ -131,4 +131,40 @@ class BountyApiController extends AbstractController
 
     return new JsonResponse($bountyFormatter->formatBounty($bounty, $bountyCompletion, $loot ?? null));
   }
+
+  #[Route('/bounty/xur', name: 'api.bounty.xur', methods: ['POST'])]
+  public function bountyXurClaim(
+    BountyService $bountyService,
+    BountyCompletionService $bountyCompletionService,
+    CollectionService $collectionService,
+    ManagerRegistry $managerRegistry
+  ): JsonResponse
+  {
+    if (!$this->isGranted(User::ROLE_USER)) {
+      return new JsonResponse(['errors' => ['You need to be connected to claim this reward']], 401);
+    }
+
+    /** @var User $user */
+    $user = $this->getUser();
+    $bountyDate = $bountyService->getTodayBountyDate();
+    $bounties = $bountyService->getBountiesByDate($bountyDate);
+
+    $claimable = true;
+    foreach ($bounties as $bounty) {
+      $bountyCompletion = $bountyCompletionService->findOrCreateBountyCompletion($bounty, $user);
+      if (!$bountyCompletion->isCompleted() || $bountyCompletion->getAttempts() !== 1) {
+        $claimable = false;
+      }
+    }
+
+    if (!$claimable) {
+      return new JsonResponse(['errors' => ['You cannot claim this reward']], 400);
+    }
+
+    $collectionService->rewardXurItem($user);
+    $em = $managerRegistry->getManager();
+    $em->flush();
+
+    return new JsonResponse($user->getCollections());
+  }
 }

@@ -15,6 +15,7 @@ export const ROUTES = {
 export const ROUTES_API = {
   BOUNTIES_TODAY: '/api/bounties/today',
   BOUNTY_GUESS: '/api/bounty/:id/guess',
+  BOUNTY_XUR: '/api/bounty/xur',
   COLLECTIONS: '/api/collections',
   PANEL_CACHE: '/api/panel/cache',
   PANEL_HIDE: '/api/panel/hide',
@@ -26,5 +27,6 @@ export const ROUTES_API = {
   TRIUMPH_CLAIM: '/api/triumph/:type/claim',
   TRIUMPHS: '/api/triumphs',
   USER: '/api/user',
+  USER_PLAYER: '/api/user/player',
   WEAPONS: '/api/weapons',
 };

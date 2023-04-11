@@ -20,7 +20,14 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserApiController extends AbstractController
 {
   #[Route('/user', name: 'api.user.get', methods: ['GET'])]
-  public function get(
+  public function get(UserFormatter $userFormatter): JsonResponse
+  {
+    $user = $this->getUser();
+    return new JsonResponse($userFormatter->formatUserRedux($user));
+  }
+
+  #[Route('/user/player', name: 'api.user.player', methods: ['GET'])]
+  public function getPlayer(
     ManagerRegistry $managerRegistry,
     DestinyAPIClientService $destinyAPIClient,
     UserFormatter $userFormatter,

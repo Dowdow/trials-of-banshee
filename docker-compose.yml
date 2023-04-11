@@ -30,5 +30,16 @@ services:
     volumes:
       - tob-db:/var/lib/mysql
 
+  mailhog:
+    image: mailhog/mailhog
+    container_name: mailhog
+    logging:
+      driver: "none"
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    expose:
+      - 1025
+
 volumes:
   tob-db: null

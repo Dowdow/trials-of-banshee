@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { getUser } from '../../actions/user';
+import { getUserPlayer } from '../../actions/user';
 import { useInterfaceMoveOnMouseMove } from '../../hooks/mouse';
 import { useT } from '../../hooks/translations';
 import { useUserAuthenticated } from '../../hooks/user';
@@ -26,7 +26,7 @@ export default function IndexPage() {
 
   useEffect(() => {
     if (authenticated) {
-      dispatch(getUser());
+      dispatch(getUserPlayer());
     }
   }, []);
 

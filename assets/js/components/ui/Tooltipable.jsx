@@ -8,7 +8,9 @@ export default function Tooltipable({ children }) {
   useEffect(() => () => dispatch(resetTooltip()), []);
 
   const onMouseEnter = (title, description, connected = false) => {
-    dispatch(setTooltip(title, description, connected));
+    if (window.matchMedia('(pointer: fine)').matches) {
+      dispatch(setTooltip(title, description, connected));
+    }
   };
 
   const onMouseLeave = () => {

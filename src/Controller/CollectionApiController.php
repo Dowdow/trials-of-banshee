@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CollectionApiController extends AbstractController
 {
   #[Route('/collections', name: 'api.collections', methods: ['GET'])]
-  public function triumphs(): JsonResponse
+  public function collections(): JsonResponse
   {
     if (!$this->isGranted(User::ROLE_USER)) {
       return new JsonResponse(null, 401);

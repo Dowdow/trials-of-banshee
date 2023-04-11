@@ -25,3 +25,7 @@ export function usePossibleWeapons() {
 
   return weapons;
 }
+
+export function useCanSeeXur() {
+  return useSelector((state) => state.bounties.items.filter((b) => b.completed && b.attempts === 1).length === 3);
+}
