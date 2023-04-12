@@ -13,7 +13,7 @@ export default function SoundForm({ onSubmit, sound = null, error = null }) {
   const [name, setName] = useState(sound !== null ? sound.name : '');
   const [description, setDescription] = useState(sound !== null ? sound.description : '');
   const [file, setFile] = useState(null);
-  const [weapons, setWeapons] = useState(sound !== null ? sound.weapons : []);
+  const [weapons, setWeapons] = useState(sound !== null ? sound.weapons.map((w) => w.id) : []);
   const [query, setQuery] = useState('');
 
   const handleSubmit = (e) => {
@@ -63,7 +63,7 @@ export default function SoundForm({ onSubmit, sound = null, error = null }) {
   };
 
   const handleRemoveWeapon = (id) => {
-    setWeapons([...weapons.filter((w) => w.id !== id)]);
+    setWeapons([...weapons.filter((w) => w !== id)]);
   };
 
   return (
@@ -85,7 +85,7 @@ export default function SoundForm({ onSubmit, sound = null, error = null }) {
         <div className="flex flex-col mb-10">
           <label className="text-lg font-bold border-b-2 border-white/30 mb-2">Weapons</label>
           <div className="flex flex-wrap gap-3">
-            {allWeapons.length !== 0 && weapons.map((w) => <Weapon key={w.id} w={allWeapons.find((fw) => fw.id === w.id)} action={() => handleRemoveWeapon(w.id)} />)}
+            {allWeapons.length !== 0 && weapons.map((w) => <Weapon key={w} w={allWeapons.find((fw) => fw.id === w)} action={() => handleRemoveWeapon(w)} />)}
             {weapons.length === 0 && <span className="text-white/70 pl-2">No weapon linked to this sound</span>}
           </div>
 
