@@ -89,7 +89,14 @@ export default function SoundsPage() {
 function SoundCategory({ type, query }) {
   const t = useT();
 
-  const sounds = useSelector((state) => state.sounds);
+  const sounds = useSelector((state) => state.sounds
+    .filter((s) => s.weapons.some((w) => w.type === type))
+    .filter((s) => s.name.toLowerCase().includes(query.toLowerCase()) || s.description.toLowerCase().includes(query.toLowerCase()))
+    .sort((a, b) => a.name.localeCompare(b.name)));
+
+  if (sounds.length === 0) {
+    return null;
+  }
 
   return (
     <div className="flex flex-col gap-y-3 p-3">
@@ -100,11 +107,7 @@ function SoundCategory({ type, query }) {
         <img src={WEAPON_TYPE_IMAGE[type]} alt={t(WEAPON_TYPE_NAME[type])} className="h-7 w-7" />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-        {sounds
-          .filter((s) => s.weapons.some((w) => w.type === type))
-          .filter((s) => s.name.toLowerCase().includes(query.toLowerCase()) || s.description.toLowerCase().includes(query.toLowerCase()))
-          .sort((a, b) => a.name.localeCompare(b.name))
-          .map((s) => <Sound key={s.id} s={s} />)}
+        {sounds.map((s) => <Sound key={s.id} s={s} />)}
       </div>
     </div>
   );

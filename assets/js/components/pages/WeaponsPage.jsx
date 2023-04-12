@@ -134,6 +134,10 @@ function WeaponCategory({ type, query, hasSound, damageType, rarity }) {
       return b.rarity - a.rarity;
     }));
 
+  if (weapons.length === 0) {
+    return null;
+  }
+
   return (
     <div className="flex flex-col gap-y-3 p-3">
       <div className="p-1 flex gap-x-2 font-bold text-xl border-b border-white/80">
