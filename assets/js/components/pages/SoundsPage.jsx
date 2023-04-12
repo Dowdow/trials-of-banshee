@@ -6,6 +6,7 @@ import { getSounds } from '../../actions/sounds';
 import { useLocale, useT } from '../../hooks/translations';
 import { useUserAdmin } from '../../hooks/user';
 import { ROUTES } from '../../utils/routes';
+import { WEAPON_TYPE, WEAPON_TYPE_IMAGE, WEAPON_TYPE_NAME } from '../../utils/weapons';
 import EscapeLink from '../ui/clickable/EscapeLink';
 import LeftClickLink from '../ui/clickable/LeftClickLink';
 import WeaponIcon from '../ui/weapon/WeaponIcon';
@@ -15,9 +16,8 @@ export default function SoundsPage() {
   const dispatch = useDispatch();
   const t = useT();
 
-  const sounds = useSelector((state) => state.sounds);
-
   const [query, setQuery] = useState('');
+  const [type, setType] = useState(0);
 
   useEffect(() => {
     if (admin) {
@@ -27,6 +27,10 @@ export default function SoundsPage() {
 
   const handleQuery = (e) => {
     setQuery(e.target.value);
+  };
+
+  const handleType = (e) => {
+    setType(parseInt(e.target.value, 10));
   };
 
   if (!admin) return null;
@@ -42,6 +46,26 @@ export default function SoundsPage() {
           </div>
           <div className="flex items-center flex-wrap gap-2 md:gap-6">
             <input type="text" value={query} onChange={handleQuery} className="p-2 text-lg bg-light-grey text-white" placeholder="Search a sound" />
+            <select value={type} onChange={handleType} className="p-2 text-lg bg-light-grey text-white">
+              <option value={0}>{t('weapons.filters.weapon.all')}</option>
+              <option value={WEAPON_TYPE.AUTO}>{t(WEAPON_TYPE_NAME[WEAPON_TYPE.AUTO])}</option>
+              <option value={WEAPON_TYPE.SHOTGUN}>{t(WEAPON_TYPE_NAME[WEAPON_TYPE.SHOTGUN])}</option>
+              <option value={WEAPON_TYPE.MACHINEGUN}>{t(WEAPON_TYPE_NAME[WEAPON_TYPE.MACHINEGUN])}</option>
+              <option value={WEAPON_TYPE.HAND_CANNON}>{t(WEAPON_TYPE_NAME[WEAPON_TYPE.HAND_CANNON])}</option>
+              <option value={WEAPON_TYPE.ROCKET_LAUNCHER}>{t(WEAPON_TYPE_NAME[WEAPON_TYPE.ROCKET_LAUNCHER])}</option>
+              <option value={WEAPON_TYPE.FUSION}>{t(WEAPON_TYPE_NAME[WEAPON_TYPE.FUSION])}</option>
+              <option value={WEAPON_TYPE.SNIPER}>{t(WEAPON_TYPE_NAME[WEAPON_TYPE.SNIPER])}</option>
+              <option value={WEAPON_TYPE.PULSE}>{t(WEAPON_TYPE_NAME[WEAPON_TYPE.PULSE])}</option>
+              <option value={WEAPON_TYPE.SCOUT}>{t(WEAPON_TYPE_NAME[WEAPON_TYPE.SCOUT])}</option>
+              <option value={WEAPON_TYPE.SIDEARM}>{t(WEAPON_TYPE_NAME[WEAPON_TYPE.SIDEARM])}</option>
+              <option value={WEAPON_TYPE.SWORD}>{t(WEAPON_TYPE_NAME[WEAPON_TYPE.SWORD])}</option>
+              <option value={WEAPON_TYPE.LINEAR_FUSION}>{t(WEAPON_TYPE_NAME[WEAPON_TYPE.LINEAR_FUSION])}</option>
+              <option value={WEAPON_TYPE.GRENADE_LAUNCHER}>{t(WEAPON_TYPE_NAME[WEAPON_TYPE.GRENADE_LAUNCHER])}</option>
+              <option value={WEAPON_TYPE.SUBMACHINE_GUN}>{t(WEAPON_TYPE_NAME[WEAPON_TYPE.SUBMACHINE_GUN])}</option>
+              <option value={WEAPON_TYPE.TRACE}>{t(WEAPON_TYPE_NAME[WEAPON_TYPE.TRACE])}</option>
+              <option value={WEAPON_TYPE.BOW}>{t(WEAPON_TYPE_NAME[WEAPON_TYPE.BOW])}</option>
+              <option value={WEAPON_TYPE.GLAIVE}>{t(WEAPON_TYPE_NAME[WEAPON_TYPE.GLAIVE])}</option>
+            </select>
           </div>
         </div>
         <nav className="flex flex-wrap gap-3">
@@ -51,12 +75,36 @@ export default function SoundsPage() {
         </nav>
       </div>
       <div className="container mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-5 p-3 md:py-5">
-          {sounds
-            .filter((s) => s.name.toLowerCase().includes(query.toLowerCase()) || s.description.toLowerCase().includes(query.toLowerCase()))
-            .sort((a, b) => a.name.localeCompare(b.name))
-            .map((s) => <Sound key={s.id} s={s} />)}
+        {Object.entries(WEAPON_TYPE)
+          .filter((values) => (type === 0 ? true : type === values[1]))
+          .map(([key, value]) => (
+            <SoundCategory key={key} type={value} query={query} />
+          ))}
+
+      </div>
+    </div>
+  );
+}
+
+function SoundCategory({ type, query }) {
+  const t = useT();
+
+  const sounds = useSelector((state) => state.sounds);
+
+  return (
+    <div className="flex flex-col gap-y-3 p-3">
+      <div className="p-1 flex gap-x-2 font-bold text-xl border-b border-white/80">
+        <div className="text-white uppercase tracking-wider">
+          {t(WEAPON_TYPE_NAME[type])}
         </div>
+        <img src={WEAPON_TYPE_IMAGE[type]} alt={t(WEAPON_TYPE_NAME[type])} className="h-7 w-7" />
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        {sounds
+          .filter((s) => s.weapons.some((w) => w.type === type))
+          .filter((s) => s.name.toLowerCase().includes(query.toLowerCase()) || s.description.toLowerCase().includes(query.toLowerCase()))
+          .sort((a, b) => a.name.localeCompare(b.name))
+          .map((s) => <Sound key={s.id} s={s} />)}
       </div>
     </div>
   );
@@ -79,23 +127,21 @@ function Sound({ s }) {
   };
 
   return (
-    <div className="p-1 border-2 border-transparent hover:border-white/80 transition-colors duration-300">
-      <div className="flex flex-col gap-1 p-5 bg-transparent hover:bg-light-grey border border-white/30 hover:border-white/80 transition-colors">
-        <div className="flex justify-between gap-2">
-          <span className="text-lg tracking-wide text-white">{s.name}</span>
-          <div className="flex items-center gap-2">
-            <button type="button" onClick={handlePlay} className="text-white underline">{playing ? 'Pause' : 'Listen'}</button>
-            <Link to={generatePath(ROUTES.SOUND_EDIT, { id: s.id })} className="text-white underline">Edit</Link>
-          </div>
+    <div className="flex flex-col gap-1 p-3 bg-transparent hover:bg-light-grey border border-white/30 hover:border-white/80 transition-colors">
+      <div className="flex justify-between gap-2">
+        <span className="text-lg tracking-wide text-white">{s.name}</span>
+        <div className="flex items-center gap-2">
+          <button type="button" onClick={handlePlay} className="text-white underline">{playing ? 'Pause' : 'Listen'}</button>
+          <Link to={generatePath(ROUTES.SOUND_EDIT, { id: s.id })} className="text-white underline">Edit</Link>
         </div>
-        <span className="text-white/80">{s.description}</span>
-        <div className="flex flex-wrap gap-2 mt-2">
-          {weapons.length !== 0 && s.weapons.map((w) => <Weapon key={w} w={weapons.find((fw) => fw.id === w)} />)}
-        </div>
-        <audio ref={audioRef} src={`/uploads/sounds/${s.path}`} preload="auto" onEnded={() => setPlaying(false)}>
-          <track kind="captions" />
-        </audio>
       </div>
+      <span className="text-white/80">{s.description}</span>
+      <div className="flex flex-wrap gap-2">
+        {weapons.length !== 0 && s.weapons.map((w) => <Weapon key={w.id} w={weapons.find((fw) => fw.id === w.id)} />)}
+      </div>
+      <audio ref={audioRef} src={`/uploads/sounds/${s.path}`} preload="auto" onEnded={() => setPlaying(false)}>
+        <track kind="captions" />
+      </audio>
     </div>
   );
 }
@@ -103,12 +149,17 @@ function Sound({ s }) {
 function Weapon({ w }) {
   const locale = useLocale();
   return (
-    <button type="button" className="flex items-center gap-1 p-1 border border-white/30">
+    <div className="flex items-center gap-1 p-1 border border-white/30">
       <WeaponIcon icon={w.icon} alt={w.names[locale]} iconWatermark={w.iconWatermark} className="w-8 h-8" />
       <span className="tracking-wide text-white">{w.names[locale]}</span>
-    </button>
+    </div>
   );
 }
+
+SoundCategory.propTypes = {
+  type: PropTypes.number.isRequired,
+  query: PropTypes.string.isRequired,
+};
 
 Sound.propTypes = {
   s: PropTypes.shape({

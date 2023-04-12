@@ -36,7 +36,10 @@ class SoundFormatter
       'description' => $sound->getDescription(),
       'path' => $sound->getPath(),
       'weapons' => array_map(static function (Weapon $weapon) {
-        return $weapon->getId();
+        return [
+          'id' => $weapon->getId(),
+          'type' => $weapon->getType(),
+        ];
       }, $sound->getWeapons()->toArray()),
     ];
   }
