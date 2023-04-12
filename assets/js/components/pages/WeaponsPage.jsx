@@ -5,7 +5,7 @@ import { setDamageType, setHasSound, setQuery, setRarity, setType } from '../../
 import { useLocale, useT } from '../../hooks/translations';
 import { useUserAdmin } from '../../hooks/user';
 import { DEFAULT_LOCALE } from '../../utils/locale';
-import { WEAPON_DAMAGE_TYPE, WEAPON_DAMAGE_TYPE_IMAGE, WEAPON_DAMAGE_TYPE_NAME, WEAPON_RARITY, WEAPON_RARITY_NAME, WEAPON_TYPE, WEAPON_TYPE_NAME } from '../../utils/weapons';
+import { WEAPON_DAMAGE_TYPE, WEAPON_DAMAGE_TYPE_IMAGE, WEAPON_DAMAGE_TYPE_NAME, WEAPON_RARITY, WEAPON_RARITY_NAME, WEAPON_TYPE, WEAPON_TYPE_IMAGE, WEAPON_TYPE_NAME } from '../../utils/weapons';
 import { ROUTES } from '../../utils/routes';
 import EscapeLink from '../ui/clickable/EscapeLink';
 import LeftClickLink from '../ui/clickable/LeftClickLink';
@@ -16,10 +16,8 @@ import releg from '../../../img/misc/relegation.png';
 export default function WeaponsPage() {
   const admin = useUserAdmin();
   const dispatch = useDispatch();
-  const locale = useLocale();
   const t = useT();
 
-  const weapons = useSelector((state) => state.weapons);
   const { damageType, hasSound, query, rarity, type } = useSelector((state) => state.weaponFilters);
 
   const handleDamageType = (e) => {
@@ -102,20 +100,50 @@ export default function WeaponsPage() {
         </nav>
       </div>
       <div className="container mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-5 p-3 md:py-5">
-          {weapons
-            .filter((w) => w.names[locale].toLocaleLowerCase().includes(query.toLocaleLowerCase()) || w.names[DEFAULT_LOCALE].toLocaleLowerCase().includes(query.toLocaleLowerCase()))
-            .filter((w) => {
-              if (hasSound === 1) return w.hasSound === true;
-              if (hasSound === 2) return w.hasSound === false;
-              return true;
-            })
-            .filter((w) => (type === 0 ? true : w.type === type))
-            .filter((w) => (damageType === 0 ? true : w.damageType === damageType))
-            .filter((w) => (rarity === 0 ? true : w.rarity === rarity))
-            .sort((a, b) => a.names[locale].localeCompare(b.names[locale]))
-            .map((w) => <Weapon key={w.id} w={w} />)}
+        {Object.entries(WEAPON_TYPE)
+          .filter((values) => (type === 0 ? true : type === values[1]))
+          .map(([key, value]) => (
+            <WeaponCategory key={key} type={value} query={query} hasSound={hasSound} damageType={damageType} rarity={rarity} />
+          ))}
+      </div>
+    </div>
+  );
+}
+
+function WeaponCategory({ type, query, hasSound, damageType, rarity }) {
+  const locale = useLocale();
+  const t = useT();
+
+  const weapons = useSelector((state) => state.weapons
+    .filter((w) => w.type === type)
+    .filter((w) => w.names[locale].toLocaleLowerCase().includes(query.toLocaleLowerCase()) || w.names[DEFAULT_LOCALE].toLocaleLowerCase().includes(query.toLocaleLowerCase()))
+    .filter((w) => {
+      if (hasSound === 1) return w.hasSound === true;
+      if (hasSound === 2) return w.hasSound === false;
+      return true;
+    })
+    .filter((w) => (damageType === 0 ? true : w.damageType === damageType))
+    .filter((w) => (rarity === 0 ? true : w.rarity === rarity))
+    .sort((a, b) => {
+      if (a.rarity === b.rarity) {
+        if (a.damageType === b.damageType) {
+          return a.names[locale].localeCompare(b.names[locale]);
+        }
+        return a.damageType - b.damageType;
+      }
+      return b.rarity - a.rarity;
+    }));
+
+  return (
+    <div className="flex flex-col gap-y-3 p-3">
+      <div className="p-1 flex gap-x-2 font-bold text-xl border-b border-white/80">
+        <div className="text-white uppercase tracking-wider">
+          {t(WEAPON_TYPE_NAME[type])}
         </div>
+        <img src={WEAPON_TYPE_IMAGE[type]} alt={t(WEAPON_TYPE_NAME[type])} className="h-7 w-7" />
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+        {weapons.map((w) => <Weapon key={w.id} w={w} />)}
       </div>
     </div>
   );
@@ -125,21 +153,37 @@ function Weapon({ w }) {
   const locale = useLocale();
   const t = useT();
   return (
-    <a href={`https://www.light.gg/db/items/${w.hash}`} target="_blank" rel="noreferrer" className="p-1 border-2 border-transparent hover:border-white/80 transition-colors duration-300 cursor-pointer">
-      <div className="flex gap-5 p-5 bg-transparent hover:bg-light-grey border border-white/30 hover:border-white/80 transition-colors">
-        <WeaponIcon icon={w.icon} alt={w.names[locale]} iconWatermark={w.iconWatermark} className="w-20 h-20" />
-        <div className="flex flex-col overflow-hidden">
-          <span className="text-lg tracking-wide text-white whitespace-nowrap text-ellipsis">{w.names[locale]}</span>
-          <span className="text-white/60">{t(WEAPON_TYPE_NAME[w.type])}</span>
-          <div className="flex items-center gap-2 mt-1">
-            <img src={WEAPON_DAMAGE_TYPE_IMAGE[w.damageType]} alt={t(WEAPON_DAMAGE_TYPE_NAME[w.damageType])} className="w-5 h-5" loading="lazy" />
-            <img src={w.hasSound ? promo : releg} alt={w.hasSound ? 'Promotion' : 'Relegation'} className="w-5 h-5" loading="lazy" />
-          </div>
+    <a
+      href={`https://www.light.gg/db/items/${w.hash}`}
+      target="_blank"
+      rel="noreferrer"
+      className="flex gap-3 p-3 bg-transparent hover:bg-light-grey border border-white/30 hover:border-white/80 transition-colors duration-300 cursor-pointer"
+    >
+      <WeaponIcon
+        icon={w.icon}
+        alt={w.names[locale]}
+        iconWatermark={w.iconWatermark}
+        className="w-20 h-20 min-w-[5rem] min-h-[5rem]"
+      />
+      <div className="flex flex-col overflow-hidden">
+        <span className="text-lg tracking-wide text-white">{w.names[locale]}</span>
+        <span className="text-white/60">{t(WEAPON_TYPE_NAME[w.type])}</span>
+        <div className="flex items-center gap-2 mt-1">
+          <img src={WEAPON_DAMAGE_TYPE_IMAGE[w.damageType]} alt={t(WEAPON_DAMAGE_TYPE_NAME[w.damageType])} className="w-5 h-5" loading="lazy" />
+          <img src={w.hasSound ? promo : releg} alt={w.hasSound ? 'Promotion' : 'Relegation'} className="w-5 h-5" loading="lazy" />
         </div>
       </div>
     </a>
   );
 }
+
+WeaponCategory.propTypes = {
+  type: PropTypes.number.isRequired,
+  query: PropTypes.string.isRequired,
+  hasSound: PropTypes.number.isRequired,
+  damageType: PropTypes.number.isRequired,
+  rarity: PropTypes.number.isRequired,
+};
 
 Weapon.propTypes = {
   w: PropTypes.shape({
