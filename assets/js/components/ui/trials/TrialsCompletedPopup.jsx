@@ -75,7 +75,7 @@ export default function TrialsCompletedPopup({ onExit }) {
                   <div className="border-b-2 border-white/40">{t('trials.bounty.reward.no')}</div>
                   <div className="flex gap-x-5 items-center">
                     <img src={emptyEngram} alt={t('emgram.empty')} className="w-16 md:w-24 h-16 md:h-24" />
-                    <div className="text-sm md:text-base">
+                    <div className="text-sm md:text-base max-w-lg">
                       {t('trials.bounty.reward.no.description')}
                     </div>
                   </div>
