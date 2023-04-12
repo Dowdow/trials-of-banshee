@@ -132,29 +132,51 @@ class BountyCompletionService
     /** @var WeaponRepository $weaponRepository */
     $weaponRepository = $this->em->getRepository(Weapon::class);
     $historyWeapons = $weaponRepository->findBy(['id' => $bountyCompletion->getHistory()]);
-    foreach ($historyWeapons as $weapon) {
-      if ($weapon->getRarity() === $bountyWeapon->getRarity()) {
-        if (!in_array($weapon->getRarity(), $knowledge[self::KNOWLEDGE_IN_KEY][self::CLUE_RARITY], true)) {
-          $knowledge[self::KNOWLEDGE_IN_KEY][self::CLUE_RARITY][] = $weapon->getRarity();
+
+    foreach ($bountyCompletion->getHistory() as $history) {
+      $weapon = null;
+      foreach ($historyWeapons as $w) {
+        if ($w->getId() === $history) {
+          $weapon = $w;
+          break;
         }
-      } else if (!in_array($weapon->getRarity(), $knowledge[self::KNOWLEDGE_OUT_KEY][self::CLUE_RARITY], true)) {
-        $knowledge[self::KNOWLEDGE_OUT_KEY][self::CLUE_RARITY][] = $weapon->getRarity();
       }
 
-      if ($weapon->getDamageType() === $bountyWeapon->getDamageType()) {
-        if (!in_array($weapon->getDamageType(), $knowledge[self::KNOWLEDGE_IN_KEY][self::CLUE_DAMAGE_TYPE], true)) {
-          $knowledge[self::KNOWLEDGE_IN_KEY][self::CLUE_DAMAGE_TYPE][] = $weapon->getDamageType();
-        }
-      } else if (!in_array($weapon->getDamageType(), $knowledge[self::KNOWLEDGE_OUT_KEY][self::CLUE_DAMAGE_TYPE], true)) {
-        $knowledge[self::KNOWLEDGE_OUT_KEY][self::CLUE_DAMAGE_TYPE][] = $weapon->getDamageType();
+      if ($weapon === null) {
+        continue;
       }
 
+      // Weapon Type Knowledge
       if ($weapon->getType() === $bountyWeapon->getType()) {
         if (!in_array($weapon->getType(), $knowledge[self::KNOWLEDGE_IN_KEY][self::CLUE_WEAPON_TYPE], true)) {
           $knowledge[self::KNOWLEDGE_IN_KEY][self::CLUE_WEAPON_TYPE][] = $weapon->getType();
+          continue;
         }
       } else if (!in_array($weapon->getType(), $knowledge[self::KNOWLEDGE_OUT_KEY][self::CLUE_WEAPON_TYPE], true)) {
         $knowledge[self::KNOWLEDGE_OUT_KEY][self::CLUE_WEAPON_TYPE][] = $weapon->getType();
+      }
+
+      // Damage Type Knowledge, only when weapon type is found
+      if (!empty($knowledge[self::KNOWLEDGE_IN_KEY][self::CLUE_WEAPON_TYPE])) {
+        if ($weapon->getDamageType() === $bountyWeapon->getDamageType()) {
+          if (!in_array($weapon->getDamageType(), $knowledge[self::KNOWLEDGE_IN_KEY][self::CLUE_DAMAGE_TYPE], true)) {
+            $knowledge[self::KNOWLEDGE_IN_KEY][self::CLUE_DAMAGE_TYPE][] = $weapon->getDamageType();
+            continue;
+          }
+        } else if (!in_array($weapon->getDamageType(), $knowledge[self::KNOWLEDGE_OUT_KEY][self::CLUE_DAMAGE_TYPE], true)) {
+          $knowledge[self::KNOWLEDGE_OUT_KEY][self::CLUE_DAMAGE_TYPE][] = $weapon->getDamageType();
+        }
+      }
+
+      // Rarity Knowledge, only if damage type is found
+      if (!empty($knowledge[self::KNOWLEDGE_IN_KEY][self::CLUE_DAMAGE_TYPE])) {
+        if ($weapon->getRarity() === $bountyWeapon->getRarity()) {
+          if (!in_array($weapon->getRarity(), $knowledge[self::KNOWLEDGE_IN_KEY][self::CLUE_RARITY], true)) {
+            $knowledge[self::KNOWLEDGE_IN_KEY][self::CLUE_RARITY][] = $weapon->getRarity();
+          }
+        } else if (!in_array($weapon->getRarity(), $knowledge[self::KNOWLEDGE_OUT_KEY][self::CLUE_RARITY], true)) {
+          $knowledge[self::KNOWLEDGE_OUT_KEY][self::CLUE_RARITY][] = $weapon->getRarity();
+        }
       }
     }
 

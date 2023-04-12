@@ -37,7 +37,7 @@ export function useT() {
 
   const t = useCallback((key, params = {}) => {
     if (typeof key !== 'string' || key.trim() === '') {
-      console.err('Empty translations key');
+      console.log('Empty translations key');
       return '';
     }
 

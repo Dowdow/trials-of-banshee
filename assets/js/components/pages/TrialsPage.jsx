@@ -16,15 +16,13 @@ import NavBarBottom from '../ui/NavBarBottom';
 import TrialsAudio from '../ui/trials/TrialsAudio';
 import TrialsBounties from '../ui/trials/TrialsBounties';
 import TrialsBountyPresentation from '../ui/trials/TrialsBountyPresentation';
+import TrialsClues from '../ui/trials/TrialsClues';
 import TrialsCollectionAndTriumphs from '../ui/trials/TrialsCollectionAndTriumphs';
 import TrialsCompletedPopup from '../ui/trials/TrialsCompletedPopup';
 import TrialsFlawless from '../ui/trials/TrialsFlawless';
 import TrialsHistory from '../ui/trials/TrialsHistory';
 import TrialsInformations from '../ui/trials/TrialsInformations';
 import TrialsInput from '../ui/trials/TrialsInput';
-import TrialsInputDamageType from '../ui/trials/TrialsInputDamageType';
-import TrialsInputRarity from '../ui/trials/TrialsInputRarity';
-import TrialsInputWeaponType from '../ui/trials/TrialsInputWeaponType';
 import TrialsPossibleWeaponsPopup from '../ui/trials/TrialsPossibleWeaponsPopup';
 import banshee from '../../../img/banshee.jpg';
 
@@ -142,12 +140,8 @@ function RightPanel({ slideIn, slideOut, handleClickLink, handleSlideAnimationEn
             {currentBounty
               ? (
                 <div className="flex flex-col gap-y-4 md:gap-y-6 xl:gap-y-8 p-5 lg:p-8 xl:p-10">
-                  <div className="flex flex-col gap-y-4">
-                    <TrialsInput />
-                    <TrialsInputRarity />
-                    <TrialsInputDamageType />
-                    <TrialsInputWeaponType />
-                  </div>
+                  <TrialsInput />
+                  <TrialsClues />
                   <TrialsHistory />
                 </div>
               ) : (
