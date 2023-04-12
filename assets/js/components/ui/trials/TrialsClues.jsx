@@ -17,7 +17,7 @@ export default function TrialsClues() {
   return (
     <div>
       <CategoryTitle title={t('trials.clues')} />
-      <div className="flex flex-col gap-y-4 mt-4">
+      <div className="flex flex-col gap-y-2 md:gap-y-4 mt-4">
         <TrialsInputWeaponType />
         {weaponType && <TrialsInputDamageType />}
         {damageType && <TrialsInputRarity />}

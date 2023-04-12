@@ -141,8 +141,8 @@ function RightPanel({ slideIn, slideOut, handleClickLink, handleSlideAnimationEn
               ? (
                 <div className="flex flex-col gap-y-4 md:gap-y-6 xl:gap-y-8 p-5 lg:p-8 xl:p-10">
                   <TrialsInput />
-                  <TrialsClues />
                   <TrialsHistory />
+                  <TrialsClues />
                 </div>
               ) : (
                 <div className="h-full flex flex-col gap-y-4 md:gap-y-10 xl:gap-y-12 p-5 lg:p-8 xl:p-10">
