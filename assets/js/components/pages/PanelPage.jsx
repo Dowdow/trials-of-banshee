@@ -47,6 +47,10 @@ export default function PanelPage() {
     stream(ROUTES_API.PANEL_HIDE);
   };
 
+  const handleClickBountyCreate = async () => {
+    stream(ROUTES_API.PANEL_BOUNTY);
+  };
+
   if (!admin) return null;
   return (
     <div className="bg-dark min-h-screen">
@@ -60,6 +64,7 @@ export default function PanelPage() {
             <LeftClickButton text="Cache" onClick={handleClickDestinyWeaponsCache} />
             <LeftClickButton text="Parse" onClick={handleClickDestinyWeaponsParse} />
             <LeftClickButton text="Hide" onClick={handleClickDestinyWeaponsHide} />
+            <LeftClickButton text="Bounty" onClick={handleClickBountyCreate} />
           </div>
         </div>
         <nav className="flex flex-wrap gap-3">

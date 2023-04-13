@@ -2,11 +2,18 @@
 
 namespace App\Service;
 
+use App\Entity\Bounty;
 use App\Entity\Weapon;
+use App\Exception\CreateBountyException;
 use App\Exception\DestinyClient\DestinyGetAvailableLocalesException;
 use App\Exception\DestinyClient\DestinyGetDestinyManifestException;
+use App\Repository\BountyRepository;
 use App\Repository\WeaponRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
+use Exception;
 use JsonException;
 use Psr\Log\LoggerInterface;
 use SplFileObject;
@@ -246,6 +253,97 @@ class PanelService
     $this->em->flush();
 
     return true;
+  }
+
+  public function bountyCreate(string $dateString = null): bool|iterable
+  {
+    /** @var BountyRepository $bountyRepository */
+    $bountyRepository = $this->em->getRepository(Bounty::class);
+    /** @var WeaponRepository $weaponRepository */
+    $weaponRepository = $this->em->getRepository(Weapon::class);
+
+    try {
+      $date = new DateTime($dateString ?? 'now');
+    } catch (Exception $e) {
+      $this->logger->error($e);
+      yield 'Impossible to parse date. Use the YYYY-MM-DD format.';
+      return false;
+    }
+
+    $date->setTime(17, 0);
+    yield 'Current date is ' . $date->format('d-m-Y H:i');
+
+    try {
+      $generator = $this->createBounty($bountyRepository, $weaponRepository, $date, Bounty::TYPE_DAILY, 'Daily');
+      foreach ($generator as $value) {
+        yield $value;
+      }
+    } catch (CreateBountyException $e) {
+      $this->logger->error($e);
+    }
+    try {
+      $generator = $this->createBounty($bountyRepository, $weaponRepository, $date, Bounty::TYPE_ASPIRING, 'Aspiring');
+      foreach ($generator as $value) {
+        yield $value;
+      }
+    } catch (CreateBountyException $e) {
+      $this->logger->error($e);
+    }
+    try {
+      $generator = $this->createBounty($bountyRepository, $weaponRepository, $date, Bounty::TYPE_GUNSMITH, 'Gunsmith');
+      foreach ($generator as $value) {
+        yield $value;
+      }
+    } catch (CreateBountyException $e) {
+      $this->logger->error($e);
+    }
+
+    return true;
+  }
+
+  /**
+   * @throws CreateBountyException
+   */
+  private function createBounty(
+    BountyRepository $bountyRepository,
+    WeaponRepository $weaponRepository,
+    DateTime $date,
+    int $type,
+    string $name
+  ): iterable
+  {
+    yield "Checking for existing $name bounty...";
+
+    try {
+      $hasBounty = $bountyRepository->hasBountyWithDateStartAndType($date, $type);
+    } catch (NoResultException|NonUniqueResultException $e) {
+      $this->logger->error($e);
+      $hasBounty = true;
+    }
+
+    if (!$hasBounty) {
+      yield 'Absent';
+      yield "Creating $name bounty...";
+
+      try {
+        $recommendedWeapons = $weaponRepository->findWeaponsWithSoundAndMinBounties();
+      } catch (NoResultException|NonUniqueResultException $e) {
+        throw new CreateBountyException($e);
+      }
+
+      $weapon = $recommendedWeapons[array_rand($recommendedWeapons)];
+
+      $bounty = new Bounty();
+      $bounty->setType($type);
+      $bounty->setDateStart($date);
+      $bounty->setWeapon($weapon);
+
+      $this->em->persist($bounty);
+      $this->em->flush();
+      yield 'Done';
+    } else {
+      yield 'Already created';
+    }
   }
 
   private function containsKeywords(string $haystack): bool

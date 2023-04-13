@@ -68,4 +68,23 @@ class PanelApiController extends AbstractController
       }
     });
   }
+
+  #[Route('/panel/bounty', name: 'api.panel.bounty', methods: ['POST'])]
+  public function panelBounty(PanelService $panelService): NotFoundHttpException|StreamedResponse
+  {
+    if (!$this->isGranted(User::ROLE_ADMIN)) {
+      return $this->createNotFoundException();
+    }
+
+    $generator = $panelService->bountyCreate();
+    return new StreamedResponse(function () use ($generator) {
+      foreach ($generator as $data) {
+        echo "$data\n";
+        if (ob_get_contents() !== false) {
+          ob_flush();
+        }
+        flush();
+      }
+    });
+  }
 }

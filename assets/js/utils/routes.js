@@ -17,6 +17,7 @@ export const ROUTES_API = {
   BOUNTY_GUESS: '/api/bounty/:id/guess',
   BOUNTY_XUR: '/api/bounty/xur',
   COLLECTIONS: '/api/collections',
+  PANEL_BOUNTY: '/api/panel/bounty',
   PANEL_CACHE: '/api/panel/cache',
   PANEL_HIDE: '/api/panel/hide',
   PANEL_PARSE: '/api/panel/parse',
