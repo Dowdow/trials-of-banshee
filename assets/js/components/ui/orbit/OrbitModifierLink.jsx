@@ -4,15 +4,14 @@ import Tooltipable from '../Tooltipable';
 
 export default function OrbitModifierLink({ href, img, text, description }) {
   return (
-    <Tooltipable>
-      {(onMouseEnter, onMouseLeave) => (
+    <Tooltipable title={text} description={description}>
+      {(ref) => (
         <a
+          ref={ref}
           href={href}
           target="_blank"
           rel="noopener noreferrer"
           className="p-2 bg-white/70 backdrop-blur-sm rounded-full opacity-90"
-          onMouseEnter={() => onMouseEnter(text, description)}
-          onMouseLeave={() => onMouseLeave()}
         >
           <img src={img} alt={text} className="w-9 h-9 opacity-90" />
         </a>

@@ -13,14 +13,13 @@ export default function Item({ type, active = false }) {
   }
 
   return (
-    <Tooltipable>
-      {(onMouseEnter, onMouseLeave) => (
+    <Tooltipable title={ITEMS[type]} description="items.description">
+      {(ref) => (
         <img
+          ref={ref}
           src={ITEM_IMAGES[type]}
           alt={t(ITEMS[type])}
           className="w-24 h-24 border border-white/30 hover:brightness-125 transition-all duration-300"
-          onMouseEnter={() => onMouseEnter(t(ITEMS[type]), t('items.description'))}
-          onMouseLeave={() => onMouseLeave()}
         />
       )}
     </Tooltipable>

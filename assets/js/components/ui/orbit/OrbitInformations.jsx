@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 export default function OrbitInformations() {
   const [hover, setHover] = useState(false);
-
+  // Check group hover tailwind
   return (
     <button type="button" title="Coming soon" className="hidden w-24 h-24 p-1 border-2 border-white/30 border-dotted rounded-full" onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
       <div className={`w-full h-full border-2 border-white/90 rounded-full transition-colors duration-300 ${hover ? 'bg-white/10' : 'bg-transparent'}`}>

@@ -13,14 +13,13 @@ export default function Engram({ type, active = false }) {
   }
 
   return (
-    <Tooltipable>
-      {(onMouseEnter, onMouseLeave) => (
+    <Tooltipable title={ENGRAMS[type]} description="engrams.description">
+      {(ref) => (
         <img
+          ref={ref}
           src={ENGRAM_IMAGES[type]}
           alt={t(ENGRAMS[type])}
           className="w-24 h-24 hover:brightness-125 transition-all duration-300"
-          onMouseEnter={() => onMouseEnter(t(ENGRAMS[type]), t('engrams.description'))}
-          onMouseLeave={() => onMouseLeave()}
         />
       )}
     </Tooltipable>

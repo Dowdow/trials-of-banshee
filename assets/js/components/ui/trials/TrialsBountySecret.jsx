@@ -8,12 +8,11 @@ export default function TrialsBountySecret() {
   const completed = useUserXurBountyClaimable();
   const t = useT();
   return (
-    <Tooltipable>
-      {(onMouseEnter, onMouseLeave) => (
+    <Tooltipable title={bountyNameFromType(BOUNTY_TYPE.SECRET)} description={bountyDescriptionFromType(BOUNTY_TYPE.SECRET)}>
+      {(ref) => (
         <div
+          ref={ref}
           className={`p-0.5 border-2 border-transparent ${completed ? 'hover:border-white/30' : 'hover:border-white/70'} transition-colors duration-300 cursor-help`}
-          onMouseEnter={() => onMouseEnter(t(bountyNameFromType(BOUNTY_TYPE.SECRET)), t(bountyDescriptionFromType(BOUNTY_TYPE.SECRET)))}
-          onMouseLeave={() => onMouseLeave()}
         >
           <div className={`relative overflow-hidden ${completed ? 'bg-gray-dark' : 'bg-white'}`}>
             <img

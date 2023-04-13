@@ -4,13 +4,12 @@ import Tooltipable from '../Tooltipable';
 export default function EngramEmpty() {
   return (
     <Tooltipable>
-      {(onMouseEnter, onMouseLeave) => (
+      {(ref) => (
         <svg
+          ref={ref}
           xmlns="http://www.w3.org/2000/svg"
           width="96"
           height="96"
-          onMouseEnter={() => onMouseEnter('???', '???')}
-          onMouseLeave={() => onMouseLeave()}
         >
           <g className="opacity-20 hover:opacity-40 transition-opacity duration-300">
             <path

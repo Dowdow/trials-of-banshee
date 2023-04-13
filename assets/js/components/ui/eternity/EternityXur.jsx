@@ -54,18 +54,15 @@ export default function EternityXur() {
         </div>
       </div>
       <div className="-ml-1 mt-4 md:mt-8">
-        <Tooltipable>
-          {(onMouseEnter, onMouseLeave) => (
+        <Tooltipable title={ITEMS.xurGrassItem} description="items.description">
+          {(ref) => (
             <button
+              ref={ref}
               type="button"
               disabled={completed || !claimable}
               onClick={handleClick}
               className={`p-0.5 border-2 border-transparent disabled:hover:border-white/30 ${animationClick ? 'hover:border-transparent' : 'hover:border-white/70'} transition-colors duration-300 disabled:cursor-not-allowed`}
               onAnimationEnd={handleAnimationEnd}
-              onMouseOver={() => onMouseEnter(t(ITEMS.xurGrassItem), t('items.description'))}
-              onMouseOut={() => onMouseLeave()}
-              onFocus={() => onMouseEnter(t(ITEMS.xurGrassItem), t('items.description'))}
-              onBlur={() => onMouseLeave()}
             >
               <div className={`relative overflow-hidden ${animationClick && 'animate-bounty'} ${completed ? 'bg-gray-dark' : 'bg-white'}`}>
                 <img src={ITEM_IMAGES.xurGrassItem} alt={t(ITEMS.xurGrassItem)} className={`${animationClick ? 'opacity-0 hover:opacity-0' : 'hover:opacity-70'} ${completed && 'opacity-70'} border border-white/30 transition-opacity duration-300`} loading="lazy" />

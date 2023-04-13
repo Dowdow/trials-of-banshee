@@ -46,16 +46,11 @@ export default function TrialsHistory() {
 
 function WeaponHistory({ weapon, correct = false }) {
   const locale = useLocale();
-  const t = useT();
 
   return (
-    <Tooltipable>
-      {(onMouseEnter, onMouseLeave) => (
-        <div
-          className="relative animate-wiggle"
-          onMouseEnter={() => onMouseEnter(weapon.names[locale], t('trials.history.weapon'))}
-          onMouseLeave={() => onMouseLeave()}
-        >
+    <Tooltipable title={weapon.names[locale]} description="trials.history.weapon">
+      {(ref) => (
+        <div ref={ref} className="relative animate-wiggle">
           <WeaponIcon icon={weapon.icon} alt={weapon.names[locale]} iconWatermark={weapon.iconWatermark} className="w-20 h-20" />
           <div className="absolute top-0 left-0 w-20 h-20 overflow-hidden">
             {correct ? (

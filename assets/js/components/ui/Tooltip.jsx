@@ -10,7 +10,7 @@ export default function Tooltip() {
 
   const { visible, header, content, connected } = useSelector((state) => state.tooltip);
 
-  if (!window.matchMedia('(pointer: fine)').matches) {
+  if (!window.matchMedia('(pointer: fine)').matches || !window.matchMedia('(any-pointer: fine)').matches) {
     return null;
   }
 
@@ -22,7 +22,7 @@ export default function Tooltip() {
     >
       <div className="h-1 w-full bg-white/60" />
       <div className="p-2 bg-dark/90 text-2xl font-bold tracking-wide uppercase">
-        {header}
+        {header !== '' && t(header)}
       </div>
       {connected && (
         <div className="p-2 bg-red/30 text-xl tracking-wide">
@@ -30,7 +30,7 @@ export default function Tooltip() {
         </div>
       )}
       <div className="p-3 bg-gray-light/70 text-lg tracking-wide">
-        {content}
+        {content !== '' && t(content)}
       </div>
     </div>
   );

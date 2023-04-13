@@ -8,13 +8,12 @@ export default function ItemEmpty() {
 
   return (
     <Tooltipable>
-      {(onMouseEnter, onMouseLeave) => (
+      {(ref) => (
         <img
+          ref={ref}
           src={emptyItem}
           alt={t('item.empty')}
           className="w-24 h-24 border border-white/30"
-          onMouseEnter={() => onMouseEnter('???', '???')}
-          onMouseLeave={() => onMouseLeave()}
         />
       )}
     </Tooltipable>

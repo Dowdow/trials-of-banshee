@@ -25,18 +25,15 @@ export default function TrialsBounty({ bounty, onClick }) {
   };
 
   return (
-    <Tooltipable>
-      {(onMouseEnter, onMouseLeave) => (
+    <Tooltipable title={bountyNameFromType(bounty.type)} description={bountyDescriptionFromType(bounty.type)} connected={!authenticated}>
+      {(ref) => (
         <button
+          ref={ref}
           type="button"
           disabled={completed}
           onClick={handleClick}
           className={`p-0.5 border-2 border-transparent disabled:hover:border-white/30 ${animationClick ? 'hover:border-transparent' : 'hover:border-white/70'} transition-colors duration-300 disabled:cursor-not-allowed`}
           onAnimationEnd={handleAnimationEnd}
-          onMouseOver={() => onMouseEnter(bountyName, t(bountyDescriptionFromType(bounty.type)), !authenticated)}
-          onMouseOut={() => onMouseLeave()}
-          onFocus={() => onMouseEnter(bountyName, t(bountyDescriptionFromType(bounty.type)), !authenticated)}
-          onBlur={() => onMouseLeave()}
         >
           <div className={`relative overflow-hidden ${animationClick && 'animate-bounty'} ${completed ? 'bg-gray-dark' : 'bg-white'}`}>
             <img

@@ -1,21 +1,35 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { resetTooltip, setTooltip } from '../../actions/tooltip';
 
-export default function Tooltipable({ children }) {
+export default function Tooltipable({ title = '???', description = '???', connected = false, children }) {
   const dispatch = useDispatch();
+  const subject = useRef();
 
-  useEffect(() => () => dispatch(resetTooltip()), []);
-
-  const onMouseEnter = (title, description, connected = false) => {
-    if (window.matchMedia('(pointer: fine)').matches) {
-      dispatch(setTooltip(title, description, connected));
+  const enter = (e) => {
+    if (e.pointerType !== 'mouse') {
+      return;
     }
+    dispatch(setTooltip(title, description, connected));
   };
 
-  const onMouseLeave = () => {
+  const leave = () => {
     dispatch(resetTooltip());
   };
 
-  return children(onMouseEnter, onMouseLeave);
+  useEffect(() => {
+    if (subject.current) {
+      subject.current.addEventListener('pointerenter', enter);
+      subject.current.addEventListener('pointerleave', leave);
+    }
+    return () => {
+      if (subject.current) {
+        subject.current.removeEventListener('pointerenter', enter);
+        subject.current.removeEventListener('pointerleave', leave);
+      }
+      dispatch(resetTooltip());
+    };
+  }, []);
+
+  return children(subject);
 }

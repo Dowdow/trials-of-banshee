@@ -23,14 +23,9 @@ export default function OrbitFireteam() {
           {t('orbit.fireteam')}
         </div>
         {authenticated && (
-          <Tooltipable>
-            {(onMouseEnter, onMouseLeave) => (
-              <a
-                href={ROUTES.OAUTH_LOGOUT}
-                className="cursor-pointer"
-                onMouseEnter={() => onMouseEnter(t('logout'), t('logout.description'))}
-                onMouseLeave={() => onMouseLeave()}
-              >
+          <Tooltipable title="logout" description="logout.description">
+            {(ref) => (
+              <a ref={ref} href={ROUTES.OAUTH_LOGOUT} className="cursor-pointer">
                 <img src={logout} alt={t('logout')} className="w-6" />
               </a>
             )}
