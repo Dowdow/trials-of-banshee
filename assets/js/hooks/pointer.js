@@ -1,13 +1,13 @@
 /* eslint-disable no-lonely-if */
 import { useEffect, useState } from 'react';
 
-export function useInterfaceMoveOnMouseMove() {
+export function useInterfaceMoveOnPointerMove() {
   const maxMove = 10;
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
 
   function update(event) {
-    if (!window.matchMedia('(pointer: fine)').matches) {
+    if (event.pointerType !== 'mouse') {
       setX(0);
       setY(0);
       return;
@@ -43,12 +43,12 @@ export function useInterfaceMoveOnMouseMove() {
   }
 
   useEffect(() => {
-    window.addEventListener('mouseenter', update);
-    window.addEventListener('mousemove', update);
+    window.addEventListener('pointerenter', update);
+    window.addEventListener('pointermove', update);
     window.addEventListener('resize', resize);
     return () => {
-      window.removeEventListener('mouseenter', update);
-      window.removeEventListener('mousemove', update);
+      window.removeEventListener('pointerenter', update);
+      window.removeEventListener('pointermove', update);
       window.removeEventListener('resize', resize);
     };
   });
@@ -56,7 +56,7 @@ export function useInterfaceMoveOnMouseMove() {
   return { x, y };
 }
 
-export function useTooltipMoveOnMouseMove(tooltipRef) {
+export function useTooltipMoveOnPointerMove(tooltipRef) {
   const mouseSpace = 20;
 
   const [x, setX] = useState(0);
@@ -64,7 +64,7 @@ export function useTooltipMoveOnMouseMove(tooltipRef) {
 
   useEffect(() => {
     function move(event) {
-      if (!window.matchMedia('(pointer: fine)').matches) {
+      if (event.pointerType !== 'mouse') {
         setX(0);
         setY(0);
         return;
@@ -111,12 +111,12 @@ export function useTooltipMoveOnMouseMove(tooltipRef) {
       setY(0);
     }
 
-    window.addEventListener('mouseenter', move);
-    window.addEventListener('mousemove', move);
+    window.addEventListener('pointerenter', move);
+    window.addEventListener('pointermove', move);
     window.addEventListener('resize', resize);
     return () => {
-      window.removeEventListener('mouseenter', move);
-      window.removeEventListener('mousemove', move);
+      window.removeEventListener('pointerenter', move);
+      window.removeEventListener('pointermove', move);
       window.removeEventListener('resize', resize);
     };
   });

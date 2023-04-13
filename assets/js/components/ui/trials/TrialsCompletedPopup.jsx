@@ -31,14 +31,14 @@ export default function TrialsCompletedPopup({ onExit }) {
 
   return (
     <div className={`absolute top-0 left-0 w-full h-screen flex items-center bg-transparent backdrop-blur-sm overflow-hidden opacity-0 animate-completed-in ${completedOut && 'animate-completed-out'}`} onAnimationEnd={handleAnimationEnd}>
-      <div className="w-full bg-dark-grey/70">
+      <div className="w-full bg-gray-dark/70">
         <div className="w-full h-2 bg-white/50" />
         <div className="w-full flex flex-col md:flex-row">
-          <div className="flex justify-center items-center md:w-1/2 bg-light-grey/50">
+          <div className="flex justify-center items-center md:w-1/2 bg-gray-light/50">
             <img className="w-full h-full object-cover" src={`https://bungie.net${weapon.screenshot}`} alt={t('weapon')} loading="lazy" />
           </div>
           <div className="flex flex-col grow">
-            <div className="flex items-center p-3 lg:p-5 bg-light-grey/40 text-xl lg:text-3xl text-white/80 font-bold tracking-widest lg:tracking-[0.3em] uppercase">
+            <div className="flex items-center p-3 lg:p-5 bg-gray-light/40 text-xl lg:text-3xl text-white/80 font-bold tracking-widest lg:tracking-[0.3em] uppercase">
               {t('trials.bounty.completed')}
             </div>
             <div className="flex flex-col gap-y-2 md:gap-y-4 p-3 lg:p-5 text-white/70 text-base lg:text-xl tracking-wide">
@@ -48,7 +48,7 @@ export default function TrialsCompletedPopup({ onExit }) {
                   {t('trials.bounty.perfect')}
                 </div>
                 <div className="w-5 h-5 p-0.5 border border-white/30">
-                  <div className={`w-full h-full ${currentBounty.perfectMatch ? 'bg-light-green' : 'bg-red'}`} />
+                  <div className={`w-full h-full ${currentBounty.perfectMatch ? 'bg-green-light' : 'bg-red'}`} />
                 </div>
               </div>
               {currentBounty.type !== BOUNTY_TYPE.DAILY && (
@@ -57,7 +57,7 @@ export default function TrialsCompletedPopup({ onExit }) {
                     {t('trials.bounty.flawless')}
                   </div>
                   <div className="w-5 h-5 p-0.5 border border-white/30">
-                    <div className={`w-full h-full ${currentBounty.flawless ? 'bg-light-green' : 'bg-red'}`} />
+                    <div className={`w-full h-full ${currentBounty.flawless ? 'bg-green-light' : 'bg-red'}`} />
                   </div>
                 </div>
               )}
@@ -84,7 +84,7 @@ export default function TrialsCompletedPopup({ onExit }) {
             </div>
           </div>
         </div>
-        <div className="w-full py-2 flex justify-center gap-x-5 bg-dark-grey/60">
+        <div className="w-full py-2 flex justify-center gap-x-5 bg-gray-dark/60">
           <TwitterShareBounty />
           <LeftClickButton onClick={() => setCompletedOut(true)} text="O.K." />
         </div>

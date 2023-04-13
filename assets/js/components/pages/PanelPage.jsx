@@ -54,7 +54,7 @@ export default function PanelPage() {
   if (!admin) return null;
   return (
     <div className="bg-dark min-h-screen">
-      <div className="sticky top-0 flex justify-between items-center flex-wrap gap-3 md:gap-6 w-full bg-dark-grey p-3 md:p-5">
+      <div className="sticky top-0 flex justify-between items-center flex-wrap gap-3 md:gap-6 w-full bg-gray-dark p-3 md:p-5">
         <div className="flex items-center flex-wrap gap-3 md:gap-6">
           <div>
             <h1 className="mb-1 md:mb-3 font-neue-haas-display-bold text-5xl md:text-6xl text-white">Panel</h1>
@@ -74,7 +74,7 @@ export default function PanelPage() {
         </nav>
       </div>
       <div className="container mx-auto p-4">
-        <div className="w-full p-4 bg-light-grey text-lg text-white tracking-wider rounded">
+        <div className="w-full p-4 bg-gray-light text-lg text-white tracking-wider rounded">
           {data.map((line, index) => (
             // eslint-disable-next-line react/no-array-index-key
             <div key={index} className="flex gap-x-4">

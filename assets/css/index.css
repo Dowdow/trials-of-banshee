@@ -30,19 +30,19 @@
 
 @layer components {
   .collection-gradient {
-    background: #28292B;
-    background: radial-gradient(circle, #28292B 0%, #1C1D1F 100%);
+    background: theme(colors.gray-light);
+    background: radial-gradient(circle, theme(colors.gray-light) 0%, theme(colors.gray-dark) 100%);
   }
 
   .triumph-background-gradient {
     background-size: 40px 40px;
     background-image:
-      linear-gradient(to right, #28292B 1px, transparent 1px),
-      linear-gradient(to bottom, #28292B 1px, #1C1D1F 1px);
+      linear-gradient(to right, theme(colors.gray-light) 1px, transparent 1px),
+      linear-gradient(to bottom, theme(colors.gray-light) 1px, theme(colors.gray-dark) 1px);
   }
 
   .triumph-gradient {
-    background: linear-gradient(-45deg, #1C1D1F 0%, #28292B 75%, transparent 75%, transparent 100%);
+    background: linear-gradient(-45deg, theme(colors.gray-dark) 0%, theme(colors.gray-light) 75%, transparent 75%, transparent 100%);
   }
 
   .noscrollbar::-webkit-scrollbar {

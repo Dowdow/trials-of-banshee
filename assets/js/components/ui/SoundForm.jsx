@@ -72,15 +72,15 @@ export default function SoundForm({ onSubmit, sound = null, error = null }) {
       <form onSubmit={handleSubmit} className="w-full p-6 text-white/70">
         <div className="flex flex-col mb-3">
           <label className="text-lg font-bold border-b-2 border-white/30 mb-2">Name</label>
-          <input type="text" value={name} onChange={handleChangeName} className="p-2 text-lg bg-light-grey text-white" placeholder="Sound name" />
+          <input type="text" value={name} onChange={handleChangeName} className="p-2 text-lg bg-gray-light text-white" placeholder="Sound name" />
         </div>
         <div className="flex flex-col mb-3">
           <label className="text-lg font-bold border-b-2 border-white/30 mb-2">Description</label>
-          <textarea value={description} onChange={handleChangeDescription} className="p-2 text-lg bg-light-grey text-white" placeholder="Sound description" />
+          <textarea value={description} onChange={handleChangeDescription} className="p-2 text-lg bg-gray-light text-white" placeholder="Sound description" />
         </div>
         <div className="flex flex-col mb-3">
           <label className="text-lg font-bold border-b-2 border-white/30 mb-2">Audio file</label>
-          <input type="file" accept="audio/*" onChange={handleChangeFile} className="p-2 text-lg bg-light-grey text-white" />
+          <input type="file" accept="audio/*" onChange={handleChangeFile} className="p-2 text-lg bg-gray-light text-white" />
         </div>
         <div className="flex flex-col mb-10">
           <label className="text-lg font-bold border-b-2 border-white/30 mb-2">Weapons</label>
@@ -89,9 +89,9 @@ export default function SoundForm({ onSubmit, sound = null, error = null }) {
             {weapons.length === 0 && <span className="text-white/70 pl-2">No weapon linked to this sound</span>}
           </div>
 
-          <div className="w-full h-1 bg-dark-grey my-2" />
+          <div className="w-full h-1 bg-gray-dark my-2" />
 
-          <input type="text" value={query} onChange={handleChangeQuery} className="p-2 text-lg bg-light-grey text-white" placeholder="Type a weapon name" />
+          <input type="text" value={query} onChange={handleChangeQuery} className="p-2 text-lg bg-gray-light text-white" placeholder="Type a weapon name" />
           <div className="flex flex-wrap gap-1 mt-2">
             {query !== '' && allWeapons
               .filter((w) => w.names[locale].toLowerCase().includes(query.toLowerCase()) || w.names[DEFAULT_LOCALE].toLowerCase().includes(query.toLowerCase()))
@@ -99,7 +99,7 @@ export default function SoundForm({ onSubmit, sound = null, error = null }) {
           </div>
         </div>
         <div className="flex justify-end">
-          <button type="submit" className="px-3 py-2 bg-light-grey text-xl font-bold tracking-wide">Submit</button>
+          <button type="submit" className="px-3 py-2 bg-gray-light text-xl font-bold tracking-wide">Submit</button>
         </div>
       </form>
     </>
@@ -109,7 +109,7 @@ export default function SoundForm({ onSubmit, sound = null, error = null }) {
 function Weapon({ w, action }) {
   const locale = useLocale();
   return (
-    <button type="button" onClick={action} className="flex items-center gap-1 p-1 bg-transparent hover:bg-light-grey border border-white/30 hover:border-white/80 transition-colors cursor-pointer">
+    <button type="button" onClick={action} className="flex items-center gap-1 p-1 bg-transparent hover:bg-gray-light border border-white/30 hover:border-white/80 transition-colors cursor-pointer">
       <WeaponIcon icon={w.icon} alt={w.names[locale]} iconWatermark={w.iconWatermark} className="w-8 h-8" />
       <span className="tracking-wide text-white">{w.names[locale]}</span>
     </button>

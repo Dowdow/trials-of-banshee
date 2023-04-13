@@ -18,7 +18,7 @@ export default function TrialsFlawless() {
       </div>
       <div className={`relative w-5 h-5 p-0.5 border border-white/30 text-white/90 text-base lg:text-xl tracking-wide ${currentBounty.flawless === false && 'animate-flawless-roll'}`}>
         <div className={`absolute w-[1.375rem] h-[1.375rem] -top-0.5 -left-0.5 border-2 border-white opacity-0 ${currentBounty.flawless !== false && 'animate-flawless-pop'}`} />
-        <div className={`w-full h-full ${currentBounty.flawless === false ? 'bg-red' : 'bg-light-green'} transition-colors duration-300`} />
+        <div className={`w-full h-full ${currentBounty.flawless === false ? 'bg-red' : 'bg-green-light'} transition-colors duration-300`} />
       </div>
     </section>
   );

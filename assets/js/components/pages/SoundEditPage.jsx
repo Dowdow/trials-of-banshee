@@ -40,7 +40,7 @@ export default function SoundEditPage() {
   if (sound === undefined) return <div>Sound not found</div>;
   return (
     <div className="bg-dark min-h-screen">
-      <div className="sticky top-0 flex justify-between items-center flex-wrap gap-3 md:gap-6 w-full bg-dark-grey p-3 md:p-5">
+      <div className="sticky top-0 flex justify-between items-center flex-wrap gap-3 md:gap-6 w-full bg-gray-dark p-3 md:p-5">
         <div>
           <h1 className="mb-1 md:mb-3 font-neue-haas-display-bold text-5xl md:text-6xl text-white">Edit a Sound</h1>
           <div className="w-full h-0.5 bg-white/50" />

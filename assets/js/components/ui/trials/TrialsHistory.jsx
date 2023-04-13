@@ -60,12 +60,12 @@ function WeaponHistory({ weapon, correct = false }) {
           <div className="absolute top-0 left-0 w-20 h-20 overflow-hidden">
             {correct ? (
               <>
-                <div className="absolute -bottom-10 -right-10 bg-light-blue h-20 w-20 shadow-dark-grey rotate-45" />
+                <div className="absolute -bottom-10 -right-10 bg-blue-light h-20 w-20 shadow-gray-dark rotate-45" />
                 <div className="absolute bottom-3.5 right-2.5 h-2.5 w-4 border-l-4 border-b-4 border-white -rotate-45" />
               </>
             ) : (
               <>
-                <div className="absolute -bottom-10 -right-10 bg-red/90 h-20 w-20 shadow-dark-grey rotate-45" />
+                <div className="absolute -bottom-10 -right-10 bg-red/90 h-20 w-20 shadow-gray-dark rotate-45" />
                 <div className="absolute bottom-3.5 right-2.5 h-1 w-5 bg-white rotate-45" />
                 <div className="absolute bottom-3.5 right-2.5 h-1 w-5 bg-white -rotate-45" />
               </>

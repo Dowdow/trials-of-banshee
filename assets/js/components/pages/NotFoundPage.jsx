@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { getBountiesToday } from '../../actions/bounties';
 import { getUser } from '../../actions/user';
 import { useCanSeeXur } from '../../hooks/bounty';
-import { useInterfaceMoveOnMouseMove } from '../../hooks/mouse';
+import { useInterfaceMoveOnPointerMove } from '../../hooks/pointer';
 import { useT } from '../../hooks/translations';
 import { useUserAuthenticated } from '../../hooks/user';
 import { ROUTES } from '../../utils/routes';
@@ -21,7 +21,7 @@ export default function NotFoundPage() {
   const navigate = useNavigate();
   const t = useT();
 
-  const { x, y } = useInterfaceMoveOnMouseMove();
+  const { x, y } = useInterfaceMoveOnPointerMove();
 
   const [fadeOut, setFadeOut] = useState(false);
   const [nextPage, setNextPage] = useState(null);
@@ -47,7 +47,7 @@ export default function NotFoundPage() {
       </div>
       <InitFade />
       <div className="absolute -top-[10px] -right-[10px] h-[calc(100vh+20px)] w-[calc(100%+20px)] md:w-[calc(75%+10px)] lg:w-[calc(66%+10px)] xl:w-[calc(50%+10px)] flex flex-col backdrop-blur-lg" style={{ translate: `${x}px ${y}px` }}>
-        <div className="w-full h-full bg-light-grey/70 py-[10px] px-[10px] md:pl-0">
+        <div className="w-full h-full bg-gray-light/70 py-[10px] px-[10px] md:pl-0">
           <div className="p-5 lg:p-8 xl:p-10">
             {authenticated && canSeeXur ? <EternityXur /> : <EternityNotFound />}
           </div>

@@ -38,7 +38,7 @@ export default function TrialsBounty({ bounty, onClick }) {
           onFocus={() => onMouseEnter(bountyName, t(bountyDescriptionFromType(bounty.type)), !authenticated)}
           onBlur={() => onMouseLeave()}
         >
-          <div className={`relative overflow-hidden ${animationClick && 'animate-bounty'} ${completed ? 'bg-dark-grey' : 'bg-white'}`}>
+          <div className={`relative overflow-hidden ${animationClick && 'animate-bounty'} ${completed ? 'bg-gray-dark' : 'bg-white'}`}>
             <img
               src={bountyImageFromType(bounty.type)}
               alt={bountyName}
@@ -47,13 +47,13 @@ export default function TrialsBounty({ bounty, onClick }) {
             />
             {completed && (
               <>
-                <div className={`absolute -bottom-10 -right-10 ${bounty.flawless || bounty.attempts === 1 ? 'bg-yellow' : 'bg-light-blue'} h-20 w-20 rotate-45`} />
+                <div className={`absolute -bottom-10 -right-10 ${bounty.flawless || bounty.attempts === 1 ? 'bg-yellow' : 'bg-blue-light'} h-20 w-20 rotate-45`} />
                 <div className="absolute bottom-3.5 right-2.5 h-2.5 w-4 border-l-4 border-b-4 border-white -rotate-45" />
               </>
             )}
             {!completed && bounty.history.length > 0 && (
               <>
-                <div className="absolute -bottom-10 -right-10 bg-light-red h-20 w-20 shadow-dark-grey rotate-45" />
+                <div className="absolute -bottom-10 -right-10 bg-red-light h-20 w-20 shadow-gray-dark rotate-45" />
                 <div className="absolute bottom-9 right-3.5 h-2.5 w-4 text-white text-6xl">~</div>
               </>
             )}

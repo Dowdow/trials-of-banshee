@@ -15,7 +15,7 @@ export default function TrialsBountySecret() {
           onMouseEnter={() => onMouseEnter(t(bountyNameFromType(BOUNTY_TYPE.SECRET)), t(bountyDescriptionFromType(BOUNTY_TYPE.SECRET)))}
           onMouseLeave={() => onMouseLeave()}
         >
-          <div className={`relative overflow-hidden ${completed ? 'bg-dark-grey' : 'bg-white'}`}>
+          <div className={`relative overflow-hidden ${completed ? 'bg-gray-dark' : 'bg-white'}`}>
             <img
               src={bountyImageFromType(BOUNTY_TYPE.SECRET)}
               alt={t(bountyNameFromType(BOUNTY_TYPE.SECRET))}

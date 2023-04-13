@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { getUserPlayer } from '../../actions/user';
-import { useInterfaceMoveOnMouseMove } from '../../hooks/mouse';
+import { useInterfaceMoveOnPointerMove } from '../../hooks/pointer';
 import { useT } from '../../hooks/translations';
 import { useUserAuthenticated } from '../../hooks/user';
 import InitFade from '../ui/InitFade';
@@ -22,7 +22,7 @@ export default function IndexPage() {
   const [launchFade, setLaunchFade] = useState(false);
   const [zoomEarth, setZoomEarth] = useState(false);
 
-  const { x, y } = useInterfaceMoveOnMouseMove();
+  const { x, y } = useInterfaceMoveOnPointerMove();
 
   useEffect(() => {
     if (authenticated) {

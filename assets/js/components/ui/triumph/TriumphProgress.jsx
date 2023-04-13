@@ -26,7 +26,7 @@ export default function TriumphProgress({ type, title, description, completed = 
   };
 
   return (
-    <button type="button" onClick={handleClick} disabled={!claimable} className={`relative flex flex-col justify-between bg-white/10 border box-border ${claimable && 'border-light-green'} ${completed && 'border-yellow'} ${!claimable && !completed && 'border-white/30'}`}>
+    <button type="button" onClick={handleClick} disabled={!claimable} className={`relative flex flex-col justify-between bg-white/10 border box-border ${claimable && 'border-green-light'} ${completed && 'border-yellow'} ${!claimable && !completed && 'border-white/30'}`}>
       {claim && (
         <>
           <div className="absolute w-full h-full top-0 left-0 flex justify-between z-10" onAnimationEnd={animationClaimEnd}>

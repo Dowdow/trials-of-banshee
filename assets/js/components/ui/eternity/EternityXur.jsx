@@ -67,11 +67,11 @@ export default function EternityXur() {
               onFocus={() => onMouseEnter(t(ITEMS.xurGrassItem), t('items.description'))}
               onBlur={() => onMouseLeave()}
             >
-              <div className={`relative overflow-hidden ${animationClick && 'animate-bounty'} ${completed ? 'bg-dark-grey' : 'bg-white'}`}>
+              <div className={`relative overflow-hidden ${animationClick && 'animate-bounty'} ${completed ? 'bg-gray-dark' : 'bg-white'}`}>
                 <img src={ITEM_IMAGES.xurGrassItem} alt={t(ITEMS.xurGrassItem)} className={`${animationClick ? 'opacity-0 hover:opacity-0' : 'hover:opacity-70'} ${completed && 'opacity-70'} border border-white/30 transition-opacity duration-300`} loading="lazy" />
                 {completed && (
                   <>
-                    <div className="absolute -bottom-10 -right-10 bg-light-blue h-20 w-20 rotate-45" />
+                    <div className="absolute -bottom-10 -right-10 bg-blue-light h-20 w-20 rotate-45" />
                     <div className="absolute bottom-3.5 right-2.5 h-2.5 w-4 border-l-4 border-b-4 border-white -rotate-45" />
                   </>
                 )}

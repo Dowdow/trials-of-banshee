@@ -19,7 +19,7 @@ export default function WeaponIcon({ icon, alt, iconWatermark = null, damageType
         <img
           src={WEAPON_DAMAGE_TYPE_IMAGE[damageType]}
           alt={t(WEAPON_DAMAGE_TYPE_NAME[damageType])}
-          className="absolute bottom-0 right-0 p-0.5 w-5 h-5 bg-light-grey/30"
+          className="absolute bottom-0 right-0 p-0.5 w-5 h-5 bg-gray-light/30"
           loading="lazy"
         />
       )}

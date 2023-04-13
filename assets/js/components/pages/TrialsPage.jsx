@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { getBountiesToday, setCurrentBounty } from '../../actions/bounties';
 import { useCurrentBounty } from '../../hooks/bounty';
-import { useInterfaceMoveOnMouseMove } from '../../hooks/mouse';
+import { useInterfaceMoveOnPointerMove } from '../../hooks/pointer';
 import { useT } from '../../hooks/translations';
 import { useUserAdmin } from '../../hooks/user';
 import { ROUTES } from '../../utils/routes';
@@ -90,14 +90,14 @@ export default function TrialsPage() {
 
 function BansheeName() {
   const t = useT();
-  const { x, y } = useInterfaceMoveOnMouseMove();
+  const { x, y } = useInterfaceMoveOnPointerMove();
   return (
     <div className="hidden md:block absolute md:bottom-52 xl:bottom-24 md:-left-32 xl:left-12 xl:pl-12 md:-rotate-90 xl:rotate-0" style={{ translate: `${x}px ${y}px` }}>
-      <div className="ml-3 text-lg font-bold tracking-widest text-white text-shadow-sm shadow-light-grey/30 uppercase select-none">
+      <div className="ml-3 text-lg font-bold tracking-widest text-white text-shadow-sm shadow-gray-light/30 uppercase select-none">
         {t('gunsmith')}
       </div>
-      <div className="w-full h-2 bg-white/90 text-shadow-sm shadow-light-grey/30 mb-2" />
-      <div className="font-neue-haas-display-bold text-7xl uppercase text-white text-shadow-sm shadow-light-grey/30 select-none">
+      <div className="w-full h-2 bg-white/90 text-shadow-sm shadow-gray-light/30 mb-2" />
+      <div className="font-neue-haas-display-bold text-7xl uppercase text-white text-shadow-sm shadow-gray-light/30 select-none">
         {t('banshee')}
       </div>
       <div className="h-0.5 w-[95%] ml-3 bg-white/70 mt-3" />
@@ -110,7 +110,7 @@ function RightPanel({ slideIn, slideOut, handleClickLink, handleSlideAnimationEn
 
   const admin = useUserAdmin();
   const currentBounty = useCurrentBounty();
-  const { x, y } = useInterfaceMoveOnMouseMove();
+  const { x, y } = useInterfaceMoveOnPointerMove();
 
   return (
     <div className="relative w-full h-screen overflow-hidden">

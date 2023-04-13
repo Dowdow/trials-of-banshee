@@ -42,15 +42,15 @@ export default function WeaponsPage() {
 
   return (
     <div className="bg-dark min-h-screen">
-      <div className="sticky top-0 flex justify-between items-center flex-wrap gap-3 md:gap-6 w-full p-3 md:p-5 bg-dark-grey z-10">
+      <div className="sticky top-0 flex justify-between items-center flex-wrap gap-3 md:gap-6 w-full p-3 md:p-5 bg-gray-dark z-10">
         <div className="flex items-center flex-wrap gap-3 md:gap-6">
           <div>
             <h1 className="mb-1 md:mb-3 font-neue-haas-display-bold text-5xl md:text-6xl text-white">{t('weapons')}</h1>
             <div className="w-full h-0.5 bg-white/50" />
           </div>
           <div className="flex items-center flex-wrap gap-2 md:gap-6">
-            <input type="text" value={query} onChange={handleQuery} className="p-2 text-lg bg-light-grey text-white" placeholder={t('weapons.filters.search')} />
-            <select value={rarity} onChange={handleRarity} className="p-2 text-lg bg-light-grey text-white">
+            <input type="text" value={query} onChange={handleQuery} className="p-2 text-lg bg-gray-light text-white" placeholder={t('weapons.filters.search')} />
+            <select value={rarity} onChange={handleRarity} className="p-2 text-lg bg-gray-light text-white">
               <option value={0}>{t('weapons.filters.rarity.all')}</option>
               <option value={WEAPON_RARITY.EXOTIC}>{t(WEAPON_RARITY_NAME[WEAPON_RARITY.EXOTIC])}</option>
               <option value={WEAPON_RARITY.LEGENDARY}>{t(WEAPON_RARITY_NAME[WEAPON_RARITY.LEGENDARY])}</option>
@@ -58,7 +58,7 @@ export default function WeaponsPage() {
               <option value={WEAPON_RARITY.COMMON}>{t(WEAPON_RARITY_NAME[WEAPON_RARITY.COMMON])}</option>
               <option value={WEAPON_RARITY.BASIC}>{t(WEAPON_RARITY_NAME[WEAPON_RARITY.BASIC])}</option>
             </select>
-            <select value={damageType} onChange={handleDamageType} className="p-2 text-lg bg-light-grey text-white">
+            <select value={damageType} onChange={handleDamageType} className="p-2 text-lg bg-gray-light text-white">
               <option value={0}>{t('weapons.filters.damage.all')}</option>
               <option value={WEAPON_DAMAGE_TYPE.KINETIC}>{t(WEAPON_DAMAGE_TYPE_NAME[WEAPON_DAMAGE_TYPE.KINETIC])}</option>
               <option value={WEAPON_DAMAGE_TYPE.ARC}>{t(WEAPON_DAMAGE_TYPE_NAME[WEAPON_DAMAGE_TYPE.ARC])}</option>
@@ -67,7 +67,7 @@ export default function WeaponsPage() {
               <option value={WEAPON_DAMAGE_TYPE.STRAND}>{t(WEAPON_DAMAGE_TYPE_NAME[WEAPON_DAMAGE_TYPE.STRAND])}</option>
               <option value={WEAPON_DAMAGE_TYPE.VOID}>{t(WEAPON_DAMAGE_TYPE_NAME[WEAPON_DAMAGE_TYPE.VOID])}</option>
             </select>
-            <select value={type} onChange={handleType} className="p-2 text-lg bg-light-grey text-white">
+            <select value={type} onChange={handleType} className="p-2 text-lg bg-gray-light text-white">
               <option value={0}>{t('weapons.filters.weapon.all')}</option>
               <option value={WEAPON_TYPE.AUTO}>{t(WEAPON_TYPE_NAME[WEAPON_TYPE.AUTO])}</option>
               <option value={WEAPON_TYPE.SHOTGUN}>{t(WEAPON_TYPE_NAME[WEAPON_TYPE.SHOTGUN])}</option>
@@ -87,7 +87,7 @@ export default function WeaponsPage() {
               <option value={WEAPON_TYPE.BOW}>{t(WEAPON_TYPE_NAME[WEAPON_TYPE.BOW])}</option>
               <option value={WEAPON_TYPE.GLAIVE}>{t(WEAPON_TYPE_NAME[WEAPON_TYPE.GLAIVE])}</option>
             </select>
-            <select value={hasSound} onChange={handleHasSound} className="p-2 text-lg bg-light-grey text-white">
+            <select value={hasSound} onChange={handleHasSound} className="p-2 text-lg bg-gray-light text-white">
               <option value={0}>{t('weapons.filters.sound.all')}</option>
               <option value={1}>{t('weapons.filters.sound.with')}</option>
               <option value={2}>{t('weapons.filters.sound.without')}</option>
@@ -161,7 +161,7 @@ function Weapon({ w }) {
       href={`https://www.light.gg/db/items/${w.hash}`}
       target="_blank"
       rel="noreferrer"
-      className="flex gap-3 p-3 bg-transparent hover:bg-light-grey border border-white/30 hover:border-white/80 transition-colors duration-300 cursor-pointer"
+      className="flex gap-3 p-3 bg-transparent hover:bg-gray-light border border-white/30 hover:border-white/80 transition-colors duration-300 cursor-pointer"
     >
       <WeaponIcon
         icon={w.icon}

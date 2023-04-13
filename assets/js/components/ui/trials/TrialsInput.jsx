@@ -52,13 +52,13 @@ export default function TrialsInput() {
             value={guessInput}
             disabled={currentBounty.completed}
             onChange={(e) => setGuessInput(e.target.value)}
-            className="w-full p-2 text-lg bg-light-grey/30 border border-white/30 hover:border-white/50 focus:border-white/70 text-white transition-colors duration-300 disabled:cursor-not-allowed"
+            className="w-full p-2 text-lg bg-gray-light/30 border border-white/30 hover:border-white/50 focus:border-white/70 text-white transition-colors duration-300 disabled:cursor-not-allowed"
             placeholder={t('trials.input.placeholder')}
             autoComplete="off"
           />
           <button
             type="button"
-            className="flex gap-x-2 items-center p-2 bg-light-grey/30 border border-white/30 hover:border-white/50 text-lg text-white/70 hover:text-white transition-colors duration-300 whitespace-nowrap"
+            className="flex gap-x-2 items-center p-2 bg-gray-light/30 border border-white/30 hover:border-white/50 text-lg text-white/70 hover:text-white transition-colors duration-300 whitespace-nowrap"
             onClick={handleClickWeaponsPopup}
           >
             <span>{t('weapons')}</span>
@@ -66,7 +66,7 @@ export default function TrialsInput() {
           </button>
         </div>
         {guessInput !== '' && (
-          <div className="absolute w-full max-h-80 p-2 bg-light-grey/95 border-b border-x border-white/70 overflow-y-scroll overflow-x-hidden z-20">
+          <div className="absolute w-full max-h-80 p-2 bg-gray-light/95 border-b border-x border-white/70 overflow-y-scroll overflow-x-hidden z-20">
             <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-1">
               {searchWeapons.map((w) => <TrialsWeaponGuess key={w.id} w={w} onClick={handleClickGuess} />)}
             </div>

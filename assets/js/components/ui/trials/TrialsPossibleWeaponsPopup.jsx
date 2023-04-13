@@ -26,8 +26,8 @@ export default function TrialsPossibleWeaponsPopup() {
   }
 
   return (
-    <div onClick={handleClose} className={`${show ? '' : 'hidden'} absolute top-0 left-0 w-full h-screen flex justify-center items-center bg-light-grey/90 backdrop-blur-sm`}>
-      <div className="container mx-auto max-h-[75%] bg-dark-grey/90 text-white/90 overflow-y-scroll noscrollbar">
+    <div onClick={handleClose} className={`${show ? '' : 'hidden'} absolute top-0 left-0 w-full h-screen flex justify-center items-center bg-gray-light/90 backdrop-blur-sm`}>
+      <div className="container mx-auto max-h-[75%] bg-gray-dark/90 text-white/90 overflow-y-scroll noscrollbar">
         <div className="flex flex-col gap-y-2 p-1">
           {Object.entries(WEAPON_TYPE)
             .filter((values) => (currentBounty.knowledge.include.weaponType.length > 0 ? currentBounty.knowledge.include.weaponType.includes(values[1]) : !currentBounty.knowledge.exclude.weaponType.includes(values[1])))
@@ -77,7 +77,7 @@ function WeaponCategory({ weaponType, knowledge, history, onClick }) {
 
   return (
     <div>
-      <div className="sticky top-0 p-1 flex gap-x-2 font-bold text-xl border-b border-white/80 bg-dark-grey z-10">
+      <div className="sticky top-0 p-1 flex gap-x-2 font-bold text-xl border-b border-white/80 bg-gray-dark z-10">
         <div>
           {t(WEAPON_TYPE_NAME[weaponType])}
         </div>

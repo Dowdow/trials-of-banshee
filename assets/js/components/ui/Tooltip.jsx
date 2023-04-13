@@ -1,11 +1,11 @@
 import React, { useRef } from 'react';
 import { useSelector } from 'react-redux';
-import { useTooltipMoveOnMouseMove } from '../../hooks/mouse';
+import { useTooltipMoveOnPointerMove } from '../../hooks/pointer';
 import { useT } from '../../hooks/translations';
 
 export default function Tooltip() {
   const tooltipRef = useRef();
-  const { x, y } = useTooltipMoveOnMouseMove(tooltipRef);
+  const { x, y } = useTooltipMoveOnPointerMove(tooltipRef);
   const t = useT();
 
   const { visible, header, content, connected } = useSelector((state) => state.tooltip);
@@ -29,7 +29,7 @@ export default function Tooltip() {
           {t('tooltip.connected')}
         </div>
       )}
-      <div className="p-3 bg-light-grey/70 text-lg tracking-wide">
+      <div className="p-3 bg-gray-light/70 text-lg tracking-wide">
         {content}
       </div>
     </div>

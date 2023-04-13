@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getUserTriumphs } from '../../actions/user';
 import { useTriumphsDefault } from '../../hooks/default';
-import { useInterfaceMoveOnMouseMove } from '../../hooks/mouse';
+import { useInterfaceMoveOnPointerMove } from '../../hooks/pointer';
 import { useT } from '../../hooks/translations';
 import { useUserCollectionBadgeClaimable, useUserTriumphs, useUserXurBountyClaimable } from '../../hooks/user';
 import { ROUTES } from '../../utils/routes';
@@ -28,7 +28,7 @@ export default function TriumphsPage() {
   const [fadeOut, setFadeOut] = useState(false);
   const [nextPage, setNextPage] = useState(null);
 
-  const { x, y } = useInterfaceMoveOnMouseMove();
+  const { x, y } = useInterfaceMoveOnPointerMove();
 
   useEffect(() => {
     dispatch(getUserTriumphs());
@@ -49,7 +49,7 @@ export default function TriumphsPage() {
           <div className="w-full lg:w-2/5 xl:w-1/4 flex flex-col justify-between gap-y-10 border-t-2 border-white/10">
             <div>
               <div className="relative w-full flex justify-center mt-12 p-6">
-                <div className="w-60 h-72 p-1 bg-dark-grey border-[12px] border-yellow rounded-b-full">
+                <div className="w-60 h-72 p-1 bg-gray-dark border-[12px] border-yellow rounded-b-full">
                   <div className="flex justify-center items-center w-full h-full p-4 border-[4px] border-yellow rounded-b-full">
                     <img src={seal} alt={t('gunsmith')} className="w-full h-full" />
                   </div>
@@ -73,7 +73,7 @@ export default function TriumphsPage() {
             <div className="border-t-2 md:border-t-0 border-white/10" />
             <div className="md:border-t-2 border-white/10" />
             <div />
-            <div className="hidden md:flex justify-center items-center bg-dark-grey/70 text-white/20">◀</div>
+            <div className="hidden md:flex justify-center items-center bg-gray-dark/70 text-white/20">◀</div>
             <div className="grow overflow-y-scroll noscrollbar">
               <div className="grid grid-cols-1 2xl:grid-cols-2 gap-1.5">
                 <Triumph
@@ -129,7 +129,7 @@ export default function TriumphsPage() {
                 />
               </div>
             </div>
-            <div className="hidden md:flex justify-center items-center bg-dark-grey/70 text-white/20">▶</div>
+            <div className="hidden md:flex justify-center items-center bg-gray-dark/70 text-white/20">▶</div>
           </div>
           <div className="hidden xl:block absolute top-16 left-16 w-3 h-3 border-b-2 border-r-2 border-white/10" />
           <div className="hidden xl:block absolute top-16 right-16 w-3 h-3 border-b-2 border-l-2 border-white/10" />

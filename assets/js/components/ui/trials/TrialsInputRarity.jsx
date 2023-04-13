@@ -27,7 +27,7 @@ function RarityButton({ rarity, found, include = false, exclude = false }) {
   const t = useT();
   return (
     <div className={`flex gap-x-2 items-center ${found && !include ? 'hidden' : ''}`}>
-      <div className={`p-1 border border-white/30 hover:border-white/50 transition-colors duration-300 ${include ? 'bg-light-blue/50' : ''} ${exclude ? 'bg-red/30' : ''} ${!include && !exclude ? 'bg-light-grey/30' : ''}`}>
+      <div className={`p-1 border border-white/30 hover:border-white/50 transition-colors duration-300 ${include ? 'bg-blue-light/50' : ''} ${exclude ? 'bg-red/30' : ''} ${!include && !exclude ? 'bg-gray-light/30' : ''}`}>
         <img src={WEAPON_RARITY_IMAGE[rarity]} alt={WEAPON_RARITY_NAME[rarity]} className="w-10 h-10 md:w-12 md:h-12" />
       </div>
       {found && include && (

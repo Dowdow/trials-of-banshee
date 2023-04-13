@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { getUserCollections } from '../../actions/user';
 import { useCollectionEngramsDefault, useCollectionItemsDefault } from '../../hooks/default';
-import { useInterfaceMoveOnMouseMove } from '../../hooks/mouse';
+import { useInterfaceMoveOnPointerMove } from '../../hooks/pointer';
 import { useT } from '../../hooks/translations';
 import { useUserEngramsCollection, useUserItemsCollection } from '../../hooks/user';
 import { ROUTES } from '../../utils/routes';
@@ -29,7 +29,7 @@ export default function CollectionPage() {
   const [fadeOut, setFadeOut] = useState(false);
   const [nextPage, setNextPage] = useState(null);
 
-  const { x, y } = useInterfaceMoveOnMouseMove();
+  const { x, y } = useInterfaceMoveOnPointerMove();
 
   useEffect(() => {
     dispatch(getUserCollections());
@@ -53,8 +53,8 @@ export default function CollectionPage() {
               <h1 className="text-5xl font-bold text-white tracking-widest uppercase select-none">
                 {t('collection')}
               </h1>
-              <div className="hidden xl:flex justify-center items-center w-60 h-60 bg-dark-grey border-8 border-yellow rotate-45">
-                <div className="flex justify-center items-center w-52 h-52 bg-light-grey border-4 border-yellow">
+              <div className="hidden xl:flex justify-center items-center w-60 h-60 bg-gray-dark border-8 border-yellow rotate-45">
+                <div className="flex justify-center items-center w-52 h-52 bg-gray-light border-4 border-yellow">
                   <div className="-rotate-45 select-none p-4">
                     <img src={packageImg} alt={t('collection')} className="w-full h-full" />
                   </div>

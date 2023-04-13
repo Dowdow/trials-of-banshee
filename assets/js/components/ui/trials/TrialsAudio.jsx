@@ -42,7 +42,7 @@ export default function TrialsAudio() {
           <div className={`absolute bottom-0 left-0 w-1.5 h-1.5 rounded-full transition-colors duration-500 ${hover || playing ? 'bg-white/90' : 'bg-white/40'}`} />
           <div className={`absolute bottom-0 right-0 w-1.5 h-1.5 rounded-full transition-colors duration-500 ${hover || playing ? 'bg-white/90' : 'bg-white/40'}`} />
         </div>
-        <div className={`absolute w-16 h-16 border rounded-full transition-colors duration-300 ${hover ? 'bg-light-grey border-white/50' : 'bg-light-grey/80 border-transparent'} ${playing && 'bg-purple border-white/50'}`} />
+        <div className={`absolute w-16 h-16 border rounded-full transition-colors duration-300 ${hover ? 'bg-gray-light border-white/50' : 'bg-gray-light/80 border-transparent'} ${playing && 'bg-purple border-white/50'}`} />
         <img src={mouse} alt={t('click.left')} className="absolute" />
       </button>
     </section>

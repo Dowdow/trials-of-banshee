@@ -36,7 +36,7 @@ export default function SoundsPage() {
   if (!admin) return null;
   return (
     <div className="bg-dark min-h-screen">
-      <div className="sticky top-0 flex justify-between items-center flex-wrap gap-3 md:gap-6 w-full bg-dark-grey p-3 md:p-5 z-10">
+      <div className="sticky top-0 flex justify-between items-center flex-wrap gap-3 md:gap-6 w-full bg-gray-dark p-3 md:p-5 z-10">
         <div className="flex items-center flex-wrap gap-3 md:gap-6">
           <div>
             <h1 className="mb-1 md:mb-3 font-neue-haas-display-bold text-5xl md:text-6xl text-white">
@@ -45,8 +45,8 @@ export default function SoundsPage() {
             <div className="w-full h-0.5 bg-white/50" />
           </div>
           <div className="flex items-center flex-wrap gap-2 md:gap-6">
-            <input type="text" value={query} onChange={handleQuery} className="p-2 text-lg bg-light-grey text-white" placeholder="Search a sound" />
-            <select value={type} onChange={handleType} className="p-2 text-lg bg-light-grey text-white">
+            <input type="text" value={query} onChange={handleQuery} className="p-2 text-lg bg-gray-light text-white" placeholder="Search a sound" />
+            <select value={type} onChange={handleType} className="p-2 text-lg bg-gray-light text-white">
               <option value={0}>{t('weapons.filters.weapon.all')}</option>
               <option value={WEAPON_TYPE.AUTO}>{t(WEAPON_TYPE_NAME[WEAPON_TYPE.AUTO])}</option>
               <option value={WEAPON_TYPE.SHOTGUN}>{t(WEAPON_TYPE_NAME[WEAPON_TYPE.SHOTGUN])}</option>
@@ -130,7 +130,7 @@ function Sound({ s }) {
   };
 
   return (
-    <div className="flex flex-col gap-1 p-3 bg-transparent hover:bg-light-grey border border-white/30 hover:border-white/80 transition-colors">
+    <div className="flex flex-col gap-1 p-3 bg-transparent hover:bg-gray-light border border-white/30 hover:border-white/80 transition-colors">
       <div className="flex justify-between gap-2">
         <span className="text-lg tracking-wide text-white">{s.name}</span>
         <div className="flex items-center gap-2">

@@ -27,7 +27,7 @@ function DamageTypeButton({ damageType, found, include = false, exclude = false 
   const t = useT();
   return (
     <div className={`flex gap-x-2 items-center ${found && !include ? 'hidden' : ''}`}>
-      <div className={`p-2 border border-white/30 hover:border-white/50 transition-colors duration-300 ${include ? 'bg-light-blue/50' : ''} ${exclude ? 'bg-red/30' : ''} ${!include && !exclude ? 'bg-light-grey/30' : ''}`}>
+      <div className={`p-2 border border-white/30 hover:border-white/50 transition-colors duration-300 ${include ? 'bg-blue-light/50' : ''} ${exclude ? 'bg-red/30' : ''} ${!include && !exclude ? 'bg-gray-light/30' : ''}`}>
         <img src={WEAPON_DAMAGE_TYPE_IMAGE[damageType]} alt={WEAPON_DAMAGE_TYPE_NAME[damageType]} className="w-8 h-8 md:w-10 md:h-10" />
       </div>
       {found && include && (
