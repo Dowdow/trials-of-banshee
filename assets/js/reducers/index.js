@@ -1,6 +1,7 @@
 import bounties from './bounties';
 import collections from './collections';
 import locale from './locale';
+import soundFilters from './soundFilters';
 import sounds from './sounds';
 import tooltip from './tooltip';
 import triumphs from './triumphs';
@@ -12,6 +13,7 @@ export default {
   bounties,
   collections,
   locale,
+  soundFilters,
   sounds,
   tooltip,
   triumphs,

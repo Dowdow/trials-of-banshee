@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { generatePath, Link } from 'react-router-dom';
+import { setQuery, setType } from '../../actions/soundFilters';
 import { getSounds } from '../../actions/sounds';
 import { useLocale, useT } from '../../hooks/translations';
 import { useUserAdmin } from '../../hooks/user';
@@ -16,8 +17,7 @@ export default function SoundsPage() {
   const dispatch = useDispatch();
   const t = useT();
 
-  const [query, setQuery] = useState('');
-  const [type, setType] = useState(0);
+  const { query, type } = useSelector((state) => state.soundFilters);
 
   useEffect(() => {
     if (admin) {
@@ -26,11 +26,11 @@ export default function SoundsPage() {
   }, []);
 
   const handleQuery = (e) => {
-    setQuery(e.target.value);
+    dispatch(setQuery(e.target.value));
   };
 
   const handleType = (e) => {
-    setType(parseInt(e.target.value, 10));
+    dispatch(setType(parseInt(e.target.value, 10)));
   };
 
   if (!admin) return null;
