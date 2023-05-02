@@ -20,7 +20,7 @@ export default function bounties(state = init, action = {}) {
       return {
         ...state,
         items: [...state.items, action.payload],
-        completions: state.completions + 1,
+        completions: action.payload.completed ? state.completions + 1 : state.completions,
       };
     }
     default:
