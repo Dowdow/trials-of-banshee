@@ -13,12 +13,12 @@ class TriumphService
   public const BOUNTIES_CLAIMED_DEFAULT = false;
   public const ASPIRING_BOUNTIES = 'aspiringBounties'; // Total completed aspiring bounties
   public const ASPIRING_BOUNTIES_DEFAULT = 0;
-  public const ASPIRING_BOUNTIES_GOAL = 50;
+  public const ASPIRING_BOUNTIES_GOAL = 30;
   public const ASPIRING_BOUNTIES_CLAIMED = 'aspiringBountiesClaimed';
   public const ASPIRING_BOUNTIES_CLAIMED_DEFAULT = false;
   public const TRUE_GUNSMITH_BOUNTIES = 'trueGunsmithBounties'; // Total completed true gunsmith bounties
   public const TRUE_GUNSMITH_BOUNTIES_DEFAULT = 0;
-  public const TRUE_GUNSMITH_BOUNTIES_GOAL = 25;
+  public const TRUE_GUNSMITH_BOUNTIES_GOAL = 15;
   public const TRUE_GUNSMITH_BOUNTIES_CLAIMED = 'trueGunsmithBountiesClaimed';
   public const TRUE_GUNSMITH_BOUNTIES_CLAIMED_DEFAULT = false;
   public const PERFECT_MATCHES = 'perfectMatches'; // Total perfect match bounties
