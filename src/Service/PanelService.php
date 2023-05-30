@@ -23,7 +23,6 @@ use Symfony\Component\Process\Process;
 class PanelService
 {
   public const WEAPON_ITEM_TYPE = 3;
-  public const DEFAULT_ICON_WATERMARK = '/common/destiny2_content/icons/0dac2f181f0245cfc64494eccb7db9f7.png';
   public const HIDDEN_KEYWORDS = [
     '(Adept)',
     '(Timelost)',
@@ -33,7 +32,6 @@ class PanelService
     'v1.0.1',
     'v1.0.2'
   ];
-
 
   private DestinyAPIClientService $destinyAPIClient;
   private EntityManagerInterface $em;
@@ -166,7 +164,7 @@ class PanelService
             $locale => $item['displayProperties']['name'],
           ],
           'icon' => $item['displayProperties']['icon'],
-          'iconWatermark' => $item['iconWatermark'] ?? self::DEFAULT_ICON_WATERMARK,
+          'iconWatermark' => $item['iconWatermark'] ?? $item['quality']['displayVersionWatermarkIcons'][0],
           'screenshot' => $item['screenshot'],
           'type' => $item['itemSubType'],
           'damageType' => $item['defaultDamageType'],
