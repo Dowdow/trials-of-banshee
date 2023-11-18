@@ -1,10 +1,12 @@
 FROM php:8.2-apache
 
+SHELL ["/bin/bash", "-c"]
+
 # Updates
 RUN apt-get update && apt-get -y upgrade
 
 # Packages
-RUN apt-get install -y apt-utils git libonig-dev libicu-dev python3 python3-pip rsync sshpass unzip wget zip zsh
+RUN apt-get install -y apt-utils git libonig-dev libicu-dev pipx rsync sshpass unzip wget zip zsh
 
 # Intall ohmyzsh
 RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
@@ -35,13 +37,17 @@ COPY tob.conf /etc/apache2/sites-available/tob.conf
 RUN a2ensite tob.conf
 
 # NodeJS
-RUN curl -fsSL https://deb.nodesource.com/setup_19.x | bash - && apt-get install -y nodejs
+RUN apt-get install -y ca-certificates curl gnupg
+RUN mkdir -p /etc/apt/keyrings
+RUN curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+RUN echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_21.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list
+RUN apt-get update && apt-get install nodejs -y
 RUN npm i -g npm
 
 # Git
 RUN git config --global --add safe.directory /var/www/html
 
 # Ansible
-RUN python3 -m pip install --user ansible
+RUN pipx install --include-deps ansible
 RUN echo "export PATH=$PATH:/root/.local/bin" >> /root/.zshrc
 RUN /root/.local/bin/ansible-galaxy install ansistrano.deploy ansistrano.rollback
