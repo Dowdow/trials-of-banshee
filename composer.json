@@ -11,28 +11,28 @@
         "doctrine/doctrine-bundle": "^2.10",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.15",
-        "symfony/asset": "6.3.*",
-        "symfony/console": "6.3.*",
-        "symfony/dotenv": "6.3.*",
-        "symfony/filesystem": "6.3.*",
+        "symfony/asset": "*",
+        "symfony/console": "*",
+        "symfony/dotenv": "*",
+        "symfony/filesystem": "*",
         "symfony/flex": "^2.3",
-        "symfony/form": "6.3.*",
-        "symfony/framework-bundle": "6.3.*",
-        "symfony/http-client": "6.3.*",
-        "symfony/mailer": "6.3.*",
-        "symfony/mime": "6.3.*",
+        "symfony/form": "*",
+        "symfony/framework-bundle": "*",
+        "symfony/http-client": "*",
+        "symfony/mailer": "*",
+        "symfony/mime": "*",
         "symfony/monolog-bundle": "^3.8",
-        "symfony/process": "6.3.*",
-        "symfony/runtime": "6.3.*",
-        "symfony/security-bundle": "6.3.*",
-        "symfony/twig-bundle": "6.3.*",
-        "symfony/validator": "6.3.*",
-        "symfony/yaml": "6.3.*"
+        "symfony/process": "*",
+        "symfony/runtime": "*",
+        "symfony/security-bundle": "*",
+        "symfony/twig-bundle": "*",
+        "symfony/validator": "*",
+        "symfony/yaml": "*"
     },
     "require-dev": {
         "symfony/maker-bundle": "^1.49",
-        "symfony/stopwatch": "6.3.*",
-        "symfony/web-profiler-bundle": "6.3.*"
+        "symfony/stopwatch": "*",
+        "symfony/web-profiler-bundle": "*"
     },
     "config": {
         "allow-plugins": {
@@ -78,7 +78,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": "true",
-            "require": "6.3.*",
+            "require": "6.4.*",
             "docker": false
         }
     }

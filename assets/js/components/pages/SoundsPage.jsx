@@ -151,6 +151,9 @@ function Sound({ s }) {
 
 function Weapon({ w }) {
   const locale = useLocale();
+  if (!w) {
+    return null;
+  }
   return (
     <div className="flex items-center gap-1 p-1 border border-white/30">
       <WeaponIcon icon={w.icon} alt={w.names[locale]} iconWatermark={w.iconWatermark} className="w-8 h-8" />
